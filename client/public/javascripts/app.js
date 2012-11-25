@@ -600,7 +600,30 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<' + (model.title) + '></' + (model.title) + '>');
+  buf.push('<div class="buttons"><button class="icon-delete"></button></div>');
+  if ( model.title)
+  {
+  buf.push('<div class="title"><a');
+  buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
+  buf.push('>' + escape((interp = model.title) == null ? '' : interp) + '</a></div>');
+  }
+  else
+  {
+  buf.push('<div class="title"><a');
+  buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
+  buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a></div>');
+  }
+  buf.push('<div class="tags">' + escape((interp = model.tags) == null ? '' : interp) + '</div>');
+  if ( model.title)
+  {
+  buf.push('<a');
+  buf.push(attrs({ 'href':("" + (model.url) + ""), "class": ('url') }, {"href":true}));
+  buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a>');
+  }
+  if ( model.description)
+  {
+  buf.push('<p class="description">' + escape((interp = model.description) == null ? '' : interp) + '</p>');
+  }
   }
   return buf.join("");
   };
