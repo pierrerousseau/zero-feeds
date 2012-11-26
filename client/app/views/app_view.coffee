@@ -50,7 +50,7 @@ module.exports = class AppView extends View
                 url: url
             event.preventDefault()
             @feedsView.collection.create feed,
-                success: => alert "ok"
+                success: =>
                 error: => alert "Server error occured, feed was not saved"
         else
             alert 'Url field is required'

@@ -484,9 +484,7 @@ window.require.define({"views/app_view": function(exports, require, module) {
         });
         event.preventDefault();
         this.feedsView.collection.create(feed, {
-          success: function() {
-            return alert("ok");
-          },
+          success: function() {},
           error: function() {
             return alert("Server error occured, feed was not saved");
           }
@@ -519,11 +517,13 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     FeedView.prototype.tagName = 'div';
 
     FeedView.prototype.events = {
+      'click': 'onUpdateClicked',
       'click .icon-delete': 'onDeleteClicked'
     };
 
     function FeedView(model) {
       this.model = model;
+      this.link_template = require('./templates/link');
       FeedView.__super__.constructor.call(this);
     }
 
@@ -533,9 +533,95 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return template(this.getRenderData());
     };
 
-    FeedView.prototype.onDeleteClicked = function() {
+    FeedView.prototype.from = function() {
+      var title;
+      title = this.model.attributes.title;
+      if (title) {
+        return title.replace(/\s/g, "");
+      } else {
+        return "";
+      }
+    };
+
+    FeedView.prototype.renderXml = function() {
+      var $items, $xml, from, title, tmpl;
+      $xml = $($.parseXML(this.model.attributes.content));
+      title = $xml.find("channel > title:first").text();
+      this.$el.find(".title a").html(title);
+      $items = $xml.find("item").get();
+      $items.reverse();
+      from = this.from();
+      tmpl = this.link_template;
+      return $.each($items, function(index, value) {
+        var link, url;
+        title = $(value).find("title").text();
+        url = $(value).find("link").text();
+        link = {
+          "title": title,
+          "url": url,
+          "from": from
+        };
+        $(".links").prepend(tmpl(link));
+        if (index >= 9) {
+          return false;
+        }
+      });
+    };
+
+    FeedView.prototype.onUpdateClicked = function(evt) {
+      var $title, $xml, existing, from, spinner,
+        _this = this;
+      from = this.from();
+      existing = [];
+      if (from) {
+        existing = $(".links ." + from);
+      }
+      spinner = new Spinner({
+        "lines": 13,
+        "length": 4,
+        "width": 4,
+        "radius": 6,
+        "corners": 1,
+        "rotate": 0,
+        "color": '#27aaf2',
+        "speed": 1,
+        "trail": 60,
+        "shadow": true,
+        "hwaccel": false,
+        "className": 'spinner',
+        "top": 'auto',
+        "left": 'auto'
+      });
+      spinner.spin(this.el);
+      if (existing.length) {
+        existing.remove();
+        this.$el.removeClass("show");
+        spinner.stop();
+      } else {
+        $xml = $($.parseXML(this.model.attributes.content));
+        $title = $xml.find("channel > title:first").text();
+        this.model.save({
+          "title": $title
+        }, {
+          success: function() {
+            _this.renderXml();
+            _this.render();
+            console.log(_this.$el);
+            _this.$el.addClass("show");
+            return spinner.stop();
+          },
+          error: function() {
+            spinner.stop();
+            return alert("Server error occured, feed was not deleted.");
+          }
+        });
+      }
+      return evt.preventDefault();
+    };
+
+    FeedView.prototype.onDeleteClicked = function(evt) {
       var _this = this;
-      return this.model.destroy({
+      this.model.destroy({
         success: function() {
           return _this.destroy();
         },
@@ -543,6 +629,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           return alert("Server error occured, feed was not deleted.");
         }
       });
+      evt.preventDefault();
+      return false;
     };
 
     return FeedView;
@@ -600,30 +688,20 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="buttons"><button class="icon-delete"></button></div>');
-  if ( model.title)
-  {
-  buf.push('<div class="title"><a');
-  buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
-  buf.push('>' + escape((interp = model.title) == null ? '' : interp) + '</a></div>');
-  }
-  else
-  {
-  buf.push('<div class="title"><a');
-  buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
-  buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a></div>');
-  }
-  buf.push('<div class="tags">' + escape((interp = model.tags) == null ? '' : interp) + '</div>');
+  buf.push('<div class="title"><div class="buttons"><button class="icon-delete"></button></div>');
   if ( model.title)
   {
   buf.push('<a');
-  buf.push(attrs({ 'href':("" + (model.url) + ""), "class": ('url') }, {"href":true}));
+  buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
+  buf.push('>' + escape((interp = model.title) == null ? '' : interp) + '</a>');
+  }
+  else
+  {
+  buf.push('<a');
+  buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a>');
   }
-  if ( model.description)
-  {
-  buf.push('<p class="description">' + escape((interp = model.description) == null ? '' : interp) + '</p>');
-  }
+  buf.push('</div>');
   }
   return buf.join("");
   };
@@ -635,7 +713,23 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="title" class="title-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><input type="button" title="more" class="icon-more"/></p><p><textarea placeholder="description" class="description-field"></textarea></p><button title="add" class="icon-add"></button></form></div><div class="feeds"><div class="links"></div></div>');
+  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="title" class="title-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><input type="button" title="more" class="icon-more"/></p><p><textarea placeholder="description" class="description-field"></textarea></p><button title="add" class="icon-add"></button></form><div class="feeds"></div><ul class="links"></ul></div>');
+  }
+  return buf.join("");
+  };
+}});
+
+window.require.define({"views/templates/link": function(exports, require, module) {
+  module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+  attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+  var buf = [];
+  with (locals || {}) {
+  var interp;
+  buf.push('<li');
+  buf.push(attrs({ "class": ("" + (from) + "") }, {"class":true}));
+  buf.push('><a');
+  buf.push(attrs({ 'href':("" + (url) + "") }, {"href":true}));
+  buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></li>');
   }
   return buf.join("");
   };

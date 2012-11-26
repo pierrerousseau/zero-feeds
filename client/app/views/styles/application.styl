@@ -10,3 +10,121 @@
 @import '_layout'
 @import '_responsive'
 
+body.application, input, textarea
+    color: #bbb
+    background: none repeat scroll 0 0 rgba(30, 30, 30, 0.8)
+
+a
+    color: #27aaf2
+    text-decoration: none
+
+#content
+    padding: 2em
+
+
+button, input[type=button]
+    background-color: inherit
+
+[class^="icon-"], [class*=" icon-"]
+    background-image: url("../images/glyphicons-halflings.png")
+    background-position: 14px 14px
+    background-repeat: no-repeat
+    display: inline-block
+    height: 14px
+    line-height: 14px
+    width: 14px
+    vertical-align: text-top
+    cursor: pointer
+    border-radius: 10px 10px 10px 10px
+    cursor: pointer
+    padding: 10px 15px
+    border: 2px solid #666
+
+.icon-more
+    background-position: -305px -116px
+
+.icon-less
+    background-position: -280px -117px
+
+form
+    padding: 0 2em
+    input
+        padding: .5em
+        margin: 1em
+        width: 24em
+        display: block
+    input[type=button]
+        width: 14px
+        height: 14px
+        padding: 10px 15px
+        display: inline-block
+    textarea
+        display: block
+        display: none
+        padding: .5em
+        margin: 1em
+        width: 50em
+    .url-field
+        width: 50em
+    .tags-field, .title-field
+        display: inline-block
+    .icon-add
+        background-position: -280px 3px
+        display: block
+        margin: 1em
+
+.icon-delete
+    background-position: -304px 3px
+
+.feeds
+    display: inline-block;
+    vertical-align: top;
+    max-width: 20%;
+    margin: 0 .2em
+    padding: .5em
+    .feed 
+        cursor: pointer;
+        border: 2px solid #666;
+        &:hover
+            border: 2px solid #777;
+        border-radius: 10px 10px 10px 10px
+        padding: .5em
+        margin: .5em
+        white-space: nowrap;
+        .buttons
+            display: inline-block;
+            button:hover
+                border: 2px solid #700;
+        div.title
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top;
+            a
+                margin: 0 .3em
+            a:hover
+                text-decoration: none;
+     .feed.show div.title
+            font-size: 1.2em
+            font-weight: bold;
+               
+
+
+ul.links
+    display: inline-block;
+    width: 70%;
+    vertical-align: top;
+    list-style: none
+    li
+        border-top: 1px solid #666;
+        padding: 1em 0;
+
+    .link
+        table-row
+        div, a
+            padding: .5em
+            margin: 1em
+            display: table-cell
+        .buttons
+            width: 20px
+        .title
+            font-weight: bold

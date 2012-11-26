@@ -3,4 +3,6 @@ Feed = define 'Feed', ->
     property 'url', String
     property 'tags', String
     property 'description', Text
+    property 'content', Text
     property 'created', Date, default: Date
+    property 'updated', Date, default: Date

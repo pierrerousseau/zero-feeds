@@ -4,13 +4,23 @@ Follow your favorite sites here !
 
 # To do ...
 
-* build the client side
-* build the sever side
-* make it works
-* work on client ui
+* order feeds by tags
+* order feeds by creation date for every tag
+* bug : needs to load feed 2 times before to get updated title
+* show feed description on mouseover
+* deleting a feed puts it into the new feed form
+* manage atom feeds
+* show text of link (or summary or whatever is available)
+* bug : classes of feeds with bad characters cant be deleted
+* bug : first display of a feed cant be deleted
+* add filter for links
+* allow to refresh all feeds at once (or by tag)
+
 
 # Changelog
 
+* v0.5
+  * first working version
 
 
 # About Cozy

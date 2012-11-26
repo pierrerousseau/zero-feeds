@@ -869,6 +869,146 @@ cursor not-allowed {
     width: 1170px;
   }
 }
+body.application,
+input,
+textarea {
+  color: #bbb;
+  background: none repeat scroll 0 0 rgba(30,30,30,0.8);
+}
+a {
+  color: #27aaf2;
+  text-decoration: none;
+}
+#content {
+  padding: 2em;
+}
+button,
+input[type=button] {
+  background-color: inherit;
+}
+[class^="icon-"],
+[class*=" icon-"] {
+  background-image: url("../images/glyphicons-halflings.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 14px;
+  line-height: 14px;
+  width: 14px;
+  vertical-align: text-top;
+  cursor: pointer;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border: 2px solid #666;
+}
+.icon-more {
+  background-position: -305px -116px;
+}
+.icon-less {
+  background-position: -280px -117px;
+}
+form {
+  padding: 0 2em;
+}
+form input {
+  padding: 0.5em;
+  margin: 1em;
+  width: 24em;
+  display: block;
+}
+form input[type=button] {
+  width: 14px;
+  height: 14px;
+  padding: 10px 15px;
+  display: inline-block;
+}
+form textarea {
+  display: block;
+  display: none;
+  padding: 0.5em;
+  margin: 1em;
+  width: 50em;
+}
+form .url-field {
+  width: 50em;
+}
+form .tags-field,
+form .title-field {
+  display: inline-block;
+}
+form .icon-add {
+  background-position: -280px 3px;
+  display: block;
+  margin: 1em;
+}
+.icon-delete {
+  background-position: -304px 3px;
+}
+.feeds {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 20%;
+  margin: 0 0.2em;
+  padding: 0.5em;
+}
+.feeds .feed {
+  cursor: pointer;
+  border: 2px solid #666;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  padding: 0.5em;
+  margin: 0.5em;
+  white-space: nowrap;
+}
+.feeds .feed:hover {
+  border: 2px solid #777;
+}
+.feeds .feed .buttons {
+  display: inline-block;
+}
+.feeds .feed .buttons button:hover {
+  border: 2px solid #700;
+}
+.feeds .feed div.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+.feeds .feed div.title a {
+  margin: 0 0.3em;
+}
+.feeds .feed div.title a:hover {
+  text-decoration: none;
+}
+.feeds .feed.show div.title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+ul.links {
+  display: inline-block;
+  width: 70%;
+  vertical-align: top;
+  list-style: none;
+}
+ul.links li {
+  border-top: 1px solid #666;
+  padding: 1em 0;
+}
+ul.links .link table-row,
+ul.links .link div,
+ul.links .link a {
+  padding: 0.5em;
+  margin: 1em;
+  display: table-cell;
+}
+ul.links .link .buttons {
+  width: 20px;
+}
+ul.links .link .title {
+  font-weight: bold;
+}
 .chromeframe { margin: 0.2em 0; background: #ccc; color: #000; padding: 0.2em 0; }
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
 .ir br { display: none; }
