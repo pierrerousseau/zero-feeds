@@ -51,6 +51,7 @@ module.exports = class AppView extends View
             event.preventDefault()
             @feedsView.collection.create feed,
                 success: =>
+                    $("form.new-feed").find("input, textarea").val("")
                 error: => alert "Server error occured, feed was not saved"
         else
             alert 'Url field is required'

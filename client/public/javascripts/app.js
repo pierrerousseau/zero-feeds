@@ -484,7 +484,9 @@ window.require.define({"views/app_view": function(exports, require, module) {
         });
         event.preventDefault();
         this.feedsView.collection.create(feed, {
-          success: function() {},
+          success: function() {
+            return $("form.new-feed").find("input, textarea").val("");
+          },
           error: function() {
             return alert("Server error occured, feed was not saved");
           }
@@ -623,6 +625,9 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       var _this = this;
       this.model.destroy({
         success: function() {
+          var url;
+          url = _this.$el.find(".title a").attr("href");
+          $("form.new-feed .url-field").val(url);
           return _this.destroy();
         },
         error: function() {

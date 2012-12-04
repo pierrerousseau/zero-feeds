@@ -84,6 +84,8 @@ module.exports = class FeedView extends View
     onDeleteClicked: (evt) ->
         @model.destroy
             success: =>
+                url = @$el.find(".title a").attr("href")
+                $("form.new-feed .url-field").val(url)
                 @destroy()
             error: =>
                 alert "Server error occured, feed was not deleted."
