@@ -429,9 +429,9 @@ window.require.define({"views/app_view": function(exports, require, module) {
     AppView.prototype.el = 'body.application';
 
     AppView.prototype.events = {
-      'click .icon-add': 'onCreateClicked',
-      'click .icon-more': 'onMoreClicked',
-      'click .icon-less': 'onMoreClicked'
+      'click form .icon-add': 'onCreateClicked',
+      'click form .icon-more': 'onMoreClicked',
+      'click form .icon-less': 'onMoreClicked'
     };
 
     AppView.prototype.template = function() {
@@ -554,19 +554,32 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       $items.reverse();
       from = this.from();
       tmpl = this.link_template;
-      return $.each($items, function(index, value) {
-        var link, url;
+      $.each($items, function(index, value) {
+        var description, link, url;
         title = $(value).find("title").text();
         url = $(value).find("link").text();
+        description = $(value).find("content\\:encoded").text();
+        if (description === "") {
+          description = $(value).find("description").text();
+        }
         link = {
           "title": title,
           "url": url,
-          "from": from
+          "from": from,
+          "description": description
         };
         $(".links").prepend(tmpl(link));
         if (index >= 9) {
           return false;
         }
+      });
+      return $(".links .icon-more").click(function(evt) {
+        var icon, parentLink;
+        parentLink = $(this).parents(".link:first");
+        icon = parentLink.find("button");
+        icon.toggleClass("icon-more");
+        icon.toggleClass("icon-less");
+        return parentLink.find(".description").toggle();
       });
     };
 
@@ -718,7 +731,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="title" class="title-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><input type="button" title="more" class="icon-more"/></p><p><textarea placeholder="description" class="description-field"></textarea></p><button title="add" class="icon-add"></button></form><div class="feeds"></div><ul class="links"></ul></div>');
+  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="title" class="title-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><button type="button" title="more" class="icon-more"></button></p><p><textarea placeholder="description" class="description-field"></textarea></p><button title="add" class="icon-add"></button></form><div class="feeds"></div><ul class="links"></ul></div>');
   }
   return buf.join("");
   };
@@ -731,10 +744,10 @@ window.require.define({"views/templates/link": function(exports, require, module
   with (locals || {}) {
   var interp;
   buf.push('<li');
-  buf.push(attrs({ "class": ("" + (from) + "") }, {"class":true}));
-  buf.push('><a');
+  buf.push(attrs({ "class": ("link " + (from) + "") }, {"class":true}));
+  buf.push('><div class="buttons"><button type="button" title="more" class="icon-more"></button></div><a');
   buf.push(attrs({ 'href':("" + (url) + "") }, {"href":true}));
-  buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></li>');
+  buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
   }
   return buf.join("");
   };

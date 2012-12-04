@@ -33,12 +33,25 @@ module.exports = class FeedView extends View
         tmpl   = @link_template
         $.each $items,
             (index, value) ->
-                title = $(value).find("title").text()
-                url   = $(value).find("link").text()
-                link = { "title": title, "url": url, "from": from }
+                title       = $(value).find("title").text()
+                url         = $(value).find("link").text()
+                description = $(value).find("content\\:encoded").text()
+                if description == ""
+                    description = $(value).find("description").text()
+                link = 
+                    "title": title
+                    "url": url
+                    "from": from
+                    "description": description
                 $(".links").prepend(tmpl(link))
                 if index >= 9
                     false
+        $(".links .icon-more").click((evt) -> 
+            parentLink = $(this).parents(".link:first")
+            icon = parentLink.find("button")
+            icon.toggleClass("icon-more")
+            icon.toggleClass("icon-less")
+            parentLink.find(".description").toggle())
 
     onUpdateClicked: (evt) ->
         from     = @from()

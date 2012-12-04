@@ -8,9 +8,7 @@ Follow your favorite sites here !
 * order feeds by creation date for every tag
 * bug : needs to load feed 2 times before to get updated title
 * show feed description on mouseover
-* deleting a feed puts it into the new feed form
 * manage atom feeds
-* show text of link (or summary or whatever is available)
 * bug : classes of feeds with bad characters cant be deleted
 * bug : first display of a feed cant be deleted
 * add filter for links
@@ -19,6 +17,10 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v0.6
+  * display the content or the description a feed
+  * deleting a feed puts it into the new feed form
+  * cleaning form after adding a new feed
 * v0.5
   * first working version
 

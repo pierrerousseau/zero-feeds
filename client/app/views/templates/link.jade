@@ -1,2 +1,6 @@
-li(class="#{from}")
+li(class="link #{from}")
+    .buttons
+        button.icon-more(type="button", title="more")
     a("href"="#{url}") #{title}
+    .description
+        | !{description}

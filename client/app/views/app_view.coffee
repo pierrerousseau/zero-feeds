@@ -7,9 +7,9 @@ module.exports = class AppView extends View
     el: 'body.application'
 
     events:
-        'click .icon-add': 'onCreateClicked'
-        'click .icon-more': 'onMoreClicked'
-        'click .icon-less': 'onMoreClicked'
+        'click form .icon-add': 'onCreateClicked'
+        'click form .icon-more': 'onMoreClicked'
+        'click form .icon-less': 'onMoreClicked'
 
     template: ->
         require('./templates/home')
