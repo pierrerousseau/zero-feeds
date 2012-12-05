@@ -546,21 +546,32 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     };
 
     FeedView.prototype.renderXml = function() {
-      var $items, $xml, from, title, tmpl;
+      var $items, $xml, atom, from, tmpl;
       $xml = $($.parseXML(this.model.attributes.content));
-      title = $xml.find("channel > title:first").text();
-      this.$el.find(".title a").html(title);
-      $items = $xml.find("item").get();
-      $items.reverse();
+      atom = false;
+      if ($xml.find("feed").length > 0) {
+        atom = true;
+        $items = $xml.find("entry").get();
+      } else {
+        $items = $xml.find("item").get();
+      }
       from = this.from();
       tmpl = this.link_template;
       $.each($items, function(index, value) {
-        var description, link, url;
+        var description, link, title, url;
         title = $(value).find("title").text();
-        url = $(value).find("link").text();
-        description = $(value).find("content\\:encoded").text();
-        if (description === "") {
-          description = $(value).find("description").text();
+        if (atom) {
+          url = $(value).find("id").text();
+          description = $(value).find("content").text();
+          if (description === "") {
+            description = $(value).find("summary").text();
+          }
+        } else {
+          url = $(value).find("link").text();
+          description = $(value).find("content\\:encoded").text();
+          if (description === "") {
+            description = $(value).find("description").text();
+          }
         }
         link = {
           "title": title,
@@ -568,7 +579,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           "from": from,
           "description": description
         };
-        $(".links").prepend(tmpl(link));
+        $(".links").append(tmpl(link));
         if (index >= 9) {
           return false;
         }
@@ -614,14 +625,17 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         spinner.stop();
       } else {
         $xml = $($.parseXML(this.model.attributes.content));
-        $title = $xml.find("channel > title:first").text();
+        if ($xml.find("feed").length > 0) {
+          $title = $xml.find("feed > title:first").text();
+        } else {
+          $title = $xml.find("channel > title:first").text();
+        }
         this.model.save({
           "title": $title
         }, {
           success: function() {
             _this.renderXml();
             _this.render();
-            console.log(_this.$el);
             _this.$el.addClass("show");
             return spinner.stop();
           },

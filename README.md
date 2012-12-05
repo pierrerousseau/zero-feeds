@@ -8,15 +8,17 @@ Follow your favorite sites here !
 * order feeds by creation date for every tag
 * bug : needs to load feed 2 times before to get updated title
 * show feed description on mouseover
-* manage atom feeds
 * bug : first display of a feed cant be deleted
 * add filter for links
 * allow to refresh all feeds at once (or by tag)
+* bug : doesnt support https
 
 
 # Changelog
 
-* v0.6.1
+* v0.7
+  * manage atom feeds
+  * bug solved : display last 10 links (for real ... i hope)
   * bug solved : css classes of feeds with bad characters cant be removed
 * v0.6
   * display the content or the description a feed
