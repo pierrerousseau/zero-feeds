@@ -9,7 +9,6 @@ Follow your favorite sites here !
 * bug : needs to load feed 2 times before to get updated title
 * show feed description on mouseover
 * manage atom feeds
-* bug : classes of feeds with bad characters cant be deleted
 * bug : first display of a feed cant be deleted
 * add filter for links
 * allow to refresh all feeds at once (or by tag)
@@ -17,6 +16,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v0.6.1
+  * bug solved : css classes of feeds with bad characters cant be removed
 * v0.6
   * display the content or the description a feed
   * deleting a feed puts it into the new feed form

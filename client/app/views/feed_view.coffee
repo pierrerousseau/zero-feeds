@@ -19,7 +19,8 @@ module.exports = class FeedView extends View
     from: ->
         title = @model.attributes.title
         if title
-            title.replace(/\s/g, "")
+            title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g,
+                          '');
         else
             ""
 
@@ -38,7 +39,7 @@ module.exports = class FeedView extends View
                 description = $(value).find("content\\:encoded").text()
                 if description == ""
                     description = $(value).find("description").text()
-                link = 
+                link =
                     "title": title
                     "url": url
                     "from": from
@@ -46,7 +47,7 @@ module.exports = class FeedView extends View
                 $(".links").prepend(tmpl(link))
                 if index >= 9
                     false
-        $(".links .icon-more").click((evt) -> 
+        $(".links .icon-more").click((evt) ->
             parentLink = $(this).parents(".link:first")
             icon = parentLink.find("button")
             icon.toggleClass("icon-more")

@@ -539,7 +539,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       var title;
       title = this.model.attributes.title;
       if (title) {
-        return title.replace(/\s/g, "");
+        return title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
       } else {
         return "";
       }
