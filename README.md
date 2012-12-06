@@ -16,6 +16,9 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v0.7.1
+  * refactoring model
+  * newly added feed on top
 * v0.7
   * manage atom feeds
   * bug solved : display last 10 links (for real ... i hope)

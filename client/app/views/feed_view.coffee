@@ -1,4 +1,5 @@
 View = require '../lib/view'
+linkTemplate = require './templates/link'
 
 module.exports = class FeedView extends View
     className: 'feed'
@@ -9,67 +10,29 @@ module.exports = class FeedView extends View
         'click .icon-delete': 'onDeleteClicked'
 
     constructor: (@model) ->
-        @link_template = require './templates/link'
         super()
 
     template: ->
         template = require './templates/feed'
         template @getRenderData()
 
-    from: ->
-        title = @model.attributes.title
-        if title
-            title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g,
-                          '');
-        else
-            ""
-
     renderXml: ->
-        $xml = $($.parseXML(@model.attributes.content))
-        atom = false
-        if $xml.find("feed").length > 0
-            atom   = true
-            $items = $xml.find("entry").get()
-        else
-            $items = $xml.find("item").get()
-        from = @from()
-        
-        tmpl   = @link_template
-        $.each $items,
-            (index, value) ->
-                title = $(value).find("title").text()
-                if atom
-                    url = $(value).find("id").text()
-                    description = $(value).find("content").text()
-                    if description == ""
-                        description = $(value).find("summary").text()
-                else
-                    url = $(value).find("link").text()
-                    description = $(value).find("content\\:encoded").text()
-                    if description == ""
-                        description = $(value).find("description").text()
-                link =
-                    "title": title
-                    "url": url
-                    "from": from
-                    "description": description
-                $(".links").append(tmpl(link))
-                if index >= 9
-                    false
-        
-        $(".links .icon-more").click((evt) ->
-            parentLink = $(this).parents(".link:first")
-            icon = parentLink.find("button")
-            icon.toggleClass("icon-more")
-            icon.toggleClass("icon-less")
-            parentLink.find(".description").toggle())
+        $items = @model.$items()
+        tmpl   = linkTemplate
+        links  = @model.links()
+        links.reverse()
+
+        $.each links,
+            (index, link) ->
+                link = $(tmpl(link))
+                link.find("button").click((evt) ->
+                    icon = $(this)
+                    icon.toggleClass("icon-more")
+                    icon.toggleClass("icon-less")
+                    link.find(".description").toggle())
+                $(".links").prepend(link)
 
     onUpdateClicked: (evt) ->
-        from     = @from()
-        existing = []
-        if from
-            existing = $(".links ." + from)
-
         spinner = new Spinner
             "lines": 13
             "length": 4
@@ -86,19 +49,18 @@ module.exports = class FeedView extends View
             "top": 'auto'
             "left": 'auto'
         spinner.spin(@el)
+        
+        existing = $(".links ." + @model.feedClass())
         if existing.length
             existing.remove()
             @$el.removeClass("show")
             spinner.stop()
         else
-            $xml   = $($.parseXML(@model.attributes.content))
-            if $xml.find("feed").length > 0
-                $title = $xml.find("feed > title:first").text()
-            else
-                $title = $xml.find("channel > title:first").text()
-            @model.save { "title": $title },
+            title = @model.titleText()
+            @model.save { "title": title },
                 success: =>
                     @renderXml()
+                    @model.attributes.title = @model.titleText()
                     @render()
                     @$el.addClass("show")
                     spinner.stop()

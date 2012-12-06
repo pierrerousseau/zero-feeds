@@ -368,6 +368,81 @@ window.require.define({"models/feed": function(exports, require, module) {
 
     Feed.prototype.urlRoot = 'feeds';
 
+    Feed.prototype.feedClass = function() {
+      var title;
+      title = $.trim(this.attributes.title);
+      if (title) {
+        return title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
+      } else {
+        return "none";
+      }
+    };
+
+    Feed.prototype.titleText = function() {
+      var title;
+      if (this.attributes.title) {
+        title = this.attributes.title;
+      } else {
+        if (this.isAtom()) {
+          title = this.toXml().find("feed > title:first").text();
+        } else {
+          title = this.toXml().find("channel > title:first").text();
+        }
+      }
+      return $.trim(title);
+    };
+
+    Feed.prototype.toXml = function() {
+      if (this.changed || !this._xml) {
+        this._$xml = $($.parseXML(this.attributes.content));
+      }
+      return this._$xml;
+    };
+
+    Feed.prototype.isAtom = function() {
+      return this.toXml().find("feed").length > 0;
+    };
+
+    Feed.prototype.$items = function() {
+      if (this.isAtom()) {
+        return this.toXml().find("entry").get();
+      } else {
+        return this.toXml().find("item").get();
+      }
+    };
+
+    Feed.prototype.links = function() {
+      var from, that, _links;
+      _links = [];
+      from = this.feedClass();
+      that = this;
+      $.each(this.$items(), function(index, value) {
+        var description, link, title, url;
+        title = $(value).find("title").text();
+        if (that.isAtom()) {
+          url = $(value).find("id").text();
+          description = $(value).find("content").text();
+          if (description === "") {
+            description = $(value).find("summary").text();
+          }
+        } else {
+          url = $(value).find("link").text();
+          description = $(value).find("content\\:encoded").text();
+          if (description === "") {
+            description = $(value).find("description").text();
+          }
+        }
+        link = {
+          "title": title,
+          "url": url,
+          "from": from,
+          "description": description
+        };
+        return _links.push(link);
+      });
+      return _links;
+    };
+
     Feed.prototype.isNew = function() {
       return !(this.id != null);
     };
@@ -504,11 +579,13 @@ window.require.define({"views/app_view": function(exports, require, module) {
 }});
 
 window.require.define({"views/feed_view": function(exports, require, module) {
-  var FeedView, View,
+  var FeedView, View, linkTemplate,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   View = require('../lib/view');
+
+  linkTemplate = require('./templates/link');
 
   module.exports = FeedView = (function(_super) {
 
@@ -525,7 +602,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
 
     function FeedView(model) {
       this.model = model;
-      this.link_template = require('./templates/link');
       FeedView.__super__.constructor.call(this);
     }
 
@@ -535,73 +611,28 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return template(this.getRenderData());
     };
 
-    FeedView.prototype.from = function() {
-      var title;
-      title = this.model.attributes.title;
-      if (title) {
-        return title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
-      } else {
-        return "";
-      }
-    };
-
     FeedView.prototype.renderXml = function() {
-      var $items, $xml, atom, from, tmpl;
-      $xml = $($.parseXML(this.model.attributes.content));
-      atom = false;
-      if ($xml.find("feed").length > 0) {
-        atom = true;
-        $items = $xml.find("entry").get();
-      } else {
-        $items = $xml.find("item").get();
-      }
-      from = this.from();
-      tmpl = this.link_template;
-      $.each($items, function(index, value) {
-        var description, link, title, url;
-        title = $(value).find("title").text();
-        if (atom) {
-          url = $(value).find("id").text();
-          description = $(value).find("content").text();
-          if (description === "") {
-            description = $(value).find("summary").text();
-          }
-        } else {
-          url = $(value).find("link").text();
-          description = $(value).find("content\\:encoded").text();
-          if (description === "") {
-            description = $(value).find("description").text();
-          }
-        }
-        link = {
-          "title": title,
-          "url": url,
-          "from": from,
-          "description": description
-        };
-        $(".links").append(tmpl(link));
-        if (index >= 9) {
-          return false;
-        }
-      });
-      return $(".links .icon-more").click(function(evt) {
-        var icon, parentLink;
-        parentLink = $(this).parents(".link:first");
-        icon = parentLink.find("button");
-        icon.toggleClass("icon-more");
-        icon.toggleClass("icon-less");
-        return parentLink.find(".description").toggle();
+      var $items, links, tmpl;
+      $items = this.model.$items();
+      tmpl = linkTemplate;
+      links = this.model.links();
+      links.reverse();
+      return $.each(links, function(index, link) {
+        link = $(tmpl(link));
+        link.find("button").click(function(evt) {
+          var icon;
+          icon = $(this);
+          icon.toggleClass("icon-more");
+          icon.toggleClass("icon-less");
+          return link.find(".description").toggle();
+        });
+        return $(".links").prepend(link);
       });
     };
 
     FeedView.prototype.onUpdateClicked = function(evt) {
-      var $title, $xml, existing, from, spinner,
+      var existing, spinner, title,
         _this = this;
-      from = this.from();
-      existing = [];
-      if (from) {
-        existing = $(".links ." + from);
-      }
       spinner = new Spinner({
         "lines": 13,
         "length": 4,
@@ -619,22 +650,19 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         "left": 'auto'
       });
       spinner.spin(this.el);
+      existing = $(".links ." + this.model.feedClass());
       if (existing.length) {
         existing.remove();
         this.$el.removeClass("show");
         spinner.stop();
       } else {
-        $xml = $($.parseXML(this.model.attributes.content));
-        if ($xml.find("feed").length > 0) {
-          $title = $xml.find("feed > title:first").text();
-        } else {
-          $title = $xml.find("channel > title:first").text();
-        }
+        title = this.model.titleText();
         this.model.save({
-          "title": $title
+          "title": title
         }, {
           success: function() {
             _this.renderXml();
+            _this.model.attributes.title = _this.model.titleText();
             _this.render();
             _this.$el.addClass("show");
             return spinner.stop();
@@ -688,6 +716,8 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
     __extends(FeedsView, _super);
 
     function FeedsView() {
+      this.renderAll = __bind(this.renderAll, this);
+
       this.renderOne = __bind(this.renderOne, this);
       return FeedsView.__super__.constructor.apply(this, arguments);
     }
@@ -696,16 +726,30 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
 
     FeedsView.prototype.view = FeedView;
 
-    FeedsView.prototype.renderOne = function(model) {
+    FeedsView.prototype.initialize = function() {
+      return this.collection = new FeedCollection(this);
+    };
+
+    FeedsView.prototype.renderOne = function(model, all) {
       var view;
       view = new this.view(model);
-      this.$el.append(view.render().el);
+      if (all.eachAll) {
+        this.$el.append(view.render().el);
+      } else {
+        this.$el.prepend(view.render().el);
+      }
       this.add(view);
       return this;
     };
 
-    FeedsView.prototype.initialize = function() {
-      return this.collection = new FeedCollection(this);
+    FeedsView.prototype.renderAll = function() {
+      var _this = this;
+      this.collection.each(function(model) {
+        return _this.renderOne(model, {
+          "eachAll": true
+        });
+      });
+      return this;
     };
 
     return FeedsView;

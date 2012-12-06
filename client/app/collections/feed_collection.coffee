@@ -10,4 +10,3 @@ module.exports = class FeedCollection extends Backbone.Collection
 
         @bind "add", @view.renderOne
         @bind "reset", @view.renderAll
-
