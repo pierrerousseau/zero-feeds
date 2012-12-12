@@ -64,6 +64,8 @@ module.exports = class FeedView extends View
                     @render()
                     @$el.addClass("show")
                     spinner.stop()
+                    alertify.log "" + @$el.find(".title span").html() + 
+                                 " reloaded"
                 error: =>
                     spinner.stop()
                     alert "Server error occured, feed was not deleted."
@@ -75,6 +77,8 @@ module.exports = class FeedView extends View
                 url = @$el.find(".title a").attr("href")
                 $("form.new-feed .url-field").val(url)
                 @destroy()
+                alertify.log "" + @$el.find(".title span").html() + 
+                             " removed and placed in form"
             error: =>
                 alert "Server error occured, feed was not deleted."
         evt.preventDefault()

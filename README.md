@@ -5,7 +5,6 @@ Follow your favorite sites here !
 # To do ...
 
 * order feeds by tags
-* order feeds by creation date for every tag
 * bug : needs to load feed 2 times before to get updated title
 * show feed description on mouseover
 * bug : first display of a feed cant be deleted
@@ -16,6 +15,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v0.7.2
+  * use of alertify.js
 * v0.7.1
   * refactoring model
   * newly added feed on top

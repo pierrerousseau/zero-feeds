@@ -560,7 +560,8 @@ window.require.define({"views/app_view": function(exports, require, module) {
         event.preventDefault();
         this.feedsView.collection.create(feed, {
           success: function() {
-            return $("form.new-feed").find("input, textarea").val("");
+            $("form.new-feed").find("input, textarea").val("");
+            return alertify.log("" + _this.$el.find(".title span").html() + " added");
           },
           error: function() {
             return alert("Server error occured, feed was not saved");
@@ -665,7 +666,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
             _this.model.attributes.title = _this.model.titleText();
             _this.render();
             _this.$el.addClass("show");
-            return spinner.stop();
+            spinner.stop();
+            return alertify.log("" + _this.$el.find(".title span").html() + " reloaded");
           },
           error: function() {
             spinner.stop();
@@ -683,7 +685,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           var url;
           url = _this.$el.find(".title a").attr("href");
           $("form.new-feed .url-field").val(url);
-          return _this.destroy();
+          _this.destroy();
+          return alertify.log("" + _this.$el.find(".title span").html() + " removed and placed in form");
         },
         error: function() {
           return alert("Server error occured, feed was not deleted.");
@@ -764,7 +767,7 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="buttons"><button class="icon-delete"></button></div>');
+  buf.push('<div class="title"><div class="buttons"><button class="icon-delete"></button></div><span>');
   if ( model.title)
   {
   buf.push('<a');
@@ -777,7 +780,7 @@ window.require.define({"views/templates/feed": function(exports, require, module
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a>');
   }
-  buf.push('</div>');
+  buf.push('</span></div>');
   }
   return buf.join("");
   };
