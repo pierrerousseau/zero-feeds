@@ -1,5 +1,5 @@
 all = ->
-    emit doc.title, doc
+    emit doc.tags, doc
 
 Feed.defineRequest "all", all, (err) ->
     if err

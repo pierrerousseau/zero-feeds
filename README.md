@@ -4,22 +4,21 @@ Follow your favorite sites here !
 
 # To do ...
 
-* order feeds by tags
 * bug : needs to load feed 2 times before to get updated title
 * show feed description on mouseover
 * bug : first display of a feed cant be deleted
 * add filter for links
 * allow to refresh all feeds at once (or by tag)
 * bug : doesnt support https
+* display number of new link since last feed update
 
 
 # Changelog
 
-* v0.7.2
+* v0.8
+  * order feeds by tags
   * use of alertify.js
-* v0.7.1
   * refactoring model
-  * newly added feed on top
 * v0.7
   * manage atom feeds
   * bug solved : display last 10 links (for real ... i hope)

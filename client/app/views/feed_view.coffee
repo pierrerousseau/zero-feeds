@@ -32,7 +32,8 @@ module.exports = class FeedView extends View
                     link.find(".description").toggle())
                 $(".links").prepend(link)
 
-    onUpdateClicked: (evt) ->
+    onUpdateClicked: (evt, that) ->
+        allThat = $("." + @model.cid)
         spinner = new Spinner
             "lines": 13
             "length": 4
@@ -48,12 +49,12 @@ module.exports = class FeedView extends View
             "className": 'spinner'
             "top": 'auto'
             "left": 'auto'
-        spinner.spin(@el)
-        
+        spinner.spin(that)
+
         existing = $(".links ." + @model.feedClass())
         if existing.length
             existing.remove()
-            @$el.removeClass("show")
+            $(allThat).removeClass("show")
             spinner.stop()
         else
             title = @model.titleText()
@@ -62,24 +63,73 @@ module.exports = class FeedView extends View
                     @renderXml()
                     @model.attributes.title = @model.titleText()
                     @render()
-                    @$el.addClass("show")
+                    $(allThat).find("a").html(@model.titleText())
+                    $(allThat).addClass("show")
                     spinner.stop()
-                    alertify.log "" + @$el.find(".title span").html() + 
+                    alertify.log "" + @$el.find(".title span").html() +
                                  " reloaded"
                 error: =>
                     spinner.stop()
                     alert "Server error occured, feed was not deleted."
         evt.preventDefault()
 
-    onDeleteClicked: (evt) ->
+    onDeleteClicked: (evt, that) ->
         @model.destroy
             success: =>
-                url = @$el.find(".title a").attr("href")
+                title = @$el.find(".title")
+                url   = title.find("a").attr("href")
+                tags  = title.find("span").attr("title")
+                if !tags
+                    tags = ""
                 $("form.new-feed .url-field").val(url)
+                $("form.new-feed .tags-field").val(tags)
                 @destroy()
-                alertify.log "" + @$el.find(".title span").html() + 
+                alertify.log "" + @$el.find(".title span").html() +
                              " removed and placed in form"
             error: =>
                 alert "Server error occured, feed was not deleted."
         evt.preventDefault()
         false
+
+    render: ->
+        @$el.html @template({})
+        @$el.addClass(@model.cid)
+
+        tags = @model.attributes.tags
+        if !tags
+            tags = ["untagged"]
+
+        tagNumber = 0
+        for tag in tags
+            if tag == ""
+                tag = "untagged"
+            tagDiv = $("." + tag)
+            if tagDiv.length == 0
+                tagDiv = $('<div class="' + tag + '">' + tag + '</div>')
+                $("#content .feeds").append(tagDiv)
+
+            toDisplay = @$el.clone(true, true)
+            toDisplay.show()
+            that = @
+            toDisplay.on("click", "", (evt) -> that.onUpdateClicked(evt, this))
+            toDisplay.on("click", 
+                         ".icon-delete", 
+                         (evt) -> that.onDeleteClicked(evt, this))
+
+            exists = tagDiv.find("." + @model.cid)
+            if exists.length
+                exists.replaceAll(toDisplay)
+            else
+                tagDiv.append(toDisplay)
+
+            tagNumber++
+            @$el.hide()
+
+        @
+    
+    destroy: ->
+        @undelegateEvents()
+        @$el.removeData().unbind()
+        $("." + @model.cid).remove()
+        @remove()
+        Backbone.View::remove.call @

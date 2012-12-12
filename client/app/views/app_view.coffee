@@ -48,6 +48,7 @@ module.exports = class AppView extends View
             feed = new Feed
                 title: title
                 url: url
+                tags: tags
             event.preventDefault()
             @feedsView.collection.create feed,
                 success: =>

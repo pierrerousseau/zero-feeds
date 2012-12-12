@@ -327,7 +327,6 @@ window.require.define({"lib/view_collection": function(exports, require, module)
     ViewCollection.prototype.renderOne = function(model) {
       var view;
       view = new this.view(model);
-      this.$el.append(view.render().el);
       this.add(view);
       return this;
     };
@@ -555,7 +554,8 @@ window.require.define({"views/app_view": function(exports, require, module) {
       if ((url != null ? url.length : void 0) > 0) {
         feed = new Feed({
           title: title,
-          url: url
+          url: url,
+          tags: tags
         });
         event.preventDefault();
         this.feedsView.collection.create(feed, {
@@ -631,9 +631,10 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       });
     };
 
-    FeedView.prototype.onUpdateClicked = function(evt) {
-      var existing, spinner, title,
+    FeedView.prototype.onUpdateClicked = function(evt, that) {
+      var allThat, existing, spinner, title,
         _this = this;
+      allThat = $("." + this.model.cid);
       spinner = new Spinner({
         "lines": 13,
         "length": 4,
@@ -650,11 +651,11 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         "top": 'auto',
         "left": 'auto'
       });
-      spinner.spin(this.el);
+      spinner.spin(that);
       existing = $(".links ." + this.model.feedClass());
       if (existing.length) {
         existing.remove();
-        this.$el.removeClass("show");
+        $(allThat).removeClass("show");
         spinner.stop();
       } else {
         title = this.model.titleText();
@@ -665,7 +666,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
             _this.renderXml();
             _this.model.attributes.title = _this.model.titleText();
             _this.render();
-            _this.$el.addClass("show");
+            $(allThat).find("a").html(_this.model.titleText());
+            $(allThat).addClass("show");
             spinner.stop();
             return alertify.log("" + _this.$el.find(".title span").html() + " reloaded");
           },
@@ -678,13 +680,19 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return evt.preventDefault();
     };
 
-    FeedView.prototype.onDeleteClicked = function(evt) {
+    FeedView.prototype.onDeleteClicked = function(evt, that) {
       var _this = this;
       this.model.destroy({
         success: function() {
-          var url;
-          url = _this.$el.find(".title a").attr("href");
+          var tags, title, url;
+          title = _this.$el.find(".title");
+          url = title.find("a").attr("href");
+          tags = title.find("span").attr("title");
+          if (!tags) {
+            tags = "";
+          }
           $("form.new-feed .url-field").val(url);
+          $("form.new-feed .tags-field").val(tags);
           _this.destroy();
           return alertify.log("" + _this.$el.find(".title span").html() + " removed and placed in form");
         },
@@ -696,6 +704,54 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return false;
     };
 
+    FeedView.prototype.render = function() {
+      var exists, tag, tagDiv, tagNumber, tags, that, toDisplay, _i, _len;
+      this.$el.html(this.template({}));
+      this.$el.addClass(this.model.cid);
+      tags = this.model.attributes.tags;
+      if (!tags) {
+        tags = ["untagged"];
+      }
+      tagNumber = 0;
+      for (_i = 0, _len = tags.length; _i < _len; _i++) {
+        tag = tags[_i];
+        if (tag === "") {
+          tag = "untagged";
+        }
+        tagDiv = $("." + tag);
+        if (tagDiv.length === 0) {
+          tagDiv = $('<div class="' + tag + '">' + tag + '</div>');
+          $("#content .feeds").append(tagDiv);
+        }
+        toDisplay = this.$el.clone(true, true);
+        toDisplay.show();
+        that = this;
+        toDisplay.on("click", "", function(evt) {
+          return that.onUpdateClicked(evt, this);
+        });
+        toDisplay.on("click", ".icon-delete", function(evt) {
+          return that.onDeleteClicked(evt, this);
+        });
+        exists = tagDiv.find("." + this.model.cid);
+        if (exists.length) {
+          exists.replaceAll(toDisplay);
+        } else {
+          tagDiv.append(toDisplay);
+        }
+        tagNumber++;
+        this.$el.hide();
+      }
+      return this;
+    };
+
+    FeedView.prototype.destroy = function() {
+      this.undelegateEvents();
+      this.$el.removeData().unbind();
+      $("." + this.model.cid).remove();
+      this.remove();
+      return Backbone.View.prototype.remove.call(this);
+    };
+
     return FeedView;
 
   })(View);
@@ -704,7 +760,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
 
 window.require.define({"views/feeds_view": function(exports, require, module) {
   var FeedCollection, FeedView, FeedsView, ViewCollection,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -719,9 +774,6 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
     __extends(FeedsView, _super);
 
     function FeedsView() {
-      this.renderAll = __bind(this.renderAll, this);
-
-      this.renderOne = __bind(this.renderOne, this);
       return FeedsView.__super__.constructor.apply(this, arguments);
     }
 
@@ -731,28 +783,6 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
 
     FeedsView.prototype.initialize = function() {
       return this.collection = new FeedCollection(this);
-    };
-
-    FeedsView.prototype.renderOne = function(model, all) {
-      var view;
-      view = new this.view(model);
-      if (all.eachAll) {
-        this.$el.append(view.render().el);
-      } else {
-        this.$el.prepend(view.render().el);
-      }
-      this.add(view);
-      return this;
-    };
-
-    FeedsView.prototype.renderAll = function() {
-      var _this = this;
-      this.collection.each(function(model) {
-        return _this.renderOne(model, {
-          "eachAll": true
-        });
-      });
-      return this;
     };
 
     return FeedsView;
@@ -767,7 +797,9 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="buttons"><button class="icon-delete"></button></div><span>');
+  buf.push('<div class="title"><div class="buttons"><button class="icon-delete"></button></div><span');
+  buf.push(attrs({ 'title':("" + (model.tags) + "") }, {"title":true}));
+  buf.push('>');
   if ( model.title)
   {
   buf.push('<a');
