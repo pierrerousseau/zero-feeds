@@ -8,8 +8,6 @@ module.exports = class AppView extends View
 
     events:
         'click form .icon-add': 'onCreateClicked'
-        'click form .icon-more': 'onMoreClicked'
-        'click form .icon-less': 'onMoreClicked'
 
     template: ->
         require('./templates/home')
@@ -25,18 +23,6 @@ module.exports = class AppView extends View
         @feedsView.collection.fetch
             success: =>
                 @feedsView.$el.find('em').remove()
-
-    onMoreClicked: (event) =>
-        $(".description-field").toggle()
-        if $(".icon-more").length > 0
-            $(".icon-more").addClass("icon-less")
-            $(".icon-more").removeClass("icon-more")
-            $(".icon-less").attr("title", "less")
-        else
-            $(".icon-less").addClass("icon-more")
-            $(".icon-less").removeClass("icon-less")
-            $(".icon-more").attr("title", "more")
-        false
 
     onCreateClicked: (event) =>
         url   = $('.url-field').val()

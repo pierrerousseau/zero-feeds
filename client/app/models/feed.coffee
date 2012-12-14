@@ -36,8 +36,8 @@ module.exports = class Feed extends Backbone.Model
 
     links: () ->
         _links = []
-        from = @feedClass()
-        that = @
+        from    = @feedClass()
+        that    = @
         $.each @$items(),
             (index, value) ->
                 title = $(value).find("title").text()
@@ -55,8 +55,16 @@ module.exports = class Feed extends Backbone.Model
                     "title": title
                     "url": url
                     "from": from
+                    "state": "old"
                     "description": description
+                if index == 0
+                    that.last = link.url
                 _links.push(link)
+        last = @attributes.last
+        for link in _links 
+              if link.url == last
+                  break
+              link.state = "new"
         _links
 
     isNew: () ->

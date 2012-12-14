@@ -4,17 +4,20 @@ Follow your favorite sites here !
 
 # To do ...
 
-* bug : needs to load feed 2 times before to get updated title
-* show feed description on mouseover
-* bug : first display of a feed cant be deleted
 * add filter for links
 * allow to refresh all feeds at once (or by tag)
+* some feeds change link param at everyupdate
 * bug : doesnt support https
-* display number of new link since last feed update
+* bug : needs to load feed 2 times before to get updated title : still ?
+* bug : first display of a feed cant be deleted : still ?
+
+* to finish : store parsed links into db, in order to manage old/new feeds in a simplier way
 
 
 # Changelog
 
+* v0.8.1
+  * display new links since last update : testing version, needs improvement, do not install
 * v0.8
   * order feeds by tags
   * use of alertify.js

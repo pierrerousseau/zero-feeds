@@ -1,6 +1,7 @@
 Feed = define 'Feed', ->
     property 'title', String
     property 'url', String
+    property 'last', String
     property 'tags', String
     property 'description', Text
     property 'content', Text

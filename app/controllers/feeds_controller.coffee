@@ -32,8 +32,8 @@ action 'destroy', ->
             send success: 'Feed succesfuly deleted'
 
 action 'update', ->
-    ['title', 'content'].forEach (field) =>
-        if field == 'title'
+    ['title', 'last', 'content'].forEach (field) =>
+        if field == 'title' || field == 'last'
             @feed[field] = req.body[field] if req.body[field]?
 
     @feed.update params, (err) ->

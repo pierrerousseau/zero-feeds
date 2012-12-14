@@ -52,26 +52,18 @@ form
         padding: .5em
         margin: 1em
         width: 24em
-        display: block
     input[type=button]
         width: 14px
         height: 14px
         padding: 10px 15px
         display: inline-block
-    textarea
-        display: block
-        display: none
-        padding: .5em
-        margin: 1em
-        width: 50em
     .url-field
-        width: 50em
+        width: 50%
+        max-width: 50em
     .tags-field, .title-field
         display: inline-block
     .icon-add
         background-position: -280px 3px
-        display: block
-        margin: 1em
 
 .icon-delete
     background-position: -304px 3px
@@ -82,8 +74,11 @@ form
     max-width: 20%
     margin: 0 .2em
     padding: .5em
+    .tag
+        cursor: pointer
     .feed 
         cursor: pointer
+        display: none
         border: 2px solid #666
         &:hover
             border: 2px solid #777
@@ -123,3 +118,12 @@ ul.links
             margin: .5em
             display: none
             border: 1px dotted #666
+        &.new
+            a:visited
+                color: #2b2
+        &.old
+            a
+                color: #bbb
+            a:visited
+                color: #2b2
+

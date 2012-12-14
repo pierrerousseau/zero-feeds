@@ -411,7 +411,7 @@ window.require.define({"models/feed": function(exports, require, module) {
     };
 
     Feed.prototype.links = function() {
-      var from, that, _links;
+      var from, last, link, that, _i, _len, _links;
       _links = [];
       from = this.feedClass();
       that = this;
@@ -435,10 +435,22 @@ window.require.define({"models/feed": function(exports, require, module) {
           "title": title,
           "url": url,
           "from": from,
+          "state": "old",
           "description": description
         };
+        if (index === 0) {
+          that.last = link.url;
+        }
         return _links.push(link);
       });
+      last = this.attributes.last;
+      for (_i = 0, _len = _links.length; _i < _len; _i++) {
+        link = _links[_i];
+        if (link.url === last) {
+          break;
+        }
+        link.state = "new";
+      }
       return _links;
     };
 
@@ -495,17 +507,13 @@ window.require.define({"views/app_view": function(exports, require, module) {
 
     function AppView() {
       this.onCreateClicked = __bind(this.onCreateClicked, this);
-
-      this.onMoreClicked = __bind(this.onMoreClicked, this);
       return AppView.__super__.constructor.apply(this, arguments);
     }
 
     AppView.prototype.el = 'body.application';
 
     AppView.prototype.events = {
-      'click form .icon-add': 'onCreateClicked',
-      'click form .icon-more': 'onMoreClicked',
-      'click form .icon-less': 'onMoreClicked'
+      'click form .icon-add': 'onCreateClicked'
     };
 
     AppView.prototype.template = function() {
@@ -526,20 +534,6 @@ window.require.define({"views/app_view": function(exports, require, module) {
           return _this.feedsView.$el.find('em').remove();
         }
       });
-    };
-
-    AppView.prototype.onMoreClicked = function(event) {
-      $(".description-field").toggle();
-      if ($(".icon-more").length > 0) {
-        $(".icon-more").addClass("icon-less");
-        $(".icon-more").removeClass("icon-more");
-        $(".icon-less").attr("title", "less");
-      } else {
-        $(".icon-less").addClass("icon-more");
-        $(".icon-less").removeClass("icon-less");
-        $(".icon-more").attr("title", "more");
-      }
-      return false;
     };
 
     AppView.prototype.onCreateClicked = function(event) {
@@ -653,6 +647,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       });
       spinner.spin(that);
       existing = $(".links ." + this.model.feedClass());
+      $(".none").remove();
       if (existing.length) {
         existing.remove();
         $(allThat).removeClass("show");
@@ -663,13 +658,20 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           "title": title
         }, {
           success: function() {
+            var last;
             _this.renderXml();
             _this.model.attributes.title = _this.model.titleText();
             _this.render();
             $(allThat).find("a").html(_this.model.titleText());
             $(allThat).addClass("show");
             spinner.stop();
-            return alertify.log("" + _this.$el.find(".title span").html() + " reloaded");
+            alertify.log("" + _this.$el.find(".title span").html() + " reloaded");
+            last = _this.model.last;
+            title = _this.model.titleText();
+            return _this.model.save({
+              "title": title,
+              "last": last
+            });
           },
           error: function() {
             spinner.stop();
@@ -720,11 +722,13 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         }
         tagDiv = $("." + tag);
         if (tagDiv.length === 0) {
-          tagDiv = $('<div class="' + tag + '">' + tag + '</div>');
+          tagDiv = $('<div class="' + tag + '"><span class="tag">' + tag + '</span></div>');
+          tagDiv.on("click", ".tag", function(evt) {
+            return $(this).parents("div:first").find(".feed").toggle();
+          });
           $("#content .feeds").append(tagDiv);
         }
         toDisplay = this.$el.clone(true, true);
-        toDisplay.show();
         that = this;
         toDisplay.on("click", "", function(evt) {
           return that.onUpdateClicked(evt, this);
@@ -824,7 +828,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="title" class="title-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><button type="button" title="more" class="icon-more"></button></p><p><textarea placeholder="description" class="description-field"></textarea></p><button title="add" class="icon-add"></button></form><div class="feeds"></div><ul class="links"></ul></div>');
+  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><button title="add" class="icon-add"></button></p></form><div class="feeds"></div><ul class="links"></ul></div>');
   }
   return buf.join("");
   };
@@ -837,7 +841,7 @@ window.require.define({"views/templates/link": function(exports, require, module
   with (locals || {}) {
   var interp;
   buf.push('<li');
-  buf.push(attrs({ "class": ("link " + (from) + "") }, {"class":true}));
+  buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
   buf.push('><div class="buttons"><button type="button" title="more" class="icon-more"></button></div><a');
   buf.push(attrs({ 'href':("" + (url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');

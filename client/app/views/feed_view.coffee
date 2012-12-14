@@ -52,6 +52,7 @@ module.exports = class FeedView extends View
         spinner.spin(that)
 
         existing = $(".links ." + @model.feedClass())
+        $(".none").remove()
         if existing.length
             existing.remove()
             $(allThat).removeClass("show")
@@ -68,6 +69,9 @@ module.exports = class FeedView extends View
                     spinner.stop()
                     alertify.log "" + @$el.find(".title span").html() +
                                  " reloaded"
+                    last  = @model.last
+                    title = @model.titleText()
+                    @model.save { "title": title, "last": last },
                 error: =>
                     spinner.stop()
                     alert "Server error occured, feed was not deleted."
@@ -105,11 +109,19 @@ module.exports = class FeedView extends View
                 tag = "untagged"
             tagDiv = $("." + tag)
             if tagDiv.length == 0
-                tagDiv = $('<div class="' + tag + '">' + tag + '</div>')
+                tagDiv = $('<div class="' + tag + '"><span class="tag">' + 
+                           tag + 
+                           '</span></div>')
+                tagDiv.on("click", 
+                          ".tag", 
+                          (evt) -> 
+                              $(this).
+                                  parents("div:first").
+                                  find(".feed").
+                                  toggle())
                 $("#content .feeds").append(tagDiv)
 
             toDisplay = @$el.clone(true, true)
-            toDisplay.show()
             that = @
             toDisplay.on("click", "", (evt) -> that.onUpdateClicked(evt, this))
             toDisplay.on("click", 
