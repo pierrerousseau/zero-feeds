@@ -2,6 +2,8 @@
 
 Follow your favorite sites here !
 
+main icon from : http://www.iconfinder.com/icondetails/35421/128/feed_rss_icon
+
 # To do ...
 
 * send link to cozy-bookmarks
@@ -17,6 +19,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v0.9.1
+  * new main icon and favicon
 * v0.9
   * allow to refresh all feeds at once (by tag)
   * display new links since last update : testing version, needs improvement, 
