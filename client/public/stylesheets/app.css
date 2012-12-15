@@ -1071,11 +1071,27 @@ input[type=button] {
   padding: 10px 15px;
   border: 2px solid #666;
 }
+[class^="icon-"]:hover,
+[class*=" icon-"]:hover {
+  border-color: #777;
+}
+.icon-add {
+  background-position: -280px 3px;
+}
 .icon-more {
   background-position: -305px -116px;
 }
 .icon-less {
   background-position: -280px -117px;
+}
+.icon-reload {
+  background-position: -209px -21px;
+}
+.icon-delete {
+  background-position: -304px 3px;
+}
+.icon-delete:hover {
+  border-color: #700;
 }
 form {
   padding: 0 2em;
@@ -1099,11 +1115,27 @@ form .tags-field,
 form .title-field {
   display: inline-block;
 }
-form .icon-add {
-  background-position: -280px 3px;
+button.show-new,
+button.show-old {
+  margin: 0;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border: 2px solid #666;
 }
-.icon-delete {
-  background-position: -304px 3px;
+button.show-new:hover,
+button.show-old:hover {
+  border-color: #777;
+}
+button.show-new {
+  display: none;
+}
+.tag {
+  margin-top: 1em;
+}
+.tag button {
+  margin-right: 0.5em;
 }
 .feeds {
   display: inline-block;
@@ -1126,13 +1158,10 @@ form .icon-add {
   white-space: nowrap;
 }
 .feeds .feed:hover {
-  border: 2px solid #777;
+  border-color: #777;
 }
 .feeds .feed .buttons {
   display: inline-block;
-}
-.feeds .feed .buttons button:hover {
-  border: 2px solid #700;
 }
 .feeds .feed div.title {
   overflow: hidden;
@@ -1172,11 +1201,17 @@ ul.links li .description {
 ul.links li.new a:visited {
   color: #2b2;
 }
+ul.links li.old {
+  display: none;
+}
 ul.links li.old a {
   color: #bbb;
 }
 ul.links li.old a:visited {
   color: #2b2;
+}
+ul.links.show-old li.old {
+  display: list-item;
 }
 .chromeframe { margin: 0.2em 0; background: #ccc; color: #000; padding: 0.2em 0; }
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }

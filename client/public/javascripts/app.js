@@ -513,7 +513,9 @@ window.require.define({"views/app_view": function(exports, require, module) {
     AppView.prototype.el = 'body.application';
 
     AppView.prototype.events = {
-      'click form .icon-add': 'onCreateClicked'
+      "click form .icon-add": "onCreateClicked",
+      "click button.show-old": "showLinks",
+      "click button.show-new": "showLinks"
     };
 
     AppView.prototype.template = function() {
@@ -567,6 +569,12 @@ window.require.define({"views/app_view": function(exports, require, module) {
       return false;
     };
 
+    AppView.prototype.showLinks = function(evt) {
+      $("ul.links").toggleClass("show-old");
+      $("button.show-new").toggle();
+      return $("button.show-old").toggle();
+    };
+
     return AppView;
 
   })(View);
@@ -574,13 +582,15 @@ window.require.define({"views/app_view": function(exports, require, module) {
 }});
 
 window.require.define({"views/feed_view": function(exports, require, module) {
-  var FeedView, View, linkTemplate,
+  var FeedView, View, linkTemplate, tagTemplate,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   View = require('../lib/view');
 
   linkTemplate = require('./templates/link');
+
+  tagTemplate = require('./templates/tag');
 
   module.exports = FeedView = (function(_super) {
 
@@ -589,11 +599,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     FeedView.prototype.className = 'feed';
 
     FeedView.prototype.tagName = 'div';
-
-    FeedView.prototype.events = {
-      'click': 'onUpdateClicked',
-      'click .icon-delete': 'onDeleteClicked'
-    };
 
     function FeedView(model) {
       this.model = model;
@@ -625,9 +630,10 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       });
     };
 
-    FeedView.prototype.onUpdateClicked = function(evt, that) {
-      var allThat, existing, spinner, title,
+    FeedView.prototype.onUpdateClicked = function(evt) {
+      var allThat, existing, spinner, that, title,
         _this = this;
+      that = evt.currentTarget;
       allThat = $("." + this.model.cid);
       spinner = new Spinner({
         "lines": 13,
@@ -679,11 +685,14 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           }
         });
       }
-      return evt.preventDefault();
+      evt.preventDefault();
+      return false;
     };
 
-    FeedView.prototype.onDeleteClicked = function(evt, that) {
-      var _this = this;
+    FeedView.prototype.onDeleteClicked = function(evt) {
+      var that,
+        _this = this;
+      that = evt.currentTarget;
       this.model.destroy({
         success: function() {
           var tags, title, url;
@@ -707,40 +716,40 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     };
 
     FeedView.prototype.render = function() {
-      var exists, tag, tagDiv, tagNumber, tags, that, toDisplay, _i, _len;
+      var exists, tag, tagNumber, tagPlace, tags, that, tmpl, toDisplay, _i, _len;
       this.$el.html(this.template({}));
       this.$el.addClass(this.model.cid);
       tags = this.model.attributes.tags;
       if (!tags) {
         tags = ["untagged"];
       }
+      tmpl = tagTemplate;
       tagNumber = 0;
       for (_i = 0, _len = tags.length; _i < _len; _i++) {
         tag = tags[_i];
         if (tag === "") {
           tag = "untagged";
         }
-        tagDiv = $("." + tag);
-        if (tagDiv.length === 0) {
-          tagDiv = $('<div class="' + tag + '"><span class="tag">' + tag + '</span></div>');
-          tagDiv.on("click", ".tag", function(evt) {
-            return $(this).parents("div:first").find(".feed").toggle();
-          });
-          $("#content .feeds").append(tagDiv);
+        tagPlace = $("." + tag);
+        if (tagPlace.length === 0) {
+          tagPlace = $(tmpl({
+            "name": tag
+          }));
+          $("#content .feeds").append(tagPlace);
         }
         toDisplay = this.$el.clone(true, true);
         that = this;
         toDisplay.on("click", "", function(evt) {
-          return that.onUpdateClicked(evt, this);
+          return that.onUpdateClicked(evt);
         });
         toDisplay.on("click", ".icon-delete", function(evt) {
-          return that.onDeleteClicked(evt, this);
+          return that.onDeleteClicked(evt);
         });
-        exists = tagDiv.find("." + this.model.cid);
+        exists = tagPlace.find("." + this.model.cid);
         if (exists.length) {
           exists.replaceAll(toDisplay);
         } else {
-          tagDiv.append(toDisplay);
+          tagPlace.append(toDisplay);
         }
         tagNumber++;
         this.$el.hide();
@@ -785,6 +794,24 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
 
     FeedsView.prototype.view = FeedView;
 
+    FeedsView.prototype.events = {
+      "click .tag": "onTagClicked",
+      "click .tag .icon-reload": "onReloadTagClicked"
+    };
+
+    FeedsView.prototype.onReloadTagClicked = function(evt) {
+      $(evt.currentTarget).parents("div:first").find(".feed").show(function() {
+        return $(this).click();
+      });
+      return false;
+    };
+
+    FeedsView.prototype.onTagClicked = function(evt) {
+      console.log("ok", evt.target);
+      $(evt.currentTarget).find(".feed").toggle();
+      return false;
+    };
+
     FeedsView.prototype.initialize = function() {
       return this.collection = new FeedCollection(this);
     };
@@ -828,7 +855,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><button title="add" class="icon-add"></button></p></form><div class="feeds"></div><ul class="links"></ul></div>');
+  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><button title="add" class="icon-add"></button></p></form><div class="buttons"><button title="click here to see only new links" class="show-new">show new links</button><button title="by default, we display only new links of a feed, click here to see all links" class="show-old">show all links</button></div><div class="feeds"></div><ul class="links"></ul></div>');
   }
   return buf.join("");
   };
@@ -845,6 +872,20 @@ window.require.define({"views/templates/link": function(exports, require, module
   buf.push('><div class="buttons"><button type="button" title="more" class="icon-more"></button></div><a');
   buf.push(attrs({ 'href':("" + (url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
+  }
+  return buf.join("");
+  };
+}});
+
+window.require.define({"views/templates/tag": function(exports, require, module) {
+  module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+  attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+  var buf = [];
+  with (locals || {}) {
+  var interp;
+  buf.push('<div');
+  buf.push(attrs({ "class": ("tag " + (name) + "") }, {"class":true}));
+  buf.push('><span class="buttons"><button class="icon-reload"></button></span><span class="name">' + escape((interp = name) == null ? '' : interp) + '</span></div>');
   }
   return buf.join("");
   };

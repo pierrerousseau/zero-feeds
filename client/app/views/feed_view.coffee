@@ -1,13 +1,10 @@
 View = require '../lib/view'
 linkTemplate = require './templates/link'
+tagTemplate = require './templates/tag'
 
 module.exports = class FeedView extends View
     className: 'feed'
     tagName: 'div'
-
-    events:
-        'click': 'onUpdateClicked'
-        'click .icon-delete': 'onDeleteClicked'
 
     constructor: (@model) ->
         super()
@@ -32,7 +29,8 @@ module.exports = class FeedView extends View
                     link.find(".description").toggle())
                 $(".links").prepend(link)
 
-    onUpdateClicked: (evt, that) ->
+    onUpdateClicked: (evt) ->
+        that = evt.currentTarget
         allThat = $("." + @model.cid)
         spinner = new Spinner
             "lines": 13
@@ -76,8 +74,10 @@ module.exports = class FeedView extends View
                     spinner.stop()
                     alert "Server error occured, feed was not deleted."
         evt.preventDefault()
+        false
 
-    onDeleteClicked: (evt, that) ->
+    onDeleteClicked: (evt) ->
+        that = evt.currentTarget
         @model.destroy
             success: =>
                 title = @$el.find(".title")
@@ -103,42 +103,33 @@ module.exports = class FeedView extends View
         if !tags
             tags = ["untagged"]
 
+        tmpl = tagTemplate
         tagNumber = 0
         for tag in tags
             if tag == ""
                 tag = "untagged"
-            tagDiv = $("." + tag)
-            if tagDiv.length == 0
-                tagDiv = $('<div class="' + tag + '"><span class="tag">' + 
-                           tag + 
-                           '</span></div>')
-                tagDiv.on("click", 
-                          ".tag", 
-                          (evt) -> 
-                              $(this).
-                                  parents("div:first").
-                                  find(".feed").
-                                  toggle())
-                $("#content .feeds").append(tagDiv)
+            tagPlace = $("." + tag)
+            if tagPlace.length == 0
+                tagPlace = $(tmpl({ "name": tag }))
+                $("#content .feeds").append(tagPlace)
 
             toDisplay = @$el.clone(true, true)
             that = @
-            toDisplay.on("click", "", (evt) -> that.onUpdateClicked(evt, this))
-            toDisplay.on("click", 
-                         ".icon-delete", 
-                         (evt) -> that.onDeleteClicked(evt, this))
+            toDisplay.on("click", "", (evt) -> that.onUpdateClicked(evt))
+            toDisplay.on("click",
+                         ".icon-delete",
+                         (evt) -> that.onDeleteClicked(evt))
 
-            exists = tagDiv.find("." + @model.cid)
+            exists = tagPlace.find("." + @model.cid)
             if exists.length
                 exists.replaceAll(toDisplay)
             else
-                tagDiv.append(toDisplay)
+                tagPlace.append(toDisplay)
 
             tagNumber++
             @$el.hide()
-
         @
-    
+
     destroy: ->
         @undelegateEvents()
         @$el.removeData().unbind()

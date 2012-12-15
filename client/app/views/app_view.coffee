@@ -7,7 +7,9 @@ module.exports = class AppView extends View
     el: 'body.application'
 
     events:
-        'click form .icon-add': 'onCreateClicked'
+        "click form .icon-add": "onCreateClicked"
+        "click button.show-old": "showLinks"
+        "click button.show-new": "showLinks"
 
     template: ->
         require('./templates/home')
@@ -44,3 +46,8 @@ module.exports = class AppView extends View
         else
             alert 'Url field is required'
         false
+
+    showLinks: (evt) ->
+        $("ul.links").toggleClass("show-old")
+        $("button.show-new").toggle()
+        $("button.show-old").toggle()

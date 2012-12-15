@@ -4,20 +4,22 @@ Follow your favorite sites here !
 
 # To do ...
 
+* send link to cozy-bookmarks
 * add filter for links
-* allow to refresh all feeds at once (or by tag)
-* some feeds change link param at everyupdate
+* to know : some feeds change link params at everyupdate
 * bug : doesnt support https
 * bug : needs to load feed 2 times before to get updated title : still ?
 * bug : first display of a feed cant be deleted : still ?
 
-* to finish : store parsed links into db, in order to manage old/new feeds in a simplier way
+* to finish : store parsed links into db, 
+              in order to manage old/new/read feeds in a simplier way
 
 
 # Changelog
 
-* v0.8.1
-  * display new links since last update : testing version, needs improvement, do not install
+* v0.9
+  * allow to refresh all feeds at once (by tag)
+  * display new links since last update : testing version, needs improvement, 
 * v0.8
   * order feeds by tags
   * use of alertify.js

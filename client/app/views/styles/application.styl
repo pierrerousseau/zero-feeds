@@ -39,12 +39,25 @@ button, input[type=button]
     cursor: pointer
     padding: 10px 15px
     border: 2px solid #666
+    &:hover
+        border-color: #777
+
+.icon-add
+    background-position: -280px 3px
 
 .icon-more
     background-position: -305px -116px
 
 .icon-less
     background-position: -280px -117px
+
+.icon-reload
+    background-position: -209px -21px
+
+.icon-delete
+    background-position: -304px 3px
+    &:hover
+        border-color: #700
 
 form
     padding: 0 2em
@@ -62,11 +75,23 @@ form
         max-width: 50em
     .tags-field, .title-field
         display: inline-block
-    .icon-add
-        background-position: -280px 3px
 
-.icon-delete
-    background-position: -304px 3px
+button.show-new, button.show-old
+    margin: 0
+    border-radius: 10px 10px 10px 10px
+    cursor: pointer
+    padding: 10px 15px
+    border: 2px solid #666
+    &:hover
+        border-color: #777
+
+button.show-new
+    display: none
+
+.tag
+    margin-top: 1em
+    button
+        margin-right: .5em
 
 .feeds
     display: inline-block
@@ -76,20 +101,18 @@ form
     padding: .5em
     .tag
         cursor: pointer
-    .feed 
+    .feed
         cursor: pointer
         display: none
         border: 2px solid #666
         &:hover
-            border: 2px solid #777
+            border-color: #777
         border-radius: 10px 10px 10px 10px
         padding: .5em
         margin: .5em
         white-space: nowrap
         .buttons
             display: inline-block
-            button:hover
-                border: 2px solid #700
         div.title
             overflow: hidden
             text-overflow: ellipsis
@@ -122,8 +145,11 @@ ul.links
             a:visited
                 color: #2b2
         &.old
+            display: none
             a
                 color: #bbb
             a:visited
                 color: #2b2
-
+    &.show-old
+        li.old
+            display: list-item
