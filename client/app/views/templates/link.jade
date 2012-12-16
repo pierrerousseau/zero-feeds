@@ -1,5 +1,7 @@
 li(class="link #{from} #{state}")
     .buttons
+        if toCozyBookMarks
+            img.to-cozy-bookmarks.button(src="images/icon-cozy-bookmarks.png", title="to cozy bookmarks")
         button.icon-more(type="button", title="more")
     a("href"="#{url}") #{title}
     .description

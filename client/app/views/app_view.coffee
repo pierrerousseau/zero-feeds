@@ -1,15 +1,18 @@
-View      = require '../lib/view'
-AppRouter = require '../routers/app_router'
-FeedsView = require './feeds_view'
-Feed      = require '../models/feed'
+View       = require '../lib/view'
+AppRouter  = require '../routers/app_router'
+FeedsView  = require './feeds_view'
+ParamsView = require './params_view'
+Feed       = require '../models/feed'
 
 module.exports = class AppView extends View
     el: 'body.application'
 
     events:
-        "click form .icon-add": "onCreateClicked"
+        "click form.new-feed .icon-add": "onCreateClicked"
+        "click form.params .icon-add": "onUpdateParamsClicked"
         "click button.show-old": "showLinks"
         "click button.show-new": "showLinks"
+        "click button.show-params": "showParams"
 
     template: ->
         require('./templates/home')
@@ -20,11 +23,15 @@ module.exports = class AppView extends View
     afterRender: ->
         $(".url-field").focus()
         @feedsView = new FeedsView()
-
         @feedsView.$el.html '<em>loading...</em>'
         @feedsView.collection.fetch
             success: =>
                 @feedsView.$el.find('em').remove()
+        @paramsView = new ParamsView()
+        @paramsView.$el.html '<em>loading...</em>'
+        @paramsView.collection.fetch
+            success: =>
+                @paramsView.$el.find('em').remove()
 
     onCreateClicked: (event) =>
         url   = $('.url-field').val()
@@ -51,3 +58,16 @@ module.exports = class AppView extends View
         $("ul.links").toggleClass("show-old")
         $("button.show-new").toggle()
         $("button.show-old").toggle()
+
+    showParams: (evt) ->
+        $(".params").toggle()
+    
+    onUpdateParamsClicked: (event) =>
+        console.log @paramsView.collection
+        for param in @paramsView.collection.models
+            console.log(param)
+            console.log(param.attributes.paramId)
+            param.attributes.value = $("." + param.attributes.paramId).val()
+            param.save()
+        false
+        

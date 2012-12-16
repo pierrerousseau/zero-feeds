@@ -1078,11 +1078,11 @@ input[type=button] {
 .icon-add {
   background-position: -280px 3px;
 }
-.icon-more {
-  background-position: -305px -116px;
-}
 .icon-less {
   background-position: -280px -117px;
+}
+.icon-more {
+  background-position: -305px -116px;
 }
 .icon-reload {
   background-position: -209px -21px;
@@ -1092,6 +1092,17 @@ input[type=button] {
 }
 .icon-delete:hover {
   border-color: #700;
+}
+img.button {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.buttons button {
+  vertical-align: middle;
+  margin: 0 0.5em;
+}
+.fields {
+  display: inline-block;
 }
 form {
   padding: 0 2em;
@@ -1115,20 +1126,21 @@ form .tags-field,
 form .title-field {
   display: inline-block;
 }
-button.show-new,
-button.show-old {
-  margin: 0;
+.main-buttons button {
+  margin: 0 0.1em;
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   cursor: pointer;
   padding: 10px 15px;
   border: 2px solid #666;
 }
-button.show-new:hover,
-button.show-old:hover {
+.main-buttons button:hover {
   border-color: #777;
 }
 button.show-new {
+  display: none;
+}
+.params {
   display: none;
 }
 .tag {
@@ -1190,7 +1202,6 @@ ul.links li {
 }
 ul.links li .buttons {
   display: inline-block;
-  width: 40px;
 }
 ul.links li .description {
   padding: 0.5em;

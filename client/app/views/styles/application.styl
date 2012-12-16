@@ -45,11 +45,11 @@ button, input[type=button]
 .icon-add
     background-position: -280px 3px
 
-.icon-more
-    background-position: -305px -116px
-
 .icon-less
     background-position: -280px -117px
+
+.icon-more
+    background-position: -305px -116px
 
 .icon-reload
     background-position: -209px -21px
@@ -58,6 +58,17 @@ button, input[type=button]
     background-position: -304px 3px
     &:hover
         border-color: #700
+
+img.button
+    cursor: pointer
+    vertical-align: middle
+
+.buttons button
+    vertical-align: middle
+    margin: 0 0.5em
+
+.fields
+    display: inline-block
 
 form
     padding: 0 2em
@@ -76,8 +87,8 @@ form
     .tags-field, .title-field
         display: inline-block
 
-button.show-new, button.show-old
-    margin: 0
+.main-buttons button
+    margin: 0 .1em
     border-radius: 10px 10px 10px 10px
     cursor: pointer
     padding: 10px 15px
@@ -86,6 +97,9 @@ button.show-new, button.show-old
         border-color: #777
 
 button.show-new
+    display: none
+
+.params
     display: none
 
 .tag
@@ -135,7 +149,6 @@ ul.links
         padding: 1em 0
         .buttons
             display: inline-block
-            width: 40px
         .description
             padding: .5em
             margin: .5em

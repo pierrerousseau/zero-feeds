@@ -19,6 +19,8 @@ main icon from : http://www.iconfinder.com/icondetails/35421/128/feed_rss_icon
 
 # Changelog
 
+* v0.9.2
+  * send feed to cozy-bookmark
 * v0.9.1
   * new main icon and favicon
 * v0.9

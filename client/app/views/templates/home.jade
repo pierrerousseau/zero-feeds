@@ -5,8 +5,12 @@
             input.url-field(placeholder="url")
             input.tags-field(placeholder="tags, separated by ','")
             button.icon-add(title="add")
-    .buttons
+    .main-buttons
         button.show-new(title="click here to see only new links") show new links
         button.show-old(title="by default, we display only new links of a feed, click here to see all links") show all links
+        button.show-params(title="click here to setup cozy-feeds") parameters
+    form.params
+        div.fields
+        button.icon-add(title="add")
     div.feeds
     ul.links

@@ -1,6 +1,6 @@
-View = require '../lib/view'
+View         = require '../lib/view'
 linkTemplate = require './templates/link'
-tagTemplate = require './templates/tag'
+tagTemplate  = require './templates/tag'
 
 module.exports = class FeedView extends View
     className: 'feed'
@@ -21,13 +21,20 @@ module.exports = class FeedView extends View
 
         $.each links,
             (index, link) ->
-                link = $(tmpl(link))
-                link.find("button").click((evt) ->
+                linkElem = $(tmpl(link))
+                linkElem.find("button").click((evt) ->
                     icon = $(this)
                     icon.toggleClass("icon-more")
                     icon.toggleClass("icon-less")
-                    link.find(".description").toggle())
-                $(".links").prepend(link)
+                    linkElem.find(".description").toggle())
+                linkElem.find("img.to-cozy-bookmarks").click((evt) ->
+                    icon = $(this)
+                    ajaxOptions = 
+                        type: "POST",
+                        url: "../../apps/" + link.toCozyBookMarks + "/bookmarks",
+                        data: { url: link.url, tags: "cozy-feeds" }
+                    $.ajax(ajaxOptions))
+                $(".links").prepend(linkElem)
 
     onUpdateClicked: (evt) ->
         that = evt.currentTarget

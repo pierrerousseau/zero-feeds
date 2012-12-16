@@ -36,8 +36,9 @@ module.exports = class Feed extends Backbone.Model
 
     links: () ->
         _links = []
-        from    = @feedClass()
-        that    = @
+        from            = @feedClass()
+        toCozyBookMarks = $(".cozybookmarks").val()
+        that            = @
         $.each @$items(),
             (index, value) ->
                 title = $(value).find("title").text()
@@ -55,6 +56,7 @@ module.exports = class Feed extends Backbone.Model
                     "title": title
                     "url": url
                     "from": from
+                    "toCozyBookMarks": toCozyBookMarks
                     "state": "old"
                     "description": description
                 if index == 0
