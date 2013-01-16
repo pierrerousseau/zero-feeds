@@ -442,7 +442,7 @@ window.require.define({"models/feed": function(exports, require, module) {
       var from, last, link, that, toCozyBookMarks, _i, _len, _links;
       _links = [];
       from = this.feedClass();
-      toCozyBookMarks = $(".cozybookmarks").val();
+      toCozyBookMarks = $(".cozy-bookmarks-name").val();
       that = this;
       $.each(this.$items(), function(index, value) {
         var description, link, title, url;
@@ -563,20 +563,20 @@ window.require.define({"views/app_view": function(exports, require, module) {
     __extends(AppView, _super);
 
     function AppView() {
-      this.onUpdateParamsClicked = __bind(this.onUpdateParamsClicked, this);
+      this.updateSettings = __bind(this.updateSettings, this);
 
-      this.onCreateClicked = __bind(this.onCreateClicked, this);
+      this.addFeed = __bind(this.addFeed, this);
       return AppView.__super__.constructor.apply(this, arguments);
     }
 
     AppView.prototype.el = 'body.application';
 
     AppView.prototype.events = {
-      "click form.new-feed .icon-add": "onCreateClicked",
-      "click form.params .icon-add": "onUpdateParamsClicked",
-      "click button.show-old": "showLinks",
-      "click button.show-new": "showLinks",
-      "click button.show-params": "showParams"
+      "click .icon-new": "displayNewForm",
+      "click .icon-settings": "displaySettings",
+      "click form.new-feed .icon-add": "addFeed",
+      "click form.settings .icon-update": "updateSettings",
+      "change #show-new-links": "showLinks"
     };
 
     AppView.prototype.template = function() {
@@ -585,6 +585,14 @@ window.require.define({"views/app_view": function(exports, require, module) {
 
     AppView.prototype.initialize = function() {
       return this.router = CozyApp.Routers.AppRouter = new AppRouter();
+    };
+
+    AppView.prototype.displayNewForm = function() {
+      return $(".new-feed").toggle("slow");
+    };
+
+    AppView.prototype.displaySettings = function() {
+      return $(".settings").toggle("slow");
     };
 
     AppView.prototype.afterRender = function() {
@@ -606,33 +614,30 @@ window.require.define({"views/app_view": function(exports, require, module) {
       });
     };
 
-    AppView.prototype.onCreateClicked = function(event) {
-      var description, feed, tags, title, url,
+    AppView.prototype.addFeed = function(event) {
+      var feed, tags, url,
         _this = this;
       url = $('.url-field').val();
-      title = $('.title-field').val();
       tags = $('.tags-field').val().split(',').map(function(tag) {
         return $.trim(tag);
       });
-      description = $('.description-field').val();
       if ((url != null ? url.length : void 0) > 0) {
         feed = new Feed({
-          title: title,
           url: url,
           tags: tags
         });
         event.preventDefault();
         this.feedsView.collection.create(feed, {
           success: function() {
-            $("form.new-feed").find("input, textarea").val("");
-            return alertify.log("" + _this.$el.find(".title span").html() + " added");
+            alertify.log("" + url + " added");
+            return $("form.new-feed").find("input").val("");
           },
           error: function() {
-            return alert("Server error occured, feed was not saved");
+            return alertify.alert("Server error occured, " + "feed was not added");
           }
         });
       } else {
-        alert('Url field is required');
+        alertify.alert("Url field is required");
       }
       return false;
     };
@@ -643,19 +648,17 @@ window.require.define({"views/app_view": function(exports, require, module) {
       return $("button.show-old").toggle();
     };
 
-    AppView.prototype.showParams = function(evt) {
-      return $(".params").toggle();
-    };
-
-    AppView.prototype.onUpdateParamsClicked = function(event) {
-      var param, _i, _len, _ref;
-      console.log(this.paramsView.collection);
+    AppView.prototype.updateSettings = function(event) {
+      var checked, param, _i, _len, _ref;
       _ref = this.paramsView.collection.models;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         param = _ref[_i];
-        console.log(param);
-        console.log(param.attributes.paramId);
-        param.attributes.value = $("." + param.attributes.paramId).val();
+        if (param.attributes.paramId === "show-new-links") {
+          checked = $("." + param.attributes.paramId).attr("checked");
+          param.attributes.value = checked !== void 0;
+        } else {
+          param.attributes.value = $("." + param.attributes.paramId).val();
+        }
         param.save();
       }
       return false;
@@ -697,6 +700,14 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return template(this.getRenderData());
     };
 
+    FeedView.prototype.startWaiter = function(elem) {
+      return $(elem).find(".buttons").append("<img " + " src='images/loader.gif'" + " class='loader'" + " alt='loading ...' />");
+    };
+
+    FeedView.prototype.stopWaiter = function(elem) {
+      return $(elem).find(".loader").remove();
+    };
+
     FeedView.prototype.renderXml = function() {
       var $items, links, tmpl;
       $items = this.model.$items();
@@ -713,7 +724,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           icon.toggleClass("icon-less");
           return linkElem.find(".description").toggle();
         });
-        linkElem.find("img.to-cozy-bookmarks").click(function(evt) {
+        linkElem.find(".to-cozy-bookmarks").click(function(evt) {
           var ajaxOptions, icon;
           icon = $(this);
           ajaxOptions = {
@@ -730,34 +741,18 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       });
     };
 
-    FeedView.prototype.onUpdateClicked = function(evt) {
-      var allThat, existing, spinner, that, title,
+    FeedView.prototype.onUpdateClicked = function(evt, full) {
+      var allThat, existing, that, title,
         _this = this;
       that = evt.currentTarget;
       allThat = $("." + this.model.cid);
-      spinner = new Spinner({
-        "lines": 13,
-        "length": 4,
-        "width": 4,
-        "radius": 6,
-        "corners": 1,
-        "rotate": 0,
-        "color": '#27aaf2',
-        "speed": 1,
-        "trail": 60,
-        "shadow": true,
-        "hwaccel": false,
-        "className": 'spinner',
-        "top": 'auto',
-        "left": 'auto'
-      });
-      spinner.spin(that);
+      this.startWaiter(that);
       existing = $(".links ." + this.model.feedClass());
       $(".none").remove();
       if (existing.length) {
         existing.remove();
         $(allThat).removeClass("show");
-        spinner.stop();
+        this.stopWaiter(that);
       } else {
         title = this.model.titleText();
         this.model.save({
@@ -770,7 +765,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
             _this.render();
             $(allThat).find("a").html(_this.model.titleText());
             $(allThat).addClass("show");
-            spinner.stop();
+            _this.stopWaiter(that);
             alertify.log("" + _this.$el.find(".title span").html() + " reloaded");
             last = _this.model.last;
             title = _this.model.titleText();
@@ -780,8 +775,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
             });
           },
           error: function() {
-            spinner.stop();
-            return alert("Server error occured, feed was not deleted.");
+            _this.stopWaiter(that);
+            return alert("Server error occured, feed was not updated.");
           }
         });
       }
@@ -804,6 +799,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           }
           $("form.new-feed .url-field").val(url);
           $("form.new-feed .tags-field").val(tags);
+          $(".icon-new").click();
           _this.destroy();
           return alertify.log("" + _this.$el.find(".title span").html() + " removed and placed in form");
         },
@@ -900,7 +896,9 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
     };
 
     FeedsView.prototype.onReloadTagClicked = function(evt) {
-      $(evt.currentTarget).parents("div:first").find(".feed").show(function() {
+      var feeds;
+      feeds = $(evt.currentTarget).parents("div:first").find(".feed");
+      feeds.show(function() {
         return $(this).click();
       });
       return false;
@@ -975,7 +973,7 @@ window.require.define({"views/params_view": function(exports, require, module) {
       return ParamsView.__super__.constructor.apply(this, arguments);
     }
 
-    ParamsView.prototype.el = '.params div.fields';
+    ParamsView.prototype.el = '.settings .values';
 
     ParamsView.prototype.view = ParamView;
 
@@ -1003,7 +1001,7 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="buttons"><button class="icon-delete"></button></div><span');
+  buf.push('<div class="title"><div class="buttons"><button title="remove this feed and place its details on the new feed form" class="icon-delete"><img src="icons/delete.png" alt="delete"/></button></div><span');
   buf.push(attrs({ 'title':("" + (model.tags) + "") }, {"title":true}));
   buf.push('>');
   if ( model.title)
@@ -1030,7 +1028,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><h1>My Cozy Feeds</h1><form class="new-feed"><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><button title="add" class="icon-add"></button></p></form><div class="main-buttons"><button title="click here to see only new links" class="show-new">show new links</button><button title="by default, we display only new links of a feed, click here to see all links" class="show-old">show all links</button><button title="click here to setup cozy-feeds" class="show-params">parameters</button></div><form class="params"><div class="fields"></div><button title="add" class="icon-add"></button></form><div class="feeds"></div><ul class="links"></ul></div>');
+  buf.push('<div id="content"><div class="main-title"><h1>My Cozy Feeds<div class="buttons"><button title="add a feed" class="icon-new"><img src="icons/new.png" alt="new"/></button><button title="settings" class="icon-settings"><img src="icons/settings.png" alt="settings"/></button></div></h1><form class="new-feed"><h2>add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add"><img src="icons/add.png" alt="add"/></button></span></p></form><form class="settings"><h2>settings<div class="buttons"><button title="update" class="icon-update"><img src="icons/add.png" alt="update"/></button></div></h2><div class="values"></div></form></div><div class="feeds"></div><ul class="links"></ul></div>');
   }
   return buf.join("");
   };
@@ -1047,9 +1045,9 @@ window.require.define({"views/templates/link": function(exports, require, module
   buf.push('><div class="buttons">');
   if ( toCozyBookMarks)
   {
-  buf.push('<img src="images/icon-cozy-bookmarks.png" title="to cozy bookmarks" class="to-cozy-bookmarks button"/>');
+  buf.push('<button title="to cozy bookmarks" class="to-cozy-bookmarks"><img src="icons/cozy-bookmarks.png" alt="bookmark"/></button>');
   }
-  buf.push('<button type="button" title="more" class="icon-more"></button></div><a');
+  buf.push('<button title="view description" class="icon-more"><img src="icons/more.png" alt="more"/></button></div><a');
   buf.push(attrs({ 'href':("" + (url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
   }
@@ -1063,9 +1061,29 @@ window.require.define({"views/templates/param": function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<p><label>' + escape((interp = model.name) == null ? '' : interp) + '<input');
-  buf.push(attrs({ 'value':("" + (model.value) + ""), "class": ("" + (model.paramId) + "") }, {"class":true,"value":true}));
-  buf.push('/></label></p>');
+  buf.push('<p><label>' + escape((interp = model.name) == null ? '' : interp) + '');
+   if (model.paramId == "show-new-links")
+  {
+   if (model.value)
+  {
+  buf.push('<input');
+  buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + ""), "class": ("" + (model.paramId) + "") }, {"id":true,"name":true,"class":true,"type":true,"checked":true,"value":true}));
+  buf.push('/>');
+  }
+   else
+  {
+  buf.push('<input');
+  buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'value':("" + (model.value) + ""), "class": ("" + (model.paramId) + "") }, {"id":true,"name":true,"class":true,"type":true,"value":true}));
+  buf.push('/>');
+  }
+  }
+   else
+  {
+  buf.push('<input');
+  buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'value':("" + (model.value) + ""), "class": ("" + (model.paramId) + "") }, {"id":true,"name":true,"class":true,"value":true}));
+  buf.push('/>');
+  }
+  buf.push('</label></p>');
   }
   return buf.join("");
   };
@@ -1079,7 +1097,7 @@ window.require.define({"views/templates/tag": function(exports, require, module)
   var interp;
   buf.push('<div');
   buf.push(attrs({ "class": ("tag " + (name) + "") }, {"class":true}));
-  buf.push('><span class="buttons"><button class="icon-reload"></button></span><span class="name">' + escape((interp = name) == null ? '' : interp) + '</span></div>');
+  buf.push('><span class="buttons"><button title="reload all feeds" class="icon-reload"><img src="icons/refresh.png" alt="refresh"/></button></span><span class="name">' + escape((interp = name) == null ? '' : interp) + '</span></div>');
   }
   return buf.join("");
   };

@@ -1,6 +1,7 @@
 .title
     .buttons
-        button.icon-delete
+        button.icon-delete(title="remove this feed and place its details on the new feed form")
+            img(src="icons/delete.png", alt="delete")
      span(title="#{model.tags}")
          if model.title
                  a(href="#{model.url}") #{model.title}

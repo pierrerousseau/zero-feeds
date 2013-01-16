@@ -1,3 +1,21 @@
 p
     label #{model.name}
-        input(class="#{model.paramId}", value="#{model.value}")
+        - if (model.paramId == "show-new-links")
+            - if (model.value)
+                input(id="#{model.paramId}",
+                      name="#{model.paramId}",
+                      class="#{model.paramId}",
+                      type="checkbox",
+                      checked="checked",
+                      value="#{model.value}")
+            - else
+                input(id="#{model.paramId}",
+                      name="#{model.paramId}",
+                      class="#{model.paramId}",
+                      type="checkbox",
+                      value="#{model.value}")
+        - else
+            input(id="#{model.paramId}",
+                  name="#{model.paramId}",
+                  class="#{model.paramId}",
+                  value="#{model.value}")

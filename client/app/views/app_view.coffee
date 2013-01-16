@@ -8,17 +8,23 @@ module.exports = class AppView extends View
     el: 'body.application'
 
     events:
-        "click form.new-feed .icon-add": "onCreateClicked"
-        "click form.params .icon-add": "onUpdateParamsClicked"
-        "click button.show-old": "showLinks"
-        "click button.show-new": "showLinks"
-        "click button.show-params": "showParams"
+        "click .icon-new": "displayNewForm"
+        "click .icon-settings": "displaySettings"
+        "click form.new-feed .icon-add": "addFeed"
+        "click form.settings .icon-update": "updateSettings"
+        "change #show-new-links": "showLinks"
 
     template: ->
         require('./templates/home')
 
     initialize: ->
         @router = CozyApp.Routers.AppRouter = new AppRouter()
+
+    displayNewForm: ->
+        $(".new-feed").toggle("slow")
+
+    displaySettings: ->
+        $(".settings").toggle("slow")
 
     afterRender: ->
         $(".url-field").focus()
@@ -33,25 +39,24 @@ module.exports = class AppView extends View
             success: =>
                 @paramsView.$el.find('em').remove()
 
-    onCreateClicked: (event) =>
+    addFeed: (event) =>
         url   = $('.url-field').val()
-        title = $('.title-field').val()
         tags  = $('.tags-field').val().split(',').map (tag) -> $.trim(tag)
-        description = $('.description-field').val()
 
         if url?.length > 0
             feed = new Feed
-                title: title
                 url: url
                 tags: tags
             event.preventDefault()
             @feedsView.collection.create feed,
                 success: =>
-                    $("form.new-feed").find("input, textarea").val("")
-                    alertify.log "" + @$el.find(".title span").html() + " added"
-                error: => alert "Server error occured, feed was not saved"
+                    alertify.log "" + url + " added"
+                    $("form.new-feed").find("input").val("")
+                error: =>
+                    alertify.alert "Server error occured, " +
+                                   "feed was not added"
         else
-            alert 'Url field is required'
+            alertify.alert "Url field is required"
         false
 
     showLinks: (evt) ->
@@ -59,15 +64,13 @@ module.exports = class AppView extends View
         $("button.show-new").toggle()
         $("button.show-old").toggle()
 
-    showParams: (evt) ->
-        $(".params").toggle()
-    
-    onUpdateParamsClicked: (event) =>
-        console.log @paramsView.collection
+    updateSettings: (event) =>
         for param in @paramsView.collection.models
-            console.log(param)
-            console.log(param.attributes.paramId)
-            param.attributes.value = $("." + param.attributes.paramId).val()
+            if param.attributes.paramId == "show-new-links"
+                checked = $("." + param.attributes.paramId).attr("checked")
+                param.attributes.value = checked != undefined
+            else
+                param.attributes.value = $("." + param.attributes.paramId).val()
             param.save()
         false
-        
+

@@ -12,121 +12,87 @@
 
 body.application, input, textarea
     color: #bbb
-    background: none repeat scroll 0 0 rgba(30, 30, 30, 0.8)
+    background: none repeat scroll 0 0 rgba(40, 40, 40, 0.8)
 
-a
+a, a:visited
     color: #27aaf2
     text-decoration: none
+a:focus
+    outline: none
 
 #content
     padding: 2em
 
-
 button, input[type=button]
     background-color: inherit
 
-[class^="icon-"], [class*=" icon-"]
-    background-image: url("../images/glyphicons-halflings.png")
-    background-position: 14px 14px
-    background-repeat: no-repeat
-    display: inline-block
-    height: 14px
-    line-height: 14px
-    width: 14px
-    vertical-align: text-top
-    cursor: pointer
-    border-radius: 10px 10px 10px 10px
-    cursor: pointer
-    padding: 10px 15px
-    border: 2px solid #666
-    &:hover
-        border-color: #777
-
-.icon-add
-    background-position: -280px 3px
-
-.icon-less
-    background-position: -280px -117px
-
-.icon-more
-    background-position: -305px -116px
-
-.icon-reload
-    background-position: -209px -21px
-
-.icon-delete
-    background-position: -304px 3px
-    &:hover
-        border-color: #700
-
-img.button
-    cursor: pointer
-    vertical-align: middle
-
-.buttons button
-    vertical-align: middle
-    margin: 0 0.5em
-
-.fields
-    display: inline-block
-
-form
+div.main-title
+    margin: 0
     padding: 0 2em
-    input
-        padding: .5em
-        margin: 1em
-        width: 24em
-    input[type=button]
-        width: 14px
-        height: 14px
-        padding: 10px 15px
-        display: inline-block
-    .url-field
-        width: 50%
-        max-width: 50em
-    .tags-field, .title-field
-        display: inline-block
+    background: #232323
+    border: 1px solid #262626
 
-.main-buttons button
-    margin: 0 .1em
-    border-radius: 10px 10px 10px 10px
-    cursor: pointer
-    padding: 10px 15px
-    border: 2px solid #666
-    &:hover
-        border-color: #777
+    h1
+        background: #1f1f1f
+        border-top: 1px solid #262626
+        border-bottom:1px solid #161712
+        padding: .3em .5em
+        .buttons
+            cursor: pointer
+            float: right
+            button
+                border: none
+    form 
+        display: none
+        .buttons
+            display: inline
+        h2
+            text-decoration: underline
+        label
+            margin: .5em
+        input
+            display: inline-block
+            margin: .5em
+            padding: .5em
+            width: 24em
+            background: #262626
+            border: 1px double #171717
 
-button.show-new
-    display: none
-
-.params
-    display: none
-
-.tag
-    margin-top: 1em
-    button
-        margin-right: .5em
+        .url-field
+            width: 50%
+            max-width: 50em
+        button
+            border: none
+            vertical-align: middle
 
 .feeds
+    margin: 2em 0
+    padding: 1em 1em 0
+    background: #232323
+    border: 1px solid #262626
     display: inline-block
     vertical-align: top
-    max-width: 20%
-    margin: 0 .2em
-    padding: .5em
+    max-width: 15%
+
     .tag
         cursor: pointer
+        margin-bottom: 1em
+        button
+            border: none
+            vertical-align: middle
+            img
+                width: 16px
+                height: 16px
+
     .feed
-        cursor: pointer
         display: none
-        border: 2px solid #666
-        &:hover
-            border-color: #777
-        border-radius: 10px 10px 10px 10px
-        padding: .5em
-        margin: .5em
+        cursor: pointer
+        padding: .2em
+        margin: .2em
         white-space: nowrap
         .buttons
             display: inline-block
+            vertical-align: middle
         div.title
             overflow: hidden
             text-overflow: ellipsis
@@ -135,25 +101,37 @@ button.show-new
                 margin: 0 .3em
             a:hover
                 text-decoration: none
+                color: #72fa72
      .feed.show div.title
-            font-size: 1.2em
-            font-weight: bold
+         font-size: 1.2em
+         font-weight: bold
 
 ul.links
+    margin: 2em
+    padding: 0
+    background: #232323
     display: inline-block
-    width: 70%
     vertical-align: top
+    width: 75%
     list-style: none
     li
         border-top: 1px solid #666
-        padding: 1em 0
+        padding: 1em .5em 0
+        margin: 2em 1em
         .buttons
             display: inline-block
+            padding-right: .5em
+            button
+                border: none
+                width: auto
+                img
+                    width: 24px
+                    height: 24px
+                    vertical-align: middle
         .description
             padding: .5em
             margin: .5em
             display: none
-            border: 1px dotted #666
         &.new
             a:visited
                 color: #2b2

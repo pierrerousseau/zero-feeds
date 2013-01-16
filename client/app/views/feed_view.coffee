@@ -13,6 +13,15 @@ module.exports = class FeedView extends View
         template = require './templates/feed'
         template @getRenderData()
 
+    startWaiter: (elem) ->
+        $(elem).find(".buttons").append("<img " +
+                                        " src='images/loader.gif'" +
+                                        " class='loader'" +
+                                        " alt='loading ...' />")
+
+    stopWaiter: (elem) ->
+        $(elem).find(".loader").remove()
+
     renderXml: ->
         $items = @model.$items()
         tmpl   = linkTemplate
@@ -27,41 +36,27 @@ module.exports = class FeedView extends View
                     icon.toggleClass("icon-more")
                     icon.toggleClass("icon-less")
                     linkElem.find(".description").toggle())
-                linkElem.find("img.to-cozy-bookmarks").click((evt) ->
+                linkElem.find(".to-cozy-bookmarks").click((evt) ->
                     icon = $(this)
-                    ajaxOptions = 
+                    ajaxOptions =
                         type: "POST",
-                        url: "../../apps/" + link.toCozyBookMarks + "/bookmarks",
+                        url: "../../apps/" +
+                             link.toCozyBookMarks +
+                             "/bookmarks",
                         data: { url: link.url, tags: "cozy-feeds" }
                     $.ajax(ajaxOptions))
                 $(".links").prepend(linkElem)
 
-    onUpdateClicked: (evt) ->
+    onUpdateClicked: (evt, full) ->
         that = evt.currentTarget
         allThat = $("." + @model.cid)
-        spinner = new Spinner
-            "lines": 13
-            "length": 4
-            "width": 4
-            "radius": 6
-            "corners": 1
-            "rotate": 0
-            "color": '#27aaf2'
-            "speed": 1
-            "trail": 60
-            "shadow": true
-            "hwaccel": false
-            "className": 'spinner'
-            "top": 'auto'
-            "left": 'auto'
-        spinner.spin(that)
-
+        @startWaiter(that)
         existing = $(".links ." + @model.feedClass())
         $(".none").remove()
         if existing.length
             existing.remove()
             $(allThat).removeClass("show")
-            spinner.stop()
+            @stopWaiter(that)
         else
             title = @model.titleText()
             @model.save { "title": title },
@@ -71,15 +66,15 @@ module.exports = class FeedView extends View
                     @render()
                     $(allThat).find("a").html(@model.titleText())
                     $(allThat).addClass("show")
-                    spinner.stop()
+                    @stopWaiter(that)
                     alertify.log "" + @$el.find(".title span").html() +
                                  " reloaded"
                     last  = @model.last
                     title = @model.titleText()
                     @model.save { "title": title, "last": last },
                 error: =>
-                    spinner.stop()
-                    alert "Server error occured, feed was not deleted."
+                    @stopWaiter(that)
+                    alert "Server error occured, feed was not updated."
         evt.preventDefault()
         false
 
@@ -94,6 +89,7 @@ module.exports = class FeedView extends View
                     tags = ""
                 $("form.new-feed .url-field").val(url)
                 $("form.new-feed .tags-field").val(tags)
+                $(".icon-new").click()
                 @destroy()
                 alertify.log "" + @$el.find(".title span").html() +
                              " removed and placed in form"
@@ -122,9 +118,9 @@ module.exports = class FeedView extends View
 
             toDisplay = @$el.clone(true, true)
             that = @
-            toDisplay.on("click", "", (evt) -> that.onUpdateClicked(evt))
-            toDisplay.on("click",
-                         ".icon-delete",
+            toDisplay.on("click", "",
+                         (evt) -> that.onUpdateClicked(evt))
+            toDisplay.on("click", ".icon-delete",
                          (evt) -> that.onDeleteClicked(evt))
 
             exists = tagPlace.find("." + @model.cid)

@@ -2,23 +2,24 @@
 
 Follow your favorite sites here !
 
-main icon from : http://www.iconfinder.com/icondetails/35421/128/feed_rss_icon
-
 # To do ...
 
-* send link to cozy-bookmarks
-* add filter for links
-* to know : some feeds change link params at everyupdate
+* for v1.0 : add filter for links
+* code review (a lot of cleaning is needed)
 * bug : doesnt support https
 * bug : needs to load feed 2 times before to get updated title : still ?
 * bug : first display of a feed cant be deleted : still ?
-
+* to know : some feeds change link params at everyupdate
 * to finish : store parsed links into db, 
               in order to manage old/new/read feeds in a simplier way
 
 
 # Changelog
 
+* v0.9.4
+  * more explicit icons to add a feed and to display link description
+* v0.9.3
+  * UI review
 * v0.9.2
   * send feed to cozy-bookmark
 * v0.9.1
@@ -51,3 +52,15 @@ efficiently your data while protecting your privacy without technical skills.
 
 More informations and hosting services on:
 http://cozycloud.cc
+
+
+# Tools & resources used :
+
+* please, check package.json files
+* main icon from IconTexto (http://icontexto.blogspot.fr/ - CC by-nc-sa)
+* other icons from
+  * Icojam (http://www.icojam.com/ - free for use)
+  * Jonas Rask (http://jonasraskdesign.com/ - free for commercial use)
+  * http://en.wikipedia.org/wiki/File:Loading.gif - CC by-sa
+* alertify.js (http://fabien-d.github.com/alertify.js/ - MIT)
+

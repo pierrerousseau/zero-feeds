@@ -1,16 +1,24 @@
 #content
-    h1 My Cozy Feeds
-    form.new-feed
-        p
-            input.url-field(placeholder="url")
-            input.tags-field(placeholder="tags, separated by ','")
-            button.icon-add(title="add")
-    .main-buttons
-        button.show-new(title="click here to see only new links") show new links
-        button.show-old(title="by default, we display only new links of a feed, click here to see all links") show all links
-        button.show-params(title="click here to setup cozy-feeds") parameters
-    form.params
-        div.fields
-        button.icon-add(title="add")
+    div.main-title
+        h1 My Cozy Feeds
+            .buttons
+                button.icon-new(title="add a feed")
+                    img(src="icons/new.png", alt="new")
+                button.icon-settings(title="settings")
+                    img(src="icons/settings.png", alt="settings")
+        form.new-feed
+            h2 add a feed
+            p
+                input.url-field(placeholder="url")
+                input.tags-field(placeholder="tags, separated by ','")
+                span.buttons
+                    button.icon-add(title="add")
+                        img(src="icons/add.png", alt="add")
+        form.settings
+            h2 settings
+                .buttons
+                    button.icon-update(title="update")
+                        img(src="icons/add.png", alt="update")
+            div.values
     div.feeds
     ul.links

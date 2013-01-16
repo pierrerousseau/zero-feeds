@@ -37,7 +37,7 @@ module.exports = class Feed extends Backbone.Model
     links: () ->
         _links = []
         from            = @feedClass()
-        toCozyBookMarks = $(".cozybookmarks").val()
+        toCozyBookMarks = $(".cozy-bookmarks-name").val()
         that            = @
         $.each @$items(),
             (index, value) ->

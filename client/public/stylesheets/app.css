@@ -1041,11 +1041,15 @@ body.application,
 input,
 textarea {
   color: #bbb;
-  background: none repeat scroll 0 0 rgba(30,30,30,0.8);
+  background: none repeat scroll 0 0 rgba(40,40,40,0.8);
 }
-a {
+a,
+a:visited {
   color: #27aaf2;
   text-decoration: none;
+}
+a:focus {
+  outline: none;
 }
 #content {
   padding: 2em;
@@ -1054,126 +1058,84 @@ button,
 input[type=button] {
   background-color: inherit;
 }
-[class^="icon-"],
-[class*=" icon-"] {
-  background-image: url("../images/glyphicons-halflings.png");
-  background-position: 14px 14px;
-  background-repeat: no-repeat;
-  display: inline-block;
-  height: 14px;
-  line-height: 14px;
-  width: 14px;
-  vertical-align: text-top;
-  cursor: pointer;
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  cursor: pointer;
-  padding: 10px 15px;
-  border: 2px solid #666;
-}
-[class^="icon-"]:hover,
-[class*=" icon-"]:hover {
-  border-color: #777;
-}
-.icon-add {
-  background-position: -280px 3px;
-}
-.icon-less {
-  background-position: -280px -117px;
-}
-.icon-more {
-  background-position: -305px -116px;
-}
-.icon-reload {
-  background-position: -209px -21px;
-}
-.icon-delete {
-  background-position: -304px 3px;
-}
-.icon-delete:hover {
-  border-color: #700;
-}
-img.button {
-  cursor: pointer;
-  vertical-align: middle;
-}
-.buttons button {
-  vertical-align: middle;
-  margin: 0 0.5em;
-}
-.fields {
-  display: inline-block;
-}
-form {
+div.main-title {
+  margin: 0;
   padding: 0 2em;
+  background: #232323;
+  border: 1px solid #262626;
 }
-form input {
-  padding: 0.5em;
-  margin: 1em;
-  width: 24em;
+div.main-title h1 {
+  background: #1f1f1f;
+  border-top: 1px solid #262626;
+  border-bottom: 1px solid #161712;
+  padding: 0.3em 0.5em;
 }
-form input[type=button] {
-  width: 14px;
-  height: 14px;
-  padding: 10px 15px;
+div.main-title h1 .buttons {
+  cursor: pointer;
+  float: right;
+}
+div.main-title h1 .buttons button {
+  border: none;
+}
+div.main-title form {
+  display: none;
+}
+div.main-title form .buttons {
+  display: inline;
+}
+div.main-title form h2 {
+  text-decoration: underline;
+}
+div.main-title form label {
+  margin: 0.5em;
+}
+div.main-title form input {
   display: inline-block;
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 24em;
+  background: #262626;
+  border: 1px double #171717;
 }
-form .url-field {
+div.main-title form .url-field {
   width: 50%;
   max-width: 50em;
 }
-form .tags-field,
-form .title-field {
-  display: inline-block;
-}
-.main-buttons button {
-  margin: 0 0.1em;
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  cursor: pointer;
-  padding: 10px 15px;
-  border: 2px solid #666;
-}
-.main-buttons button:hover {
-  border-color: #777;
-}
-button.show-new {
-  display: none;
-}
-.params {
-  display: none;
-}
-.tag {
-  margin-top: 1em;
-}
-.tag button {
-  margin-right: 0.5em;
+div.main-title form button {
+  border: none;
+  vertical-align: middle;
 }
 .feeds {
+  margin: 2em 0;
+  padding: 1em 1em 0;
+  background: #232323;
+  border: 1px solid #262626;
   display: inline-block;
   vertical-align: top;
-  max-width: 20%;
-  margin: 0 0.2em;
-  padding: 0.5em;
+  max-width: 15%;
 }
 .feeds .tag {
   cursor: pointer;
+  margin-bottom: 1em;
+}
+.feeds .tag button {
+  border: none;
+  vertical-align: middle;
+}
+.feeds .tag button img {
+  width: 16px;
+  height: 16px;
 }
 .feeds .feed {
-  cursor: pointer;
   display: none;
-  border: 2px solid #666;
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  padding: 0.5em;
-  margin: 0.5em;
+  cursor: pointer;
+  padding: 0.2em;
+  margin: 0.2em;
   white-space: nowrap;
-}
-.feeds .feed:hover {
-  border-color: #777;
 }
 .feeds .feed .buttons {
   display: inline-block;
+  vertical-align: middle;
 }
 .feeds .feed div.title {
   overflow: hidden;
@@ -1185,29 +1147,43 @@ button.show-new {
 }
 .feeds .feed div.title a:hover {
   text-decoration: none;
+  color: #72fa72;
 }
 .feeds .feed.show div.title {
   font-size: 1.2em;
   font-weight: bold;
 }
 ul.links {
+  margin: 2em;
+  padding: 0;
+  background: #232323;
   display: inline-block;
-  width: 70%;
   vertical-align: top;
+  width: 75%;
   list-style: none;
 }
 ul.links li {
   border-top: 1px solid #666;
-  padding: 1em 0;
+  padding: 1em 0.5em 0;
+  margin: 2em 1em;
 }
 ul.links li .buttons {
   display: inline-block;
+  padding-right: 0.5em;
+}
+ul.links li .buttons button {
+  border: none;
+  width: auto;
+}
+ul.links li .buttons button img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
 }
 ul.links li .description {
   padding: 0.5em;
   margin: 0.5em;
   display: none;
-  border: 1px dotted #666;
 }
 ul.links li.new a:visited {
   color: #2b2;
