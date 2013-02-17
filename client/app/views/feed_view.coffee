@@ -31,11 +31,6 @@ module.exports = class FeedView extends View
         $.each links,
             (index, link) ->
                 linkElem = $(tmpl(link))
-                linkElem.find("button").click((evt) ->
-                    icon = $(this)
-                    icon.toggleClass("icon-more")
-                    icon.toggleClass("icon-less")
-                    linkElem.find(".description").toggle())
                 linkElem.find(".to-cozy-bookmarks").click((evt) ->
                     icon = $(this)
                     ajaxOptions =
@@ -50,6 +45,11 @@ module.exports = class FeedView extends View
                             alertify.alert "link wasn't added to cozy-bookmarks"
                     $.ajax(ajaxOptions)
                     false)
+                linkElem.find("button.icon-more").click((evt) ->
+                    icon = $(this)
+                    icon.toggleClass("icon-more")
+                    icon.toggleClass("icon-less")
+                    linkElem.find(".description").toggle())
                 $(".links").prepend(linkElem)
 
     onUpdateClicked: (evt, full) ->

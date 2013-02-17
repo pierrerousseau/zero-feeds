@@ -462,6 +462,7 @@ window.require.define({"models/feed": function(exports, require, module) {
         }
         link = {
           "title": title,
+          "encodedTitle": encodeURIComponent(title),
           "url": url,
           "from": from,
           "toCozyBookMarks": toCozyBookMarks,
@@ -726,13 +727,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return $.each(links, function(index, link) {
         var linkElem;
         linkElem = $(tmpl(link));
-        linkElem.find("button").click(function(evt) {
-          var icon;
-          icon = $(this);
-          icon.toggleClass("icon-more");
-          icon.toggleClass("icon-less");
-          return linkElem.find(".description").toggle();
-        });
         linkElem.find(".to-cozy-bookmarks").click(function(evt) {
           var ajaxOptions, icon;
           icon = $(this);
@@ -752,6 +746,13 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           };
           $.ajax(ajaxOptions);
           return false;
+        });
+        linkElem.find("button.icon-more").click(function(evt) {
+          var icon;
+          icon = $(this);
+          icon.toggleClass("icon-more");
+          icon.toggleClass("icon-less");
+          return linkElem.find(".description").toggle();
         });
         return $(".links").prepend(linkElem);
       });
@@ -1064,9 +1065,9 @@ window.require.define({"views/templates/link": function(exports, require, module
   var interp;
   buf.push('<li');
   buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
-  buf.push('><div class="buttons"><button title="send to tweeter" class="to-tweeter"><a');
-  buf.push(attrs({ 'href':("https://twitter.com/intent/tweet?text=" + (title) + "&url=" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
-  buf.push('><img src="icons/tweet.png" alt="tweet"/></a></button>');
+  buf.push('><div class="buttons"><a');
+  buf.push(attrs({ 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
+  buf.push('><button title="send to tweeter" class="to-tweeter"><img src="icons/tweet.png" alt="tweet"/></button></a>');
   if ( toCozyBookMarks)
   {
   buf.push('<button title="send to cozy bookmarks" class="to-cozy-bookmarks"><img src="icons/cozy-bookmarks.png" alt="bookmark"/></button>');

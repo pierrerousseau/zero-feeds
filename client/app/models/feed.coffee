@@ -54,6 +54,7 @@ module.exports = class Feed extends Backbone.Model
                         description = $(value).find("description").text()
                 link =
                     "title": title
+                    "encodedTitle": encodeURIComponent title
                     "url": url
                     "from": from
                     "toCozyBookMarks": toCozyBookMarks
