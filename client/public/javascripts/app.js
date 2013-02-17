@@ -1048,7 +1048,7 @@ window.require.define({"views/templates/link": function(exports, require, module
   buf.push('<button title="to cozy bookmarks" class="to-cozy-bookmarks"><img src="icons/cozy-bookmarks.png" alt="bookmark"/></button>');
   }
   buf.push('<button title="view description" class="icon-more"><img src="icons/more.png" alt="more"/></button></div><a');
-  buf.push(attrs({ 'href':("" + (url) + "") }, {"href":true}));
+  buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
   buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
   }
   return buf.join("");
