@@ -572,6 +572,7 @@ window.require.define({"views/app_view": function(exports, require, module) {
     AppView.prototype.el = 'body.application';
 
     AppView.prototype.events = {
+      "click h1": "showOnlyTitle",
       "click .icon-new": "displayNewForm",
       "click .icon-settings": "displaySettings",
       "click form.new-feed .icon-add": "addFeed",
@@ -587,12 +588,19 @@ window.require.define({"views/app_view": function(exports, require, module) {
       return this.router = CozyApp.Routers.AppRouter = new AppRouter();
     };
 
+    AppView.prototype.showOnlyTitle = function() {
+      $(".new-feed").hide();
+      return $(".settings").hide();
+    };
+
     AppView.prototype.displayNewForm = function() {
-      return $(".new-feed").toggle("slow");
+      $(".new-feed").show("slow");
+      return false;
     };
 
     AppView.prototype.displaySettings = function() {
-      return $(".settings").toggle("slow");
+      $(".settings").toggle("slow");
+      return false;
     };
 
     AppView.prototype.afterRender = function() {
@@ -645,7 +653,8 @@ window.require.define({"views/app_view": function(exports, require, module) {
     AppView.prototype.showLinks = function(evt) {
       $("ul.links").toggleClass("show-old");
       $("button.show-new").toggle();
-      return $("button.show-old").toggle();
+      $("button.show-old").toggle();
+      return false;
     };
 
     AppView.prototype.updateSettings = function(event) {
@@ -790,7 +799,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       that = evt.currentTarget;
       this.model.destroy({
         success: function() {
-          var tags, title, url;
+          var myTag, tags, title, url;
           title = _this.$el.find(".title");
           url = title.find("a").attr("href");
           tags = title.find("span").attr("title");
@@ -800,11 +809,17 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           $("form.new-feed .url-field").val(url);
           $("form.new-feed .tags-field").val(tags);
           $(".icon-new").click();
+          myTag = $(that).parents(".tag");
+          console.log(myTag);
+          console.log(myTag.find(".feed"));
+          if (myTag.find(".feed").length === 1) {
+            myTag.remove();
+          }
           _this.destroy();
           return alertify.log("" + _this.$el.find(".title span").html() + " removed and placed in form");
         },
         error: function() {
-          return alert("Server error occured, feed was not deleted.");
+          return alertify.alert("Server error occured, feed was not deleted.");
         }
       });
       evt.preventDefault();

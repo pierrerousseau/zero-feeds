@@ -8,6 +8,7 @@ module.exports = class AppView extends View
     el: 'body.application'
 
     events:
+        "click h1": "showOnlyTitle"
         "click .icon-new": "displayNewForm"
         "click .icon-settings": "displaySettings"
         "click form.new-feed .icon-add": "addFeed"
@@ -20,11 +21,17 @@ module.exports = class AppView extends View
     initialize: ->
         @router = CozyApp.Routers.AppRouter = new AppRouter()
 
+    showOnlyTitle: ->
+        $(".new-feed").hide()
+        $(".settings").hide()
+
     displayNewForm: ->
-        $(".new-feed").toggle("slow")
+        $(".new-feed").show("slow")
+        false
 
     displaySettings: ->
         $(".settings").toggle("slow")
+        false
 
     afterRender: ->
         $(".url-field").focus()
@@ -63,6 +70,7 @@ module.exports = class AppView extends View
         $("ul.links").toggleClass("show-old")
         $("button.show-new").toggle()
         $("button.show-old").toggle()
+        false
 
     updateSettings: (event) =>
         for param in @paramsView.collection.models

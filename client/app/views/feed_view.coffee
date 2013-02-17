@@ -90,11 +90,16 @@ module.exports = class FeedView extends View
                 $("form.new-feed .url-field").val(url)
                 $("form.new-feed .tags-field").val(tags)
                 $(".icon-new").click()
+                myTag = $(that).parents(".tag")
+                console.log myTag
+                console.log myTag.find(".feed")
+                if myTag.find(".feed").length == 1
+                    myTag.remove()
                 @destroy()
                 alertify.log "" + @$el.find(".title span").html() +
                              " removed and placed in form"
             error: =>
-                alert "Server error occured, feed was not deleted."
+                alertify.alert "Server error occured, feed was not deleted."
         evt.preventDefault()
         false
 
