@@ -1050,7 +1050,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><div class="main-title"><h1>My Cozy Feeds<div class="buttons"><button title="add a feed" class="icon-new"><img src="icons/new.png" alt="new"/></button><button title="settings" class="icon-settings"><img src="icons/settings.png" alt="settings"/></button></div></h1><form class="new-feed"><h2>add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add"><img src="icons/add.png" alt="add"/></button></span></p></form><form class="settings"><h2>settings<div class="buttons"><button title="update" class="icon-update"><img src="icons/add.png" alt="update"/></button></div></h2><div class="values"></div></form></div><div class="feeds"></div><ul class="links"></ul></div>');
+  buf.push('<div id="content"><div class="main-title"><h1>My Cozy Feeds<div class="buttons"><button title="add a feed" class="icon-new"><img src="icons/new.png" alt="new"/></button><button title="settings" class="icon-settings"><img src="icons/settings.png" alt="settings"/></button></div></h1><form class="new-feed"><h2>add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add"><img src="icons/add.png" alt="add"/></button></span></p></form><form class="settings"><h2>settings<div class="buttons"><button title="update" class="icon-update"><img src="icons/validate.png" alt="update"/></button></div></h2><div class="values"></div></form></div><div class="feeds"></div><ul class="links"></ul></div>');
   }
   return buf.join("");
   };
@@ -1064,10 +1064,12 @@ window.require.define({"views/templates/link": function(exports, require, module
   var interp;
   buf.push('<li');
   buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
-  buf.push('><div class="buttons">');
+  buf.push('><div class="buttons"><button title="send to tweeter" class="to-tweeter"><a');
+  buf.push(attrs({ 'href':("https://twitter.com/intent/tweet?text=" + (title) + "&url=" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
+  buf.push('><img src="icons/tweet.png" alt="tweet"/></a></button>');
   if ( toCozyBookMarks)
   {
-  buf.push('<button title="to cozy bookmarks" class="to-cozy-bookmarks"><img src="icons/cozy-bookmarks.png" alt="bookmark"/></button>');
+  buf.push('<button title="send to cozy bookmarks" class="to-cozy-bookmarks"><img src="icons/cozy-bookmarks.png" alt="bookmark"/></button>');
   }
   buf.push('<button title="view description" class="icon-more"><img src="icons/more.png" alt="more"/></button></div><a');
   buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));

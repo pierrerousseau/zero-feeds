@@ -4,7 +4,7 @@ Follow your favorite sites here !
 
 # To do ...
 
-* for v1.0 : add filter for links
+* for v1.1 : add filter for links
 * code review (a lot of cleaning is needed)
 * bug : doesnt support https
 * bug : needs to load feed 2 times before to get updated title : still ?
@@ -16,6 +16,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v0.9.5
+  * add an icon to send to twitter
 * v0.9.4
   * open links in new window
   * more explicit icons to add a feed and to display link description

@@ -1,7 +1,11 @@
 li(class="link #{from} #{state}")
     .buttons
+        button.to-tweeter(title="send to tweeter")
+            a(href="https://twitter.com/intent/tweet?text=#{title}&url=#{url}", 
+              target="_blank")
+                img(src="icons/tweet.png", alt="tweet")
         if toCozyBookMarks
-            button.to-cozy-bookmarks(title="to cozy bookmarks")
+            button.to-cozy-bookmarks(title="send to cozy bookmarks")
                 img(src="icons/cozy-bookmarks.png", alt="bookmark")
         button.icon-more(title="view description")
             img(src="icons/more.png", alt="more")
