@@ -17,7 +17,6 @@ module.exports = class FeedsView extends ViewCollection
         false
 
     onTagClicked: (evt) ->
-        console.log("ok", evt.target)
         $(evt.currentTarget).find(".feed").toggle()
         false
 

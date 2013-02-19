@@ -136,6 +136,8 @@ module.exports = class FeedView extends View
                 exists.replaceAll(toDisplay)
             else
                 tagPlace.append(toDisplay)
+                if @model.isNew() # put a class on parent
+                    tagPlace.find(".feed").show()
 
             tagNumber++
             @$el.hide()

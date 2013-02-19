@@ -867,6 +867,9 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           exists.replaceAll(toDisplay);
         } else {
           tagPlace.append(toDisplay);
+          if (this.model.isNew()) {
+            tagPlace.find(".feed").show();
+          }
         }
         tagNumber++;
         this.$el.hide();
@@ -926,7 +929,6 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
     };
 
     FeedsView.prototype.onTagClicked = function(evt) {
-      console.log("ok", evt.target);
       $(evt.currentTarget).find(".feed").toggle();
       return false;
     };
