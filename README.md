@@ -5,8 +5,8 @@ Follow your favorite sites here !
 # To do ...
 
 * for v1.1 : add filter for links
+* note : v1.0 is far from being a good version
 * code review (a lot of cleaning is needed)
-* bug : doesnt support https
 * bug : needs to load feed 2 times before to get updated title : still ?
 * bug : first display of a feed cant be deleted : still ?
 * to know : some feeds change link params at everyupdate
@@ -16,18 +16,15 @@ Follow your favorite sites here !
 
 # Changelog
 
-* v0.9.5
+* v1.0
+  * allow https feeds
   * add an icon to send to twitter
-* v0.9.4
   * open links in new window
   * more explicit icons to add a feed and to display link description
   * remove tag when deleting its last feed
-* v0.9.3
-  * UI review
-* v0.9.2
   * send feed to cozy-bookmark
-* v0.9.1
   * new main icon and favicon
+  * general UI review
 * v0.9
   * allow to refresh all feeds at once (by tag)
   * display new links since last update : testing version, needs improvement, 

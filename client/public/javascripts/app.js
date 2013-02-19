@@ -818,8 +818,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           $("form.new-feed .tags-field").val(tags);
           $(".icon-new").click();
           myTag = $(that).parents(".tag");
-          console.log(myTag);
-          console.log(myTag.find(".feed"));
           if (myTag.find(".feed").length === 1) {
             myTag.remove();
           }
