@@ -617,8 +617,20 @@ window.require.define({"views/app_view": function(exports, require, module) {
       this.paramsView = new ParamsView();
       this.paramsView.$el.html('<em>loading...</em>');
       return this.paramsView.collection.fetch({
-        success: function() {
-          return _this.paramsView.$el.find('em').remove();
+        success: function(view, col) {
+          var param, _i, _len, _results;
+          _this.paramsView.$el.find('em').remove();
+          _results = [];
+          for (_i = 0, _len = col.length; _i < _len; _i++) {
+            param = col[_i];
+            console.log(param);
+            if (param.paramId === "show-new-links" && !param.value) {
+              _results.push(_this.showLinks());
+            } else {
+              _results.push(void 0);
+            }
+          }
+          return _results;
         }
       });
     };

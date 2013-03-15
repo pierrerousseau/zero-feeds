@@ -43,8 +43,13 @@ module.exports = class AppView extends View
         @paramsView = new ParamsView()
         @paramsView.$el.html '<em>loading...</em>'
         @paramsView.collection.fetch
-            success: =>
+            success: (view, col) =>
                 @paramsView.$el.find('em').remove()
+                for param in col
+                    console.log param
+                    if param.paramId == "show-new-links" and not param.value
+                        @showLinks()
+
 
     addFeed: (event) =>
         url   = $('.url-field').val()
