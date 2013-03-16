@@ -575,15 +575,64 @@ window.require.define({"views/app_view": function(exports, require, module) {
     AppView.prototype.events = {
       "click h1": "showOnlyTitle",
       "click .icon-new": "displayNewForm",
-      "click .icon-help": "displayHelp",
-      "click .icon-settings": "displaySettings",
+      "click .icon-help": "toggleHelp",
+      "click .icon-settings": "toggleSettings",
       "click form.new-feed .icon-add": "addFeed",
       "click form.settings .icon-update": "updateSettings",
-      "change #show-new-links": "showLinks"
+      "change #show-new-links": "toggleOldLinks"
     };
 
     AppView.prototype.template = function() {
       return require('./templates/home');
+    };
+
+    AppView.prototype.startWaiter = function($elem) {
+      var html;
+      html = "<img src='images/loader.gif' class='loader' alt='loading ...' />";
+      return $elem.append(html);
+    };
+
+    AppView.prototype.stopWaiter = function($elem) {
+      return $elem.find(".loader").remove();
+    };
+
+    AppView.prototype.toggleOldLinks = function(evt) {
+      $("ul.links").toggleClass("show-old");
+      return false;
+    };
+
+    AppView.prototype.applyParameters = function(parameters) {
+      var parameter, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = parameters.length; _i < _len; _i++) {
+        parameter = parameters[_i];
+        if (parameter.paramId === "show-new-links" && !parameter.value) {
+          this.toggleOldLinks();
+          break;
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
+
+    AppView.prototype.afterRender = function() {
+      var _this = this;
+      this.feedsView = new FeedsView();
+      this.startWaiter(this.feedsView.$el);
+      this.feedsView.collection.fetch({
+        success: function() {
+          return _this.stopWaiter(_this.feedsView.$el);
+        }
+      });
+      this.paramsView = new ParamsView();
+      this.startWaiter(this.paramsView.$el);
+      return this.paramsView.collection.fetch({
+        success: function(view, parameters) {
+          _this.applyParameters(parameters);
+          return _this.stopWaiter(_this.paramsView.$el);
+        }
+      });
     };
 
     AppView.prototype.initialize = function() {
@@ -596,98 +645,71 @@ window.require.define({"views/app_view": function(exports, require, module) {
       return $(".help").hide();
     };
 
-    AppView.prototype.displayHelp = function() {
+    AppView.prototype.displayNewForm = function() {
+      $(".new-feed").show();
+      $(".url-field").focus();
+      return false;
+    };
+
+    AppView.prototype.toggleHelp = function() {
       $(".help").toggle("slow");
       return false;
     };
 
-    AppView.prototype.displayNewForm = function() {
-      $(".new-feed").show("slow");
+    AppView.prototype.toggleSettings = function() {
+      $(".settings").toggle();
       return false;
     };
 
-    AppView.prototype.displaySettings = function() {
-      $(".settings").toggle("slow");
-      return false;
+    AppView.prototype.cleanAddFeedForm = function() {
+      return $("form.new-feed").find("input").val("");
     };
 
-    AppView.prototype.afterRender = function() {
-      var _this = this;
-      $(".url-field").focus();
-      this.feedsView = new FeedsView();
-      this.feedsView.$el.html('<em>loading...</em>');
-      this.feedsView.collection.fetch({
-        success: function() {
-          return _this.feedsView.$el.find('em').remove();
-        }
-      });
-      this.paramsView = new ParamsView();
-      this.paramsView.$el.html('<em>loading...</em>');
-      return this.paramsView.collection.fetch({
-        success: function(view, col) {
-          var param, _i, _len, _results;
-          _this.paramsView.$el.find('em').remove();
-          _results = [];
-          for (_i = 0, _len = col.length; _i < _len; _i++) {
-            param = col[_i];
-            if (param.paramId === "show-new-links" && !param.value) {
-              _results.push(_this.showLinks());
-            } else {
-              _results.push(void 0);
-            }
-          }
-          return _results;
-        }
-      });
-    };
-
-    AppView.prototype.addFeed = function(event) {
-      var feed, tags, url,
+    AppView.prototype.createFeed = function(evt, url, tags) {
+      var feed,
         _this = this;
+      feed = new Feed({
+        url: url,
+        tags: tags
+      });
+      return this.feedsView.collection.create(feed, {
+        success: function() {
+          alertify.log("" + url + " added");
+          return _this.cleanAddFeedForm();
+        },
+        error: function() {
+          return alertify.alert("Server error occured, feed was not added");
+        }
+      });
+    };
+
+    AppView.prototype.addFeed = function(evt) {
+      var tags, url;
       url = $('.url-field').val();
       tags = $('.tags-field').val().split(',').map(function(tag) {
         return $.trim(tag);
       });
       if ((url != null ? url.length : void 0) > 0) {
-        feed = new Feed({
-          url: url,
-          tags: tags
-        });
-        event.preventDefault();
-        this.feedsView.collection.create(feed, {
-          success: function() {
-            alertify.log("" + url + " added");
-            return $("form.new-feed").find("input").val("");
-          },
-          error: function() {
-            return alertify.alert("Server error occured, " + "feed was not added");
-          }
-        });
+        this.createFeed(evt, url, tags);
+        evt.preventDefault();
       } else {
         alertify.alert("Url field is required");
       }
       return false;
     };
 
-    AppView.prototype.showLinks = function(evt) {
-      $("ul.links").toggleClass("show-old");
-      $("button.show-new").toggle();
-      $("button.show-old").toggle();
-      return false;
-    };
-
-    AppView.prototype.updateSettings = function(event) {
-      var checked, param, _i, _len, _ref;
+    AppView.prototype.updateSettings = function(evt) {
+      var checked, parameter, _i, _len, _ref;
       _ref = this.paramsView.collection.models;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        param = _ref[_i];
-        if (param.attributes.paramId === "show-new-links") {
-          checked = $("." + param.attributes.paramId).attr("checked");
-          param.attributes.value = checked !== void 0;
+        parameter = _ref[_i];
+        if (parameter.attributes.paramId === "show-new-links") {
+          checked = $("." + parameter.attributes.paramId).attr("checked");
+          parameter.attributes.value = checked !== void 0;
         } else {
-          param.attributes.value = $("." + param.attributes.paramId).val();
+          parameter.attributes.value = $("." + parameter.attributes.paramId).val();
         }
-        param.save();
+        parameter.save();
       }
       return false;
     };
@@ -1078,7 +1100,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><div class="main-title"><h1>My Cozy Feeds<div class="buttons"><button title="add a feed" class="icon-new"><img src="icons/new.png" alt="new"/></button><button title="help" class="icon-help"><img src="icons/help.png" alt="help"/></button><button title="settings" class="icon-settings"><img src="icons/settings.png" alt="settings"/></button></div></h1><form class="new-feed"><h2>add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add"><img src="icons/add.png" alt="add"/></button></span></p></form><form class="settings"><h2>settings<div class="buttons"><button title="update" class="icon-update"><img src="icons/validate.png" alt="update"/></button></div></h2><div class="values"></div></form><div class="help"><h4>This is a tool to follow your rss/atom feeds.</h4><p> <h5>How do I start ? </h5>Please put your mouse over the icons that you see, a tooltip should help you.</p><p> <h5>I\'m not sure, how to add a feed ? </h5>Just click on the top right "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the right panel.</p><p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5>Just click on red cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><p><h5>What are these "tags" ?</h5>They will be used to classify your feeds in the left panel.\nThe "reload all feeds" icon on the left of a tag name will display all feeds having this tag and the new items of these feeds.</p><p><h5>I don\'t want to reload all the feeds of a tag.</h5>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing it means that there is no new link to help you to procrastinate.</p><p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. If you prefer this behavior and don\'t want to click there every time, click on the "update" button of the settings panel.</p><p> <h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5>You are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><p> <h5>Now that the feed form, the settings panel and this help are displayed, I have to scroll to see my links.</h5>Just click on "My Cozy Feeds" on the to left and all should be fine.</p><p> <h5>It still doesn\'t work !</h5>Please <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><p> <h5>I want to use only free softwares.</h5><a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div><div class="feeds"></div><ul class="links"></ul></div>');
+  buf.push('<div id="content"><div class="main-title"><h1>My Cozy Feeds<div class="buttons"><button title="add a feed" class="icon-new"><img src="icons/new.png" alt="new"/></button><button title="help" class="icon-help"><img src="icons/help.png" alt="help"/></button><button title="settings" class="icon-settings"><img src="icons/settings.png" alt="settings"/></button></div></h1><form class="new-feed"><h2>Add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add"><img src="icons/add.png" alt="add"/></button></span></p></form><form class="settings"><h2>Settings<div class="buttons"><button title="remember settings" class="icon-update"><img src="icons/validate.png" alt="update"/></button></div></h2><div class="values"></div></form><div class="help"><h2>Help</h2><h4>This is a tool to follow your rss/atom feeds.</h4><p> <h5>How do I start ? </h5>Please put your mouse over the icons that you see, a tooltip should help you.</p><p> <h5>I\'m not sure, how to add a feed ? </h5>Just click on the top right "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the right panel.</p><p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5>Just click on red cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><p><h5>What are these "tags" ?</h5>They will be used to classify your feeds in the left panel.\nThe "reload all feeds" icon on the left of a tag name will display all feeds having this tag and the new items of these feeds.</p><p><h5>I don\'t want to reload all the feeds of a tag.</h5>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing it means that there is no new link to help you to procrastinate.</p><p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. If you prefer this behavior and don\'t want to click there every time, click on the "update" button of the settings panel.</p><p> <h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5>You are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><p> <h5>Now that the feed form, the settings panel and this help are displayed, I have to scroll to see my links.</h5>Just click on "My Cozy Feeds" on the top left and all should be fine.</p><p> <h5>It still doesn\'t work !</h5>Please <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><p> <h5>I want to use only free softwares.</h5><a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div><div class="feeds"></div><ul class="links"></ul></div>');
   }
   return buf.join("");
   };
