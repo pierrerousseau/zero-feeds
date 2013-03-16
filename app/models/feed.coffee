@@ -8,8 +8,10 @@ Feed.prototype.update = (params, callback) ->
     feed = @
     if feed.url.slice(0, 5) == "https"
         protocol = https
-    else
+    else 
         protocol = http
+        if feed.url.slice(0, 4) != "http"
+            feed.url = "http://" + feed.url
 
     protocol.get feed.url, (res) ->
         data = ''

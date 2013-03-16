@@ -26,6 +26,9 @@ module.exports = class FeedView extends View
         $items = @model.$items()
         tmpl   = linkTemplate
         links  = @model.links()
+        if not links.length
+            alertify.alert "No link found, are you sure this is a feed url ?"
+            return
         links.reverse()
 
         $.each links,
@@ -63,7 +66,12 @@ module.exports = class FeedView extends View
             $(allThat).removeClass("show")
             @stopWaiter(that)
         else
-            title = @model.titleText()
+            try
+                title = @model.titleText()
+            catch error
+                @stopWaiter(that)
+                alertify.alert "Can't parse feed, please check feed address." +
+                               "no redirection, valid feed, ..."
             @model.save { "title": title },
                 success: =>
                     @renderXml()

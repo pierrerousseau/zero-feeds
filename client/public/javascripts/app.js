@@ -735,6 +735,10 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       $items = this.model.$items();
       tmpl = linkTemplate;
       links = this.model.links();
+      if (!links.length) {
+        alertify.alert("No link found, are you sure this is a feed url ?");
+        return;
+      }
       links.reverse();
       return $.each(links, function(index, link) {
         var linkElem;
@@ -783,7 +787,12 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         $(allThat).removeClass("show");
         this.stopWaiter(that);
       } else {
-        title = this.model.titleText();
+        try {
+          title = this.model.titleText();
+        } catch (error) {
+          this.stopWaiter(that);
+          alertify.alert("Can't parse feed, please check feed address." + "no redirection, valid feed, ...");
+        }
         this.model.save({
           "title": title
         }, {
