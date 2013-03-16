@@ -10,6 +10,7 @@ module.exports = class AppView extends View
     events:
         "click h1": "showOnlyTitle"
         "click .icon-new": "displayNewForm"
+        "click .icon-help": "displayHelp"
         "click .icon-settings": "displaySettings"
         "click form.new-feed .icon-add": "addFeed"
         "click form.settings .icon-update": "updateSettings"
@@ -24,6 +25,11 @@ module.exports = class AppView extends View
     showOnlyTitle: ->
         $(".new-feed").hide()
         $(".settings").hide()
+        $(".help").hide()
+
+    displayHelp: ->
+        $(".help").toggle("slow")
+        false
 
     displayNewForm: ->
         $(".new-feed").show("slow")
@@ -46,7 +52,6 @@ module.exports = class AppView extends View
             success: (view, col) =>
                 @paramsView.$el.find('em').remove()
                 for param in col
-                    console.log param
                     if param.paramId == "show-new-links" and not param.value
                         @showLinks()
 

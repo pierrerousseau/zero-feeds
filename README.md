@@ -4,7 +4,8 @@ Follow your favorite sites here !
 
 # To do ...
 
-* for v1.1 : add filter for links
+* add filter for links
+* add import function
 * note : v1.0 is far from being a good version
 * code review (a lot of cleaning is needed)
 * bug : needs to load feed 2 times before to get updated title : still ?
@@ -16,6 +17,12 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.0.1
+  * add help panel
+  * try to add "http://" when no protocol is given in a feed url
+  * fixed bug : error handling when the feed cant be parsed
+  * fixed bug : show only new links parameter wasn't used after reload
+  * fixed bug : display links first time a feed is used
 * v1.0
   * allow https feeds
   * add an icon to send to twitter

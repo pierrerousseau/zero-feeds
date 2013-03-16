@@ -4,6 +4,8 @@
             .buttons
                 button.icon-new(title="add a feed")
                     img(src="icons/new.png", alt="new")
+                button.icon-help(title="help")
+                    img(src="icons/help.png", alt="help")
                 button.icon-settings(title="settings")
                     img(src="icons/settings.png", alt="settings")
         form.new-feed
@@ -20,5 +22,53 @@
                     button.icon-update(title="update")
                         img(src="icons/validate.png", alt="update")
             div.values
+        .help
+            h4 This is a tool to follow your rss/atom feeds.
+            p 
+                h5 How do I start ? 
+                | Please put your mouse over the icons that you see, a tooltip should help you.
+            p 
+                h5 I'm not sure, how to add a feed ? 
+                | Just click on the top right "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).
+                | The tags and the feed url should appear in the right panel.
+            p
+                h5 I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?
+                | Just click on red cross on left of the feed, don't worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.
+            p
+                h5 I just see the beginning of the url of my feed, I feel unsatisfied.
+                | Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.
+            p
+                h5 What are these "tags" ?
+                | They will be used to classify your feeds in the left panel.
+                | The "reload all feeds" icon on the left of a tag name will display all feeds having this tag and the new items of these feeds.
+            p
+                h5 I don't want to reload all the feeds of a tag.
+                | Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.
+            p
+                h5 The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !
+                | You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing it means that there is no new link to help you to procrastinate.
+            p
+                h5 I didn't visit all the links of a feed and I "reloaded" it, are the "old" links lost ?
+                | No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. If you prefer this behavior and don't want to click there every time, click on the "update" button of the settings panel.
+            p 
+                h5 In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?
+                | You are curious, isn't it ? I like you. So, install 
+                a(href="https://github.com/Piour/cozy-bookmarks", target="_blank") the cozy bookmarks app
+                |  and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.
+            p 
+                h5 Now that the feed form, the settings panel and this help are displayed, I have to scroll to see my links.
+                | Just click on "My Cozy Feeds" on the to left and all should be fine.
+            p 
+                h5 It still doesn't work !
+                | Please 
+                a(href="https://github.com/Piour/cozy-feeds/issues", target="_blank") add an issue
+                |  and help me to help you.
+            p 
+                h5 I want to use only free softwares.
+                a(href="https://github.com/Piour/cozy-feeds) Me too
+                | . 
+                |  I'm not sure what licence I can use using cozycloud but you can consider my code under 
+                a(href="https://en.wikipedia.org/wiki/WTFPL") WTFPL
+                | . 
     div.feeds
     ul.links

@@ -25,10 +25,10 @@
 	width: 550px;
 	margin-left: -275px;
 }
-	.alertify-hidden {
-		top: -50px;
-		visibility: hidden;
-	}
+.alertify-hidden {
+    top: -50px;
+    visibility: hidden;
+}
 .alertify-logs {
 	position: fixed;
 	z-index: 5000;
@@ -36,55 +36,55 @@
 	right: 10px;
 	width: 300px;
 }
-	.alertify-log {
-		display: block;
-		margin-top: 10px;
-		position: relative;
-		right: -300px;
-	}
-	.alertify-log-show {
-		right: 0;
-	}
-	.alertify-dialog {
-		padding: 25px;
-	}
-		.alertify-resetFocus {
-			border: 0;
-			clip: rect(0 0 0 0);
-			height: 1px;
-			margin: -1px;
-			overflow: hidden;
-			padding: 0;
-			position: absolute;
-			width: 1px;
-		}
-		.alertify-inner {
-			text-align: center;
-		}
-		.alertify-text {
-			margin-bottom: 15px;
-			width: 100%;
-			-webkit-box-sizing: border-box;
-			   -moz-box-sizing: border-box;
-			        box-sizing: border-box;
-			font-size: 100%;
-		}
-		.alertify-buttons {
-		}
-			.alertify-button {
-				/* line-height and font-size for input button */
-				line-height: 1.5;
-				font-size: 100%;
-				display: inline-block;
-				cursor: pointer;
-				margin-left: 5px;
-			}
+.alertify-log {
+    display: block;
+    margin-top: 10px;
+    position: relative;
+    right: -300px;
+}
+.alertify-log-show {
+    right: 0;
+}
+.alertify-dialog {
+    padding: 25px;
+}
+.alertify-resetFocus {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+.alertify-inner {
+    text-align: center;
+}
+.alertify-text {
+    margin-bottom: 15px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 100%;
+}
+.alertify-buttons {
+}
+.alertify-button {
+    /* line-height and font-size for input button */
+    line-height: 1.5;
+    font-size: 100%;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 5px;
+}
 
 @media only screen and (max-width: 680px) {
 	.alertify,
-	.alertify-logs {
-		width: 90%;
-		-webkit-box-sizing: border-box;
+    .alertify-logs {
+        width: 90%;
+        -webkit-box-sizing: border-box;
 		   -moz-box-sizing: border-box;
 		        box-sizing: border-box;
 	}
