@@ -978,6 +978,11 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
       return this.collection = new FeedCollection(this);
     };
 
+    FeedsView.prototype.renderAll = function() {
+      this.collection.models.reverse();
+      return FeedsView.__super__.renderAll.call(this);
+    };
+
     return FeedsView;
 
   })(ViewCollection);
