@@ -395,16 +395,6 @@ window.require.define({"models/feed": function(exports, require, module) {
 
     Feed.prototype.urlRoot = 'feeds';
 
-    Feed.prototype.feedClass = function() {
-      var title;
-      title = $.trim(this.attributes.title);
-      if (title) {
-        return title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
-      } else {
-        return "none";
-      }
-    };
-
     Feed.prototype.titleText = function() {
       var title;
       if (this.attributes.title) {
@@ -438,11 +428,10 @@ window.require.define({"models/feed": function(exports, require, module) {
       }
     };
 
-    Feed.prototype.links = function() {
-      var from, last, link, that, toCozyBookMarks, _i, _len, _links;
+    Feed.prototype.links = function(options) {
+      var from, last, link, that, _i, _len, _links;
       _links = [];
-      from = this.feedClass();
-      toCozyBookMarks = $(".cozy-bookmarks-name").val();
+      from = options.feedClass;
       that = this;
       $.each(this.$items(), function(index, value) {
         var description, link, title, url;
@@ -465,7 +454,6 @@ window.require.define({"models/feed": function(exports, require, module) {
           "encodedTitle": encodeURIComponent(title),
           "url": url,
           "from": from,
-          "toCozyBookMarks": toCozyBookMarks,
           "state": "old",
           "description": description
         };
@@ -564,6 +552,10 @@ window.require.define({"views/app_view": function(exports, require, module) {
     __extends(AppView, _super);
 
     function AppView() {
+      this.linkDetails = __bind(this.linkDetails, this);
+
+      this.toCozyBookMarks = __bind(this.toCozyBookMarks, this);
+
       this.updateSettings = __bind(this.updateSettings, this);
 
       this.addFeed = __bind(this.addFeed, this);
@@ -572,6 +564,10 @@ window.require.define({"views/app_view": function(exports, require, module) {
 
     AppView.prototype.el = 'body.application';
 
+    AppView.prototype.template = function() {
+      return require('./templates/home');
+    };
+
     AppView.prototype.events = {
       "click h1": "showOnlyTitle",
       "click .icon-new": "displayNewForm",
@@ -579,11 +575,9 @@ window.require.define({"views/app_view": function(exports, require, module) {
       "click .icon-settings": "toggleSettings",
       "click form.new-feed .icon-add": "addFeed",
       "click form.settings .icon-update": "updateSettings",
-      "change #show-new-links": "toggleOldLinks"
-    };
-
-    AppView.prototype.template = function() {
-      return require('./templates/home');
+      "change #show-new-links": "toggleOldLinks",
+      "click .link .to-cozy-bookmarks": "toCozyBookMarks",
+      "click .link .icon-more": "linkDetails"
     };
 
     AppView.prototype.startWaiter = function($elem) {
@@ -714,6 +708,31 @@ window.require.define({"views/app_view": function(exports, require, module) {
       return false;
     };
 
+    AppView.prototype.toCozyBookMarks = function(evt) {
+      var ajaxOptions, url;
+      url = $(evt.target).parents(".link:first").find("> a").attr("href");
+      ajaxOptions = {
+        type: "POST",
+        url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
+        data: {
+          url: url,
+          tags: "cozy-feeds"
+        },
+        success: function() {
+          return alertify.log("link added to cozy-bookmarks");
+        },
+        error: function() {
+          return alertify.alert("link wasn't added to cozy-bookmarks");
+        }
+      };
+      $.ajax(ajaxOptions);
+      return false;
+    };
+
+    AppView.prototype.linkDetails = function(evt) {
+      return $(evt.target).parents(".link:first").find(".description").toggle();
+    };
+
     return AppView;
 
   })(View);
@@ -750,76 +769,99 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return template(this.getRenderData());
     };
 
-    FeedView.prototype.startWaiter = function(elem) {
-      return $(elem).find(".buttons").append("<img " + " src='images/loader.gif'" + " class='loader'" + " alt='loading ...' />");
+    FeedView.prototype.events = {
+      "click": "onUpdateClicked",
+      "click .icon-delete": "onDeleteClicked"
     };
 
-    FeedView.prototype.stopWaiter = function(elem) {
-      return $(elem).find(".loader").remove();
+    FeedView.prototype.startWaiter = function() {
+      var html;
+      html = "<img src='images/loader.gif' class='loader' alt='loading ...' />";
+      return this.$el.find(".buttons").append(html);
+    };
+
+    FeedView.prototype.stopWaiter = function() {
+      return this.$el.find(".loader").remove();
+    };
+
+    FeedView.prototype.addToTag = function(tag) {
+      var exists, tagPlace, tmpl;
+      tmpl = tagTemplate;
+      tag = tag || "untagged";
+      tagPlace = $("." + tag);
+      if (tagPlace.length === 0) {
+        tagPlace = $(tmpl({
+          "name": tag
+        }));
+        $("#content .feeds").prepend(tagPlace);
+      }
+      exists = tagPlace.find("." + this.model.cid);
+      if (exists.length) {
+        return exists.replaceAll(this.$el);
+      } else {
+        tagPlace.append(this.$el);
+        if (this.model.isNew()) {
+          return tagPlace.addClass("show");
+        }
+      }
+    };
+
+    FeedView.prototype.render = function() {
+      var tag, tags, _i, _len;
+      this.$el.html(this.template({}));
+      this.$el.addClass(this.model.cid);
+      tags = this.model.attributes.tags || ["untagged"];
+      for (_i = 0, _len = tags.length; _i < _len; _i++) {
+        tag = tags[_i];
+        this.addToTag(tag);
+      }
+      return this;
+    };
+
+    FeedView.prototype.feedClass = function() {
+      var title;
+      title = $.trim(this.model.attributes.title);
+      if (title) {
+        return title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
+      } else {
+        return "link" + this.model.cid;
+      }
     };
 
     FeedView.prototype.renderXml = function() {
-      var $items, links, tmpl;
-      $items = this.model.$items();
+      var links, tmpl, withCozyBookmarks;
+      withCozyBookmarks = $("#cozy-bookmarks-name").val();
       tmpl = linkTemplate;
-      links = this.model.links();
+      links = this.model.links({
+        "feedClass": this.feedClass()
+      });
       if (!links.length) {
         alertify.alert("No link found, are you sure this is a feed url ?");
         return;
       }
       links.reverse();
       return $.each(links, function(index, link) {
-        var linkElem;
-        linkElem = $(tmpl(link));
-        linkElem.find(".to-cozy-bookmarks").click(function(evt) {
-          var ajaxOptions, icon;
-          icon = $(this);
-          ajaxOptions = {
-            type: "POST",
-            url: "../../apps/" + link.toCozyBookMarks + "/bookmarks",
-            data: {
-              url: link.url,
-              tags: "cozy-feeds"
-            },
-            success: function() {
-              return alertify.log("link added to cozy-bookmarks");
-            },
-            error: function() {
-              return alertify.alert("link wasn't added to cozy-bookmarks");
-            }
-          };
-          $.ajax(ajaxOptions);
-          return false;
-        });
-        linkElem.find("button.icon-more").click(function(evt) {
-          var icon;
-          icon = $(this);
-          icon.toggleClass("icon-more");
-          icon.toggleClass("icon-less");
-          return linkElem.find(".description").toggle();
-        });
-        return $(".links").prepend(linkElem);
+        link.toCozyBookMarks = withCozyBookmarks;
+        return $(".links").prepend($(tmpl(link)));
       });
     };
 
     FeedView.prototype.onUpdateClicked = function(evt, full) {
-      var allThat, existing, that, title,
+      var $allThat, existingLinks, title,
         _this = this;
-      that = evt.currentTarget;
-      allThat = $("." + this.model.cid);
-      this.startWaiter(that);
-      existing = $(".links ." + this.model.feedClass());
-      $(".none").remove();
-      if (existing.length) {
-        existing.remove();
-        $(allThat).removeClass("show");
-        this.stopWaiter(that);
+      this.startWaiter();
+      $allThat = $("." + this.model.cid);
+      existingLinks = $(".links ." + this.feedClass() + ", .link" + this.model.cid);
+      if (existingLinks.length) {
+        existingLinks.remove();
+        $allThat.removeClass("show");
+        this.stopWaiter();
       } else {
         try {
           title = this.model.titleText();
         } catch (error) {
-          this.stopWaiter(that);
           alertify.alert("Can't parse feed, please check feed address." + "no redirection, valid feed, ...");
+          this.stopWaiter();
         }
         this.model.save({
           "title": title
@@ -827,22 +869,20 @@ window.require.define({"views/feed_view": function(exports, require, module) {
           success: function() {
             var last;
             _this.renderXml();
-            _this.model.attributes.title = _this.model.titleText();
-            _this.render();
-            $(allThat).find("a").html(_this.model.titleText());
-            $(allThat).addClass("show");
-            _this.stopWaiter(that);
-            alertify.log("" + _this.$el.find(".title span").html() + " reloaded");
-            last = _this.model.last;
             title = _this.model.titleText();
-            return _this.model.save({
+            last = _this.model.last;
+            _this.model.save({
               "title": title,
               "last": last
             });
+            $allThat.find("a").html(title);
+            $allThat.addClass("show");
+            alertify.log("" + title + " reloaded");
+            return _this.stopWaiter();
           },
           error: function() {
-            _this.stopWaiter(that);
-            return alertify.alert("Server error occured, feed was not updated.");
+            alertify.alert("Server error occured, feed was not updated.");
+            return _this.stopWaiter();
           }
         });
       }
@@ -850,28 +890,33 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       return false;
     };
 
+    FeedView.prototype.refillAddForm = function() {
+      var tags, title, url;
+      title = this.$el.find(".title");
+      url = title.find("a").attr("href");
+      tags = title.find("span").attr("title") || "";
+      $("form.new-feed .url-field").val(url);
+      $("form.new-feed .tags-field").val(tags);
+      return $(".icon-new").click();
+    };
+
+    FeedView.prototype.fullRemove = function() {
+      var myTag, title;
+      myTag = this.$el.parents(".tag");
+      if (myTag.find(".feed").length === 1) {
+        myTag.remove();
+      }
+      this.destroy();
+      title = this.$el.find(".title span").html();
+      return alertify.log("" + title + " removed and placed in form");
+    };
+
     FeedView.prototype.onDeleteClicked = function(evt) {
-      var that,
-        _this = this;
-      that = evt.currentTarget;
+      var _this = this;
       this.model.destroy({
         success: function() {
-          var myTag, tags, title, url;
-          title = _this.$el.find(".title");
-          url = title.find("a").attr("href");
-          tags = title.find("span").attr("title");
-          if (!tags) {
-            tags = "";
-          }
-          $("form.new-feed .url-field").val(url);
-          $("form.new-feed .tags-field").val(tags);
-          $(".icon-new").click();
-          myTag = $(that).parents(".tag");
-          if (myTag.find(".feed").length === 1) {
-            myTag.remove();
-          }
-          _this.destroy();
-          return alertify.log("" + _this.$el.find(".title span").html() + " removed and placed in form");
+          _this.refillAddForm();
+          return _this.fullRemove();
         },
         error: function() {
           return alertify.alert("Server error occured, feed was not deleted.");
@@ -879,59 +924,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       });
       evt.preventDefault();
       return false;
-    };
-
-    FeedView.prototype.render = function() {
-      var exists, tag, tagNumber, tagPlace, tags, that, tmpl, toDisplay, _i, _len;
-      this.$el.html(this.template({}));
-      this.$el.addClass(this.model.cid);
-      tags = this.model.attributes.tags;
-      if (!tags) {
-        tags = ["untagged"];
-      }
-      tmpl = tagTemplate;
-      tagNumber = 0;
-      for (_i = 0, _len = tags.length; _i < _len; _i++) {
-        tag = tags[_i];
-        if (tag === "") {
-          tag = "untagged";
-        }
-        tagPlace = $("." + tag);
-        if (tagPlace.length === 0) {
-          tagPlace = $(tmpl({
-            "name": tag
-          }));
-          $("#content .feeds").append(tagPlace);
-        }
-        toDisplay = this.$el.clone(true, true);
-        that = this;
-        toDisplay.on("click", "", function(evt) {
-          return that.onUpdateClicked(evt);
-        });
-        toDisplay.on("click", ".icon-delete", function(evt) {
-          return that.onDeleteClicked(evt);
-        });
-        exists = tagPlace.find("." + this.model.cid);
-        if (exists.length) {
-          exists.replaceAll(toDisplay);
-        } else {
-          tagPlace.append(toDisplay);
-          if (this.model.isNew()) {
-            tagPlace.find(".feed").show();
-          }
-        }
-        tagNumber++;
-        this.$el.hide();
-      }
-      return this;
-    };
-
-    FeedView.prototype.destroy = function() {
-      this.undelegateEvents();
-      this.$el.removeData().unbind();
-      $("." + this.model.cid).remove();
-      this.remove();
-      return Backbone.View.prototype.remove.call(this);
     };
 
     return FeedView;

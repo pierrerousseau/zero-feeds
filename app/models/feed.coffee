@@ -13,7 +13,7 @@ Feed.prototype.update = (params, callback) ->
         if feed.url.slice(0, 4) != "http"
             feed.url = "http://" + feed.url
 
-    protocol.get feed.url, (res) ->
+    protocol.get(feed.url, (res) ->
         data = ''
         res.on 'data', (chunk) ->
             data += chunk.toString()
@@ -21,4 +21,5 @@ Feed.prototype.update = (params, callback) ->
             feed.updated = new Date
             feed.content = data
             feed.save()
-            callback.call(feed)
+            callback.call(feed)).on 'error',  ->
+                callback.call("Error: can't join url")

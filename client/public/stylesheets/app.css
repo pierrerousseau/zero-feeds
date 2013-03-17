@@ -1107,6 +1107,9 @@ div.main-title form button {
   width: 16px;
   height: 16px;
 }
+.feeds .tag.show .feed {
+  display: block;
+}
 .feeds .feed {
   display: none;
   cursor: pointer;

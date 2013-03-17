@@ -2,14 +2,6 @@ module.exports = class Feed extends Backbone.Model
 
     urlRoot: 'feeds'
 
-    feedClass: ->
-        title = $.trim(@attributes.title)
-        if title
-            title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g,
-                          '');
-        else
-            "none"
-
     titleText: () ->
         if @attributes.title
             title = @attributes.title
@@ -34,11 +26,10 @@ module.exports = class Feed extends Backbone.Model
         else
             @toXml().find("item").get()
 
-    links: () ->
+    links: (options) ->
         _links = []
-        from            = @feedClass()
-        toCozyBookMarks = $(".cozy-bookmarks-name").val()
-        that            = @
+        from   = options.feedClass
+        that   = @
         $.each @$items(),
             (index, value) ->
                 title = $(value).find("title").text()
@@ -57,14 +48,13 @@ module.exports = class Feed extends Backbone.Model
                     "encodedTitle": encodeURIComponent title
                     "url": url
                     "from": from
-                    "toCozyBookMarks": toCozyBookMarks
                     "state": "old"
                     "description": description
                 if index == 0
                     that.last = link.url
                 _links.push(link)
         last = @attributes.last
-        for link in _links 
+        for link in _links
               if link.url == last
                   break
               link.state = "new"

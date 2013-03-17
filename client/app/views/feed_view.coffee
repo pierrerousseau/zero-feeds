@@ -13,147 +13,128 @@ module.exports = class FeedView extends View
         template = require './templates/feed'
         template @getRenderData()
 
-    startWaiter: (elem) ->
-        $(elem).find(".buttons").append("<img " +
-                                        " src='images/loader.gif'" +
-                                        " class='loader'" +
-                                        " alt='loading ...' />")
+    events:
+        "click": "onUpdateClicked"
+        "click .icon-delete": "onDeleteClicked"
 
-    stopWaiter: (elem) ->
-        $(elem).find(".loader").remove()
+    startWaiter: () ->
+        html =
+            "<img src='images/loader.gif' class='loader' alt='loading ...' />"
+        @$el.find(".buttons").append html
 
-    renderXml: ->
-        $items = @model.$items()
-        tmpl   = linkTemplate
-        links  = @model.links()
-        if not links.length
-            alertify.alert "No link found, are you sure this is a feed url ?"
-            return
-        links.reverse()
+    stopWaiter: () ->
+        @$el.find(".loader").remove()
 
-        $.each links,
-            (index, link) ->
-                linkElem = $(tmpl(link))
-                linkElem.find(".to-cozy-bookmarks").click((evt) ->
-                    icon = $(this)
-                    ajaxOptions =
-                        type: "POST",
-                        url: "../../apps/" +
-                             link.toCozyBookMarks +
-                             "/bookmarks",
-                        data: { url: link.url, tags: "cozy-feeds" }
-                        success: () ->
-                            alertify.log "link added to cozy-bookmarks"
-                        error: () ->
-                            alertify.alert "link wasn't added to cozy-bookmarks"
-                    $.ajax(ajaxOptions)
-                    false)
-                linkElem.find("button.icon-more").click((evt) ->
-                    icon = $(this)
-                    icon.toggleClass("icon-more")
-                    icon.toggleClass("icon-less")
-                    linkElem.find(".description").toggle())
-                $(".links").prepend(linkElem)
+    addToTag: (tag) ->
+        tmpl = tagTemplate
+        tag  = tag or "untagged"
 
-    onUpdateClicked: (evt, full) ->
-        that = evt.currentTarget
-        allThat = $("." + @model.cid)
-        @startWaiter(that)
-        existing = $(".links ." + @model.feedClass())
-        $(".none").remove()
-        if existing.length
-            existing.remove()
-            $(allThat).removeClass("show")
-            @stopWaiter(that)
+        tagPlace = $ "." + tag
+        if tagPlace.length == 0
+            tagPlace = $(tmpl({ "name": tag }))
+            $("#content .feeds").prepend tagPlace
+
+        exists = tagPlace.find "." + @model.cid
+        if exists.length
+            exists.replaceAll @$el
         else
-            try
-                title = @model.titleText()
-            catch error
-                @stopWaiter(that)
-                alertify.alert "Can't parse feed, please check feed address." +
-                               "no redirection, valid feed, ..."
-            @model.save { "title": title },
-                success: =>
-                    @renderXml()
-                    @model.attributes.title = @model.titleText()
-                    @render()
-                    $(allThat).find("a").html(@model.titleText())
-                    $(allThat).addClass("show")
-                    @stopWaiter(that)
-                    alertify.log "" + @$el.find(".title span").html() +
-                                 " reloaded"
-                    last  = @model.last
-                    title = @model.titleText()
-                    @model.save { "title": title, "last": last },
-                error: =>
-                    @stopWaiter(that)
-                    alertify.alert "Server error occured, feed was not updated."
-        evt.preventDefault()
-        false
-
-    onDeleteClicked: (evt) ->
-        that = evt.currentTarget
-        @model.destroy
-            success: =>
-                title = @$el.find(".title")
-                url   = title.find("a").attr("href")
-                tags  = title.find("span").attr("title")
-                if !tags
-                    tags = ""
-                $("form.new-feed .url-field").val(url)
-                $("form.new-feed .tags-field").val(tags)
-                $(".icon-new").click()
-                myTag = $(that).parents(".tag")
-                if myTag.find(".feed").length == 1
-                    myTag.remove()
-                @destroy()
-                alertify.log "" + @$el.find(".title span").html() +
-                             " removed and placed in form"
-            error: =>
-                alertify.alert "Server error occured, feed was not deleted."
-        evt.preventDefault()
-        false
+            tagPlace.append @$el
+            if @model.isNew() # put a class on parent
+                tagPlace.addClass "show"
 
     render: ->
         @$el.html @template({})
         @$el.addClass(@model.cid)
 
-        tags = @model.attributes.tags
-        if !tags
-            tags = ["untagged"]
-
-        tmpl = tagTemplate
-        tagNumber = 0
+        tags = @model.attributes.tags or ["untagged"]
         for tag in tags
-            if tag == ""
-                tag = "untagged"
-            tagPlace = $("." + tag)
-            if tagPlace.length == 0
-                tagPlace = $(tmpl({ "name": tag }))
-                $("#content .feeds").append(tagPlace)
+            @addToTag(tag)
 
-            toDisplay = @$el.clone(true, true)
-            that = @
-            toDisplay.on("click", "",
-                         (evt) -> that.onUpdateClicked(evt))
-            toDisplay.on("click", ".icon-delete",
-                         (evt) -> that.onDeleteClicked(evt))
-
-            exists = tagPlace.find("." + @model.cid)
-            if exists.length
-                exists.replaceAll(toDisplay)
-            else
-                tagPlace.append(toDisplay)
-                if @model.isNew() # put a class on parent
-                    tagPlace.find(".feed").show()
-
-            tagNumber++
-            @$el.hide()
         @
 
-    destroy: ->
-        @undelegateEvents()
-        @$el.removeData().unbind()
-        $("." + @model.cid).remove()
-        @remove()
-        Backbone.View::remove.call @
+    feedClass: ->
+        title = $.trim(@model.attributes.title)
+        if title
+            title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g,
+                          '');
+        else
+            "link" + @model.cid
+
+    renderXml: ->
+        withCozyBookmarks = $("#cozy-bookmarks-name").val()
+        
+        tmpl   = linkTemplate
+        
+        links  = @model.links
+            "feedClass": @feedClass()
+        if not links.length
+            alertify.alert "No link found, are you sure this is a feed url ?"
+            return
+        links.reverse()
+        $.each links,
+            (index, link) ->
+                link.toCozyBookMarks = withCozyBookmarks
+                $(".links").prepend($(tmpl(link)))
+
+    onUpdateClicked: (evt, full) ->
+        @startWaiter()
+
+        $allThat      = $("." + @model.cid)
+        existingLinks = $(".links ." + @feedClass() + ", .link" + @model.cid)
+        if existingLinks.length
+            existingLinks.remove()
+            $allThat.removeClass "show"
+            @stopWaiter()
+        else
+            try
+                title = @model.titleText()
+            catch error
+                alertify.alert "Can't parse feed, please check feed address." +
+                               "no redirection, valid feed, ..."
+                @stopWaiter()
+            @model.save { "title": title },
+                success: =>
+                    @renderXml()
+                    title = @model.titleText()
+                    last  = @model.last
+                    @model.save { "title": title, "last": last }
+                    $allThat.find("a").html title
+                    $allThat.addClass "show"
+                    alertify.log "" + title + " reloaded"
+                    @stopWaiter()
+                error: =>
+                    alertify.alert "Server error occured, feed was not updated."
+                    @stopWaiter()
+
+        evt.preventDefault()
+        false
+
+    refillAddForm: ->
+        title = @$el.find(".title")
+        url   = title.find("a").attr("href")
+        tags  = title.find("span").attr("title") or ""
+
+        $("form.new-feed .url-field").val(url)
+        $("form.new-feed .tags-field").val(tags)
+        $(".icon-new").click()
+
+    fullRemove: ->
+        myTag = @$el.parents(".tag")
+        if myTag.find(".feed").length == 1
+            myTag.remove()
+
+        @destroy()
+
+        title = @$el.find(".title span").html()
+        alertify.log "" + title + " removed and placed in form"
+
+    onDeleteClicked: (evt) ->
+        @model.destroy
+            success: =>
+                @refillAddForm()
+                @fullRemove()
+            error: =>
+                alertify.alert "Server error occured, feed was not deleted."
+        evt.preventDefault()
+
+        false

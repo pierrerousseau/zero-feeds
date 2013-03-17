@@ -7,6 +7,9 @@ Feed       = require '../models/feed'
 module.exports = class AppView extends View
     el: 'body.application'
 
+    template: ->
+        require('./templates/home')
+
     events:
         "click h1": "showOnlyTitle"
         "click .icon-new": "displayNewForm"
@@ -18,17 +21,15 @@ module.exports = class AppView extends View
         "click form.settings .icon-update": "updateSettings"
         "change #show-new-links": "toggleOldLinks"
 
-    template: ->
-        require('./templates/home')
+        "click .link .to-cozy-bookmarks": "toCozyBookMarks"
+        "click .link .icon-more": "linkDetails"
 
     startWaiter: ($elem) ->
-        # TODO: see how to dry it with the feed_view method
         html = 
             "<img src='images/loader.gif' class='loader' alt='loading ...' />"
         $elem.append html
 
     stopWaiter: ($elem) ->
-        # TODO: see how to dry it with the feed_view method
         $elem.find(".loader").remove()
 
     toggleOldLinks: (evt) ->
@@ -114,3 +115,19 @@ module.exports = class AppView extends View
             parameter.save()
 
         false
+
+    toCozyBookMarks: (evt) =>
+        url = $(evt.target).parents(".link:first").find("> a").attr("href")
+        ajaxOptions =
+            type: "POST",
+            url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
+            data: { url: url, tags: "cozy-feeds" }
+            success: () ->
+                alertify.log "link added to cozy-bookmarks"
+            error: () ->
+                alertify.alert "link wasn't added to cozy-bookmarks"
+        $.ajax(ajaxOptions)
+        false
+    
+    linkDetails: (evt) =>
+        $(evt.target).parents(".link:first").find(".description").toggle()
