@@ -25,12 +25,14 @@ module.exports = class AppView extends View
         "click .link .icon-more": "linkDetails"
 
     startWaiter: ($elem) ->
-        html = 
-            "<img src='images/loader.gif' class='loader' alt='loading ...' />"
+        html = "<img " + 
+               "src='images/loader.gif' " + 
+               "class='main loader' " + 
+               "alt='loading ...' />"
         $elem.append html
 
     stopWaiter: ($elem) ->
-        $elem.find(".loader").remove()
+        $elem.find(".main.loader").remove()
 
     toggleOldLinks: (evt) ->
         $("ul.links").toggleClass("show-old")
@@ -86,7 +88,8 @@ module.exports = class AppView extends View
             url: url
             tags: tags
         @feedsView.collection.create feed,
-            success: =>
+            success: (elem) =>
+                $("." + elem.cid).click()
                 alertify.log "" + url + " added"
                 @cleanAddFeedForm()
             error: =>

@@ -18,6 +18,11 @@ Follow your favorite sites here !
 # Changelog
 
 * v1.0.1
+  * update newly added feed
+  * give more space to feeds names
+  * prevent to reload a feed already reloading (only for full tag reload)
+  * code cleaning (views)
+* v1.0.1
   * add help panel
   * try to add "http://" when no protocol is given in a feed url
   * fixed bug : error handling when the feed cant be parsed

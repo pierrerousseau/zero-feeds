@@ -582,12 +582,12 @@ window.require.define({"views/app_view": function(exports, require, module) {
 
     AppView.prototype.startWaiter = function($elem) {
       var html;
-      html = "<img src='images/loader.gif' class='loader' alt='loading ...' />";
+      html = "<img " + "src='images/loader.gif' " + "class='main loader' " + "alt='loading ...' />";
       return $elem.append(html);
     };
 
     AppView.prototype.stopWaiter = function($elem) {
-      return $elem.find(".loader").remove();
+      return $elem.find(".main.loader").remove();
     };
 
     AppView.prototype.toggleOldLinks = function(evt) {
@@ -667,7 +667,8 @@ window.require.define({"views/app_view": function(exports, require, module) {
         tags: tags
       });
       return this.feedsView.collection.create(feed, {
-        success: function() {
+        success: function(elem) {
+          $("." + elem.cid).click();
           alertify.log("" + url + " added");
           return _this.cleanAddFeedForm();
         },
@@ -775,13 +776,11 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     };
 
     FeedView.prototype.startWaiter = function() {
-      var html;
-      html = "<img src='images/loader.gif' class='loader' alt='loading ...' />";
-      return this.$el.find(".buttons").append(html);
+      return this.$el.addClass("loading");
     };
 
     FeedView.prototype.stopWaiter = function() {
-      return this.$el.find(".loader").remove();
+      return this.$el.removeClass("loading");
     };
 
     FeedView.prototype.addToTag = function(tag) {
@@ -894,7 +893,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       var tags, title, url;
       title = this.$el.find(".title");
       url = title.find("a").attr("href");
-      tags = title.find("span").attr("title") || "";
+      tags = title.find("span").attr("tags") || "";
       $("form.new-feed .url-field").val(url);
       $("form.new-feed .tags-field").val(tags);
       return $(".icon-new").click();
@@ -964,7 +963,11 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
       var feeds;
       feeds = $(evt.currentTarget).parents("div:first").find(".feed");
       feeds.show(function() {
-        return $(this).click();
+        var $this;
+        $this = $(this);
+        if (!$this.hasClass("loading")) {
+          return $this.click();
+        }
       });
       return false;
     };
@@ -1070,22 +1073,24 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="buttons"><button title="remove this feed and place its details on the new feed form" class="icon-delete"><img src="icons/delete.png" alt="delete"/></button></div><span');
-  buf.push(attrs({ 'title':("" + (model.tags) + "") }, {"title":true}));
-  buf.push('>');
+  buf.push('<div class="title"><div class="buttons"><button title="remove this feed and place its details on the new feed form" class="icon-delete"><img src="icons/delete.png" alt="delete"/></button><img src="images/loader.gif" alt="loading ..." class="loader"/></div>');
   if ( model.title)
   {
-  buf.push('<a');
+  buf.push('<span');
+  buf.push(attrs({ 'title':("" + (model.title) + ""), 'tags':("" + (model.tags) + "") }, {"title":true,"tags":true}));
+  buf.push('><a');
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
-  buf.push('>' + escape((interp = model.title) == null ? '' : interp) + '</a>');
+  buf.push('>' + escape((interp = model.title) == null ? '' : interp) + '</a></span>');
   }
   else
   {
-  buf.push('<a');
+  buf.push('<span');
+  buf.push(attrs({ 'title':("" + (model.url) + ""), 'tags':("" + (model.tags) + "") }, {"title":true,"tags":true}));
+  buf.push('><a');
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
-  buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a>');
+  buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a></span>');
   }
-  buf.push('</span></div>');
+  buf.push('</div>');
   }
   return buf.join("");
   };

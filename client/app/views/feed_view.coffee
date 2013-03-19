@@ -18,12 +18,10 @@ module.exports = class FeedView extends View
         "click .icon-delete": "onDeleteClicked"
 
     startWaiter: () ->
-        html =
-            "<img src='images/loader.gif' class='loader' alt='loading ...' />"
-        @$el.find(".buttons").append html
+        @$el.addClass "loading"
 
     stopWaiter: () ->
-        @$el.find(".loader").remove()
+        @$el.removeClass "loading"
 
     addToTag: (tag) ->
         tmpl = tagTemplate
@@ -112,7 +110,7 @@ module.exports = class FeedView extends View
     refillAddForm: ->
         title = @$el.find(".title")
         url   = title.find("a").attr("href")
-        tags  = title.find("span").attr("title") or ""
+        tags  = title.find("span").attr("tags") or ""
 
         $("form.new-feed .url-field").val(url)
         $("form.new-feed .tags-field").val(tags)

@@ -70,7 +70,7 @@ div.main-title
     border: 1px solid #262626
     display: inline-block
     vertical-align: top
-    max-width: 15%
+    max-width: 17%
 
     .tag
         cursor: pointer
@@ -86,6 +86,7 @@ div.main-title
                 display: block
 
     .feed
+        font-size: .9em;
         display: none
         cursor: pointer
         padding: .2em
@@ -103,9 +104,13 @@ div.main-title
             a:hover
                 text-decoration: none
                 color: #72fa72
-     .feed.show div.title
-         font-size: 1.2em
-         font-weight: bold
+         .loader
+             display: none
+         &.loading
+             .loader
+                 display: inline
+    .feed.show div.title
+        font-weight: bold
 
 ul.links
     margin: 2em
@@ -113,7 +118,7 @@ ul.links
     background: #232323
     display: inline-block
     vertical-align: top
-    width: 75%
+    width: 73%
     list-style: none
     li
         border-top: 1px solid #666

@@ -2,8 +2,10 @@
     .buttons
         button.icon-delete(title="remove this feed and place its details on the new feed form")
             img(src="icons/delete.png", alt="delete")
-     span(title="#{model.tags}")
-         if model.title
-                 a(href="#{model.url}") #{model.title}
-         else
-            a(href="#{model.url}") #{model.url}
+        img(src="images/loader.gif", class="loader", alt="loading ...")
+     if model.title
+         span(title="#{model.title}", tags="#{model.tags}")
+             a(href="#{model.url}") #{model.title}
+     else
+         span(title="#{model.url}", tags="#{model.tags}")
+             a(href="#{model.url}") #{model.url}
