@@ -668,7 +668,7 @@ window.require.define({"views/app_view": function(exports, require, module) {
       });
       return this.feedsView.collection.create(feed, {
         success: function(elem) {
-          $("." + elem.cid).click();
+          $("." + elem.cid).not(".clone").click();
           alertify.log("" + url + " added");
           return _this.cleanAddFeedForm();
         },
@@ -759,8 +759,9 @@ window.require.define({"views/feed_view": function(exports, require, module) {
 
     FeedView.prototype.tagName = 'div';
 
-    function FeedView(model) {
+    function FeedView(model, clone) {
       this.model = model;
+      this.clone = clone;
       FeedView.__super__.constructor.call(this);
     }
 
@@ -784,7 +785,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     };
 
     FeedView.prototype.addToTag = function(tag) {
-      var exists, tagPlace, tmpl;
+      var elem, exists, tagPlace, tmpl;
       tmpl = tagTemplate;
       tag = tag || "untagged";
       tagPlace = $("." + tag);
@@ -795,13 +796,17 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         $("#content .feeds").prepend(tagPlace);
       }
       exists = tagPlace.find("." + this.model.cid);
-      if (exists.length) {
-        return exists.replaceAll(this.$el);
+      if ($("." + this.model.cid).length) {
+        elem = new FeedView(this.model, true).$el;
+        elem.addClass("clone");
       } else {
-        tagPlace.append(this.$el);
-        if (this.model.isNew()) {
-          return tagPlace.addClass("show");
-        }
+        elem = this.$el;
+      }
+      if (exists.length) {
+        return exists.replaceAll(elem);
+      } else {
+        tagPlace.append(elem);
+        return tagPlace.addClass("show");
       }
     };
 
@@ -809,6 +814,9 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       var tag, tags, _i, _len;
       this.$el.html(this.template({}));
       this.$el.addClass(this.model.cid);
+      if (this.clone) {
+        return;
+      }
       tags = this.model.attributes.tags || ["untagged"];
       for (_i = 0, _len = tags.length; _i < _len; _i++) {
         tag = tags[_i];
@@ -906,6 +914,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         myTag.remove();
       }
       this.destroy();
+      $(".clone." + this.model.cid).remove();
       title = this.$el.find(".title span").html();
       return alertify.log("" + title + " removed and placed in form");
     };

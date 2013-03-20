@@ -17,6 +17,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.0.2
+  * bugfix : a feed was only in one of its tag
 * v1.0.1
   * update newly added feed
   * give more space to feeds names

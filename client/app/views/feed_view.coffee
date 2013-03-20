@@ -6,7 +6,8 @@ module.exports = class FeedView extends View
     className: 'feed'
     tagName: 'div'
 
-    constructor: (@model) ->
+    constructor: (@model, clone) ->
+        @clone = clone
         super()
 
     template: ->
@@ -33,16 +34,24 @@ module.exports = class FeedView extends View
             $("#content .feeds").prepend tagPlace
 
         exists = tagPlace.find "." + @model.cid
-        if exists.length
-            exists.replaceAll @$el
+        if $("." + @model.cid).length
+            elem = new FeedView(@model, true).$el
+            elem.addClass("clone")
         else
-            tagPlace.append @$el
-            if @model.isNew() # put a class on parent
-                tagPlace.addClass "show"
+            elem = @$el
+
+        if exists.length
+            exists.replaceAll elem
+        else
+            tagPlace.append elem
+            tagPlace.addClass "show"
 
     render: ->
         @$el.html @template({})
         @$el.addClass(@model.cid)
+
+        if @clone
+            return
 
         tags = @model.attributes.tags or ["untagged"]
         for tag in tags
@@ -122,6 +131,8 @@ module.exports = class FeedView extends View
             myTag.remove()
 
         @destroy()
+
+        $(".clone." + @model.cid).remove()
 
         title = @$el.find(".title span").html()
         alertify.log "" + title + " removed and placed in form"
