@@ -44,7 +44,6 @@ module.exports = class FeedView extends View
             exists.replaceAll elem
         else
             tagPlace.append elem
-            tagPlace.addClass "show"
 
     render: ->
         @$el.html @template({})

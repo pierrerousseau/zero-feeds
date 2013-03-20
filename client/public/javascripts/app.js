@@ -668,7 +668,10 @@ window.require.define({"views/app_view": function(exports, require, module) {
       });
       return this.feedsView.collection.create(feed, {
         success: function(elem) {
-          $("." + elem.cid).not(".clone").click();
+          var elems;
+          elems = $("." + elem.cid);
+          elems.not(".clone").click();
+          elems.parents(".tag").find(".feed").show();
           alertify.log("" + url + " added");
           return _this.cleanAddFeedForm();
         },
@@ -805,8 +808,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       if (exists.length) {
         return exists.replaceAll(elem);
       } else {
-        tagPlace.append(elem);
-        return tagPlace.addClass("show");
+        return tagPlace.append(elem);
       }
     };
 

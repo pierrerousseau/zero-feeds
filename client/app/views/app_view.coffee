@@ -89,7 +89,9 @@ module.exports = class AppView extends View
             tags: tags
         @feedsView.collection.create feed,
             success: (elem) =>
-                $("." + elem.cid).not(".clone").click()
+                elems = $("." + elem.cid)
+                elems.not(".clone").click()
+                elems.parents(".tag").find(".feed").show()
                 alertify.log "" + url + " added"
                 @cleanAddFeedForm()
             error: =>
