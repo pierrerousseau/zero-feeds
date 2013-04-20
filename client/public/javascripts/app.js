@@ -429,15 +429,15 @@ window.require.define({"models/feed": function(exports, require, module) {
     };
 
     Feed.prototype.links = function(options) {
-      var from, last, link, that, _i, _len, _links;
+      var from, last, link, _i, _len, _links,
+        _this = this;
       _links = [];
       from = options.feedClass;
-      that = this;
       $.each(this.$items(), function(index, value) {
         var description, link, title, url;
         title = $(value).find("title").text();
-        if (that.isAtom()) {
-          url = $(value).find("id").text();
+        if (_this.isAtom()) {
+          url = $(value).find("link").attr("href");
           description = $(value).find("content").text();
           if (description === "") {
             description = $(value).find("summary").text();
@@ -458,7 +458,7 @@ window.require.define({"models/feed": function(exports, require, module) {
           "description": description
         };
         if (index === 0) {
-          that.last = link.url;
+          _this.last = link.url;
         }
         return _links.push(link);
       });
@@ -720,7 +720,7 @@ window.require.define({"views/app_view": function(exports, require, module) {
         url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
         data: {
           url: url,
-          tags: "cozy-feeds"
+          tags: ["cozy-feeds"]
         },
         success: function() {
           return alertify.log("link added to cozy-bookmarks");

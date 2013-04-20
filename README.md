@@ -13,10 +13,14 @@ Follow your favorite sites here !
 * to know : some feeds change link params at everyupdate
 * to finish : store parsed links into db, 
               in order to manage old/new/read feeds in a simplier way
+* was looking for atom link in "id", changed it to link ?? need to check why
 
 
 # Changelog
 
+* v1.0.4
+  * better place to find link for atom feed 
+  * bugfix : send tags array to cozy bookmarks
 * v1.0.3
   * accept gziped feeds
 * v1.0.2

@@ -29,12 +29,11 @@ module.exports = class Feed extends Backbone.Model
     links: (options) ->
         _links = []
         from   = options.feedClass
-        that   = @
         $.each @$items(),
-            (index, value) ->
+            (index, value) =>
                 title = $(value).find("title").text()
-                if that.isAtom()
-                    url = $(value).find("id").text()
+                if @isAtom()
+                    url = $(value).find("link").attr("href")
                     description = $(value).find("content").text()
                     if description == ""
                         description = $(value).find("summary").text()
@@ -51,7 +50,7 @@ module.exports = class Feed extends Backbone.Model
                     "state": "old"
                     "description": description
                 if index == 0
-                    that.last = link.url
+                    @last = link.url
                 _links.push(link)
         last = @attributes.last
         for link in _links

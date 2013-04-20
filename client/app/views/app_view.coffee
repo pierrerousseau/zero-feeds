@@ -126,7 +126,7 @@ module.exports = class AppView extends View
         ajaxOptions =
             type: "POST",
             url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
-            data: { url: url, tags: "cozy-feeds" }
+            data: { url: url, tags: ["cozy-feeds"] }
             success: () ->
                 alertify.log "link added to cozy-bookmarks"
             error: () ->
