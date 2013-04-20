@@ -1026,6 +1026,7 @@ input,
 textarea {
   color: #bbb;
   background: none repeat scroll 0 0 rgba(40,40,40,0.8);
+  padding: 0;
 }
 a,
 a:visited {
@@ -1036,7 +1037,7 @@ a:focus {
   outline: none;
 }
 #content {
-  padding: 1em;
+  padding: 0.5em;
 }
 button,
 input[type=button] {
@@ -1074,26 +1075,34 @@ div.main-title form input {
   display: inline-block;
   margin: 0.5em;
   padding: 0.5em;
-  width: 24em;
+  min-width: 45%;
   background: #262626;
   border: 1px double #171717;
 }
 div.main-title form .url-field {
-  width: 50%;
-  max-width: 50em;
+  min-width: 45%;
 }
 div.main-title form button {
   border: none;
   vertical-align: middle;
+}
+.contents {
+  margin-top: 1em;
+  display: table-row;
+  width: 100%;
+}
+.contents > div,
+.contents > ul {
+  border: 3px solid #555;
 }
 .feeds {
   margin: 2em 0;
   padding: 1em 1em 0;
   background: #232323;
   border: 1px solid #262626;
-  display: inline-block;
+  display: table-cell;
   vertical-align: top;
-  max-width: 17%;
+  max-width: 10em;
 }
 .feeds .tag {
   cursor: pointer;
@@ -1109,6 +1118,9 @@ div.main-title form button {
 }
 .feeds .tag.show .feed {
   display: block;
+}
+.feeds .tag .tag-header {
+  white-space: nowrap;
 }
 .feeds .feed {
   font-size: 0.9em;
@@ -1147,9 +1159,9 @@ ul.links {
   margin: 2em;
   padding: 0;
   background: #232323;
-  display: inline-block;
+  display: table-cell;
+  width: 99%;
   vertical-align: top;
-  width: 73%;
   list-style: none;
 }
 ul.links li {
@@ -1159,6 +1171,7 @@ ul.links li {
 }
 ul.links li .buttons {
   display: inline-block;
+  white-space: nowrap;
   padding-right: 0.5em;
 }
 ul.links li .buttons button {
@@ -1192,6 +1205,7 @@ ul.links.show-old li.old {
 }
 .help {
   display: none;
+  overflow: visible;
 }
 .help p {
   font-size: 0.9em;

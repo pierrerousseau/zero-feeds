@@ -13,6 +13,7 @@
 body.application, input, textarea
     color: #bbb
     background: none repeat scroll 0 0 rgba(40, 40, 40, 0.8)
+    padding: 0
 
 a, a:visited
     color: #27aaf2
@@ -21,7 +22,7 @@ a:focus
     outline: none
 
 #content
-    padding: 1em
+    padding: .5em
 
 button, input[type=button]
     background-color: inherit
@@ -52,25 +53,32 @@ div.main-title
             display: inline-block
             margin: .5em
             padding: .5em
-            width: 24em
+            min-width: 45%
             background: #262626
             border: 1px double #171717
 
         .url-field
-            width: 50%
-            max-width: 50em
+            min-width: 45%
         button
             border: none
             vertical-align: middle
+
+.contents
+    margin-top: 1em
+    display: table-row
+    width: 100%
+    > div, > ul
+        border: 3px solid #555
+
 
 .feeds
     margin: 2em 0
     padding: 1em 1em 0
     background: #232323
     border: 1px solid #262626
-    display: inline-block
+    display: table-cell
     vertical-align: top
-    max-width: 17%
+    max-width: 10em 
 
     .tag
         cursor: pointer
@@ -84,6 +92,8 @@ div.main-title
         &.show
             .feed
                 display: block
+        .tag-header
+            white-space: nowrap
 
     .feed
         font-size: .9em;
@@ -116,9 +126,9 @@ ul.links
     margin: 2em
     padding: 0
     background: #232323
-    display: inline-block
+    display: table-cell
+    width: 99%
     vertical-align: top
-    width: 73%
     list-style: none
     li
         border-top: 1px solid #666
@@ -126,6 +136,7 @@ ul.links
         margin: 2em 1em
         .buttons
             display: inline-block
+            white-space: nowrap
             padding-right: .5em
             button
                 border: none
@@ -151,6 +162,7 @@ ul.links
         li.old
             display: list-item
 .help
-    display: none;
+    display: none
+    overflow: visible
     p
         font-size: .9em;

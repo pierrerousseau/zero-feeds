@@ -73,7 +73,7 @@ module.exports = class AppView extends View
         false
 
     toggleHelp: ->
-        $(".help").toggle("slow")
+        $(".help").toggle()
         false
 
     toggleSettings: ->
