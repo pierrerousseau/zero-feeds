@@ -11,16 +11,27 @@ saveFeedBuffer = (feed, buffer) ->
     feed.updated = new Date
     feed.save()
 
-Feed.prototype.update = (params, callback) ->
-    feed = @
-    if feed.url.slice(0, 5) == "https"
-        protocol = https
-    else 
-        protocol = http
-        if feed.url.slice(0, 4) != "http"
-            feed.url = "http://" + feed.url
+isHttp = (url) ->
+    url.slice(0, 4) == "http"
 
-    protocol.get(feed.url, (res) ->
+getAbsoluteLocation = (url, location) ->
+    loc = location
+    if loc.charAt(0) == '/'
+        loc = url.split('/').slice(0, 3).join('/') + loc
+    if not isHttp(loc)
+        loc = "http://" + loc
+    loc
+
+
+getFeed = (feed, url, callback) ->
+    if url.slice(0, 5) == "https"
+        protocol = https
+    else
+        protocol = http
+        if not isHttp(url)
+            url = "http://" + url
+
+    protocol.get(url, (res) ->
         data   = ''
         chunks = []
         length = 0
@@ -31,14 +42,18 @@ Feed.prototype.update = (params, callback) ->
         res.on 'end', () ->
             data = Buffer.concat(chunks, length)
             if res["headers"]? and res["headers"]["content-encoding"]?
-                gziped = res["headers"]["content-encoding"] == "x-gzip"
-            else
-                gziped = false
-
-            if gziped
-                zlib.unzip(data, (err, buffer) -> saveFeedBuffer(feed, buffer))
+                if res["headers"]["content-encoding"] == "x-gzip"
+                    zlib.unzip(data,
+                               (err, buffer) -> saveFeedBuffer(feed, buffer))
+            else if res["headers"]? and res["headers"]["location"]?
+                url = getAbsoluteLocation(url, res["headers"]["location"])
+                getFeed(feed, url, () ->)
             else
                 saveFeedBuffer(feed, data)
 
             callback.call(feed)).on 'error',  ->
                 callback.call("Error: can't join url")
+
+Feed.prototype.update = (params, callback) ->
+    feed = @
+    getFeed(feed, feed.url, callback)

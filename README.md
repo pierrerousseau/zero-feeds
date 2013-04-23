@@ -18,21 +18,18 @@ Follow your favorite sites here !
 
 # Changelog
 
-* v1.0.4
-  * better place to find link for atom feed 
-  * bugfix : send tags array to cozy bookmarks
-* v1.0.3
+* v1.1
+  * handle http redirection
   * accept gziped feeds
-* v1.0.2
-  * bugfix : a feed was only in one of its tag
-* v1.0.1
-  * update newly added feed
-  * give more space to feeds names
-  * prevent to reload a feed already reloading (only for full tag reload)
-  * code cleaning (views)
-* v1.0.1
-  * add help panel
   * try to add "http://" when no protocol is given in a feed url
+  * better place to find link for atom feed 
+  * update newly added feed
+  * prevent to reload a feed already reloading (only for full tag reload)
+  * give more space to feeds names
+  * add help panel
+  * code cleaning (views)
+  * fixed bug : a feed was only in one of its tag
+  * fixed bug : send tags array to cozy bookmarks
   * fixed bug : error handling when the feed cant be parsed
   * fixed bug : show only new links parameter wasn't used after reload
   * fixed bug : display links first time a feed is used
