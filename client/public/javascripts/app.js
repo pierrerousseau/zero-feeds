@@ -432,7 +432,6 @@ window.require.define({"models/feed": function(exports, require, module) {
       var items, last, nbNew,
         _this = this;
       last = this.attributes.last;
-      console.log(last);
       items = this.$items();
       nbNew = 0;
       $.each(items, function(index, value) {

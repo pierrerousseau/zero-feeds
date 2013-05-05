@@ -28,7 +28,6 @@ module.exports = class Feed extends Backbone.Model
 
     count: () ->
         last  = @attributes.last
-        console.log(last)
         items = @$items()
         nbNew = 0
         $.each items,
