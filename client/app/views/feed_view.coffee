@@ -59,10 +59,10 @@ module.exports = class FeedView extends View
                 @stopWaiter()
                 @setCount()
                 setTimeout _.bind(@setUpdate, @), 
-                     ((1 + Math.floor(Math.random()*4)) * 60000)
+                     ((1 + Math.floor(Math.random()*14)) * 60000)
             error: =>
                 setTimeout _.bind(@setUpdate, @), 
-                     ((11 + Math.floor(Math.random()*4)) * 60000)
+                     ((11 + Math.floor(Math.random()*14)) * 60000)
                 @stopWaiter()
 
     render: ->
