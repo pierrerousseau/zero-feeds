@@ -1152,6 +1152,9 @@ div.main-title form button {
 .feeds .feed.loading .loader {
   display: inline;
 }
+.feeds .feed.loading .count {
+  display: none;
+}
 .feeds .feed.show div.title {
   font-weight: bold;
 }

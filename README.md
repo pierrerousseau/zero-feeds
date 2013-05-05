@@ -18,6 +18,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.1.1
+  * add new elements counters
 * v1.1
   * handle http redirection
   * accept gziped feeds

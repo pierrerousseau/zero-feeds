@@ -428,12 +428,37 @@ window.require.define({"models/feed": function(exports, require, module) {
       }
     };
 
+    Feed.prototype.count = function() {
+      var items, last, nbNew,
+        _this = this;
+      last = this.attributes.last;
+      console.log(last);
+      items = this.$items();
+      nbNew = 0;
+      $.each(items, function(index, value) {
+        var url;
+        if (_this.isAtom()) {
+          url = $(value).find("link").attr("href");
+        } else {
+          url = $(value).find("link").text();
+        }
+        if (url === last) {
+          return false;
+        }
+        return nbNew++;
+      });
+      return nbNew;
+    };
+
     Feed.prototype.links = function(options) {
-      var from, last, link, _i, _len, _links,
+      var from, items, last, state, _links,
         _this = this;
       _links = [];
       from = options.feedClass;
-      $.each(this.$items(), function(index, value) {
+      state = "new";
+      last = this.attributes.last;
+      items = this.$items();
+      $.each(items, function(index, value) {
         var description, link, title, url;
         title = $(value).find("title").text();
         if (_this.isAtom()) {
@@ -449,12 +474,15 @@ window.require.define({"models/feed": function(exports, require, module) {
             description = $(value).find("description").text();
           }
         }
+        if (url === last) {
+          state = "old";
+        }
         link = {
           "title": title,
           "encodedTitle": encodeURIComponent(title),
           "url": url,
           "from": from,
-          "state": "old",
+          "state": state,
           "description": description
         };
         if (index === 0) {
@@ -462,14 +490,6 @@ window.require.define({"models/feed": function(exports, require, module) {
         }
         return _links.push(link);
       });
-      last = this.attributes.last;
-      for (_i = 0, _len = _links.length; _i < _len; _i++) {
-        link = _links[_i];
-        if (link.url === last) {
-          break;
-        }
-        link.state = "new";
-      }
       return _links;
     };
 
@@ -621,12 +641,15 @@ window.require.define({"views/app_view": function(exports, require, module) {
       });
       this.paramsView = new ParamsView();
       this.startWaiter(this.paramsView.$el);
-      return this.paramsView.collection.fetch({
+      this.paramsView.collection.fetch({
         success: function(view, parameters) {
           _this.applyParameters(parameters);
           return _this.stopWaiter(_this.paramsView.$el);
         }
       });
+      if ($(".feeds").width() / $("body").width() < 10) {
+        return $(".feeds").css("max-width", "17em");
+      }
     };
 
     AppView.prototype.initialize = function() {
@@ -812,6 +835,32 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       }
     };
 
+    FeedView.prototype.setCount = function() {
+      var count;
+      count = this.model.count();
+      if (count) {
+        return this.$el.find(".count").html("(" + count + ")");
+      } else {
+        return this.$el.find(".count").html("");
+      }
+    };
+
+    FeedView.prototype.setUpdate = function() {
+      var _this = this;
+      this.startWaiter();
+      return this.model.save({}, {
+        success: function() {
+          _this.stopWaiter();
+          _this.setCount();
+          return setTimeout(_.bind(_this.setUpdate, _this), (1 + Math.floor(Math.random() * 4)) * 60000);
+        },
+        error: function() {
+          setTimeout(_.bind(_this.setUpdate, _this), (11 + Math.floor(Math.random() * 4)) * 60000);
+          return _this.stopWaiter();
+        }
+      });
+    };
+
     FeedView.prototype.render = function() {
       var tag, tags, _i, _len;
       this.$el.html(this.template({}));
@@ -824,6 +873,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         tag = tags[_i];
         this.addToTag(tag);
       }
+      this.setUpdate();
       return this;
     };
 
@@ -864,6 +914,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       if (existingLinks.length) {
         existingLinks.remove();
         $allThat.removeClass("show");
+        this.setCount();
         this.stopWaiter();
       } else {
         try {
@@ -1087,7 +1138,7 @@ window.require.define({"views/templates/feed": function(exports, require, module
   buf.push('<div class="title"><div class="buttons"><button title="remove this feed and place its details on the new feed form" class="icon-delete"><img src="icons/delete.png" alt="delete"/></button><img src="images/loader.gif" alt="loading ..." class="loader"/></div>');
   if ( model.title)
   {
-  buf.push('<span');
+  buf.push('<span class="count"></span><span');
   buf.push(attrs({ 'title':("" + (model.title) + ""), 'tags':("" + (model.tags) + "") }, {"title":true,"tags":true}));
   buf.push('><a');
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
@@ -1095,7 +1146,7 @@ window.require.define({"views/templates/feed": function(exports, require, module
   }
   else
   {
-  buf.push('<span');
+  buf.push('<span class="count"></span><span');
   buf.push(attrs({ 'title':("" + (model.url) + ""), 'tags':("" + (model.tags) + "") }, {"title":true,"tags":true}));
   buf.push('><a');
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));

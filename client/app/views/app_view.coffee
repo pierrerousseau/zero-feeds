@@ -58,6 +58,8 @@ module.exports = class AppView extends View
             success: (view, parameters) =>
                 @applyParameters(parameters)
                 @stopWaiter(@paramsView.$el)
+        if $(".feeds").width() / $("body").width() < 10
+            $(".feeds").css("max-width", "17em")
 
     initialize: ->
         @router = CozyApp.Routers.AppRouter = new AppRouter()

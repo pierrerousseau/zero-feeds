@@ -4,8 +4,10 @@
             img(src="icons/delete.png", alt="delete")
         img(src="images/loader.gif", class="loader", alt="loading ...")
      if model.title
+         span.count
          span(title="#{model.title}", tags="#{model.tags}")
              a(href="#{model.url}") #{model.title}
      else
+         span.count
          span(title="#{model.url}", tags="#{model.tags}")
              a(href="#{model.url}") #{model.url}

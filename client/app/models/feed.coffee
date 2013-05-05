@@ -26,10 +26,29 @@ module.exports = class Feed extends Backbone.Model
         else
             @toXml().find("item").get()
 
+    count: () ->
+        last  = @attributes.last
+        console.log(last)
+        items = @$items()
+        nbNew = 0
+        $.each items,
+            (index, value) =>
+                if @isAtom()
+                    url = $(value).find("link").attr("href")
+                else
+                    url = $(value).find("link").text()
+                if url == last
+                    return false
+                nbNew++
+        nbNew
+
     links: (options) ->
         _links = []
         from   = options.feedClass
-        $.each @$items(),
+        state  = "new"
+        last   = @attributes.last
+        items  = @$items()
+        $.each items,
             (index, value) =>
                 title = $(value).find("title").text()
                 if @isAtom()
@@ -42,21 +61,18 @@ module.exports = class Feed extends Backbone.Model
                     description = $(value).find("content\\:encoded").text()
                     if description == ""
                         description = $(value).find("description").text()
+                if url == last
+                    state = "old"
                 link =
                     "title": title
                     "encodedTitle": encodeURIComponent title
                     "url": url
                     "from": from
-                    "state": "old"
+                    "state": state
                     "description": description
                 if index == 0
                     @last = link.url
                 _links.push(link)
-        last = @attributes.last
-        for link in _links
-              if link.url == last
-                  break
-              link.state = "new"
         _links
 
     isNew: () ->

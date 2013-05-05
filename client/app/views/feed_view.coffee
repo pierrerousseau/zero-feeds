@@ -45,6 +45,26 @@ module.exports = class FeedView extends View
         else
             tagPlace.append elem
 
+    setCount: () ->
+        count = @model.count()
+        if count
+            @$el.find(".count").html "(" + count + ")"
+        else
+            @$el.find(".count").html ""
+
+    setUpdate: ->
+        @startWaiter()
+        @model.save { },
+            success: =>
+                @stopWaiter()
+                @setCount()
+                setTimeout _.bind(@setUpdate, @), 
+                     ((1 + Math.floor(Math.random()*4)) * 60000)
+            error: =>
+                setTimeout _.bind(@setUpdate, @), 
+                     ((11 + Math.floor(Math.random()*4)) * 60000)
+                @stopWaiter()
+
     render: ->
         @$el.html @template({})
         @$el.addClass(@model.cid)
@@ -55,6 +75,8 @@ module.exports = class FeedView extends View
         tags = @model.attributes.tags or ["untagged"]
         for tag in tags
             @addToTag(tag)
+
+        @setUpdate()
 
         @
 
@@ -90,6 +112,7 @@ module.exports = class FeedView extends View
         if existingLinks.length
             existingLinks.remove()
             $allThat.removeClass "show"
+            @setCount()
             @stopWaiter()
         else
             try
