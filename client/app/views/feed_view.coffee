@@ -16,6 +16,7 @@ module.exports = class FeedView extends View
 
     events:
         "click": "onUpdateClicked"
+        "click .count": "setUpdate"
         "click .icon-delete": "onDeleteClicked"
 
     startWaiter: () ->
@@ -52,18 +53,20 @@ module.exports = class FeedView extends View
         else
             @$el.find(".count").html ""
 
-    setUpdate: ->
-        @startWaiter()
-        @model.save { },
-            success: =>
-                @stopWaiter()
-                @setCount()
-                setTimeout _.bind(@setUpdate, @), 
-                     ((1 + Math.floor(Math.random()*14)) * 60000)
-            error: =>
-                setTimeout _.bind(@setUpdate, @), 
-                     ((11 + Math.floor(Math.random()*14)) * 60000)
-                @stopWaiter()
+    setUpdate: () ->
+        if @$el.is ":visible"
+            @startWaiter()
+            @model.save { },
+                success: =>
+                    @stopWaiter()
+                    @setCount()
+                    setTimeout _.bind(@setUpdate, @), 
+                         ((1 + Math.floor(Math.random()*14)) * 60000)
+                error: =>
+                    setTimeout _.bind(@setUpdate, @), 
+                         ((11 + Math.floor(Math.random()*14)) * 60000)
+                    @stopWaiter()
+        false
 
     render: ->
         @$el.html @template({})
@@ -75,8 +78,6 @@ module.exports = class FeedView extends View
         tags = @model.attributes.tags or ["untagged"]
         for tag in tags
             @addToTag(tag)
-
-        @setUpdate()
 
         @
 

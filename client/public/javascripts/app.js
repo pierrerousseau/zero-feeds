@@ -798,6 +798,7 @@ window.require.define({"views/feed_view": function(exports, require, module) {
 
     FeedView.prototype.events = {
       "click": "onUpdateClicked",
+      "click .count": "setUpdate",
       "click .icon-delete": "onDeleteClicked"
     };
 
@@ -846,18 +847,21 @@ window.require.define({"views/feed_view": function(exports, require, module) {
 
     FeedView.prototype.setUpdate = function() {
       var _this = this;
-      this.startWaiter();
-      return this.model.save({}, {
-        success: function() {
-          _this.stopWaiter();
-          _this.setCount();
-          return setTimeout(_.bind(_this.setUpdate, _this), (1 + Math.floor(Math.random() * 4)) * 60000);
-        },
-        error: function() {
-          setTimeout(_.bind(_this.setUpdate, _this), (11 + Math.floor(Math.random() * 4)) * 60000);
-          return _this.stopWaiter();
-        }
-      });
+      if (this.$el.is(":visible")) {
+        this.startWaiter();
+        this.model.save({}, {
+          success: function() {
+            _this.stopWaiter();
+            _this.setCount();
+            return setTimeout(_.bind(_this.setUpdate, _this), (1 + Math.floor(Math.random() * 14)) * 60000);
+          },
+          error: function() {
+            setTimeout(_.bind(_this.setUpdate, _this), (11 + Math.floor(Math.random() * 14)) * 60000);
+            return _this.stopWaiter();
+          }
+        });
+      }
+      return false;
     };
 
     FeedView.prototype.render = function() {
@@ -872,7 +876,6 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         tag = tags[_i];
         this.addToTag(tag);
       }
-      this.setUpdate();
       return this;
     };
 
@@ -1034,7 +1037,14 @@ window.require.define({"views/feeds_view": function(exports, require, module) {
     };
 
     FeedsView.prototype.onTagClicked = function(evt) {
-      $(evt.currentTarget).find(".feed").toggle();
+      var feed, feeds, target, _i, _len;
+      target = $(evt.currentTarget);
+      feeds = target.find(".feed");
+      target.find(".feed").toggle();
+      for (_i = 0, _len = feeds.length; _i < _len; _i++) {
+        feed = feeds[_i];
+        $(feed).find(".count").click();
+      }
       return false;
     };
 

@@ -14,6 +14,7 @@ Follow your favorite sites here !
 * to finish : store parsed links into db, 
               in order to manage old/new/read feeds in a simplier way
 * was looking for atom link in "id", changed it to link ?? need to check why
+* pb : too many counter reload implies couchdb size to grow
 
 
 # Changelog

@@ -20,7 +20,11 @@ module.exports = class FeedsView extends ViewCollection
         false
 
     onTagClicked: (evt) ->
-        $(evt.currentTarget).find(".feed").toggle()
+        target = $(evt.currentTarget)
+        feeds  = target.find ".feed"
+        target.find(".feed").toggle()
+        for feed in feeds
+            $(feed).find(".count").click()
         false
 
     initialize: ->
