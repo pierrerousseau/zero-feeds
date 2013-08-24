@@ -36,7 +36,7 @@ module.exports = class Feed extends Backbone.Model
                     url = $(value).find("link").attr("href")
                 else
                     url = $(value).find("link").text()
-                if url == last
+                if last and url == last
                     return false
                 nbNew++
         nbNew
@@ -60,7 +60,7 @@ module.exports = class Feed extends Backbone.Model
                     description = $(value).find("content\\:encoded").text()
                     if description == ""
                         description = $(value).find("description").text()
-                if url == last
+                if last and url == last
                     state = "old"
                 link =
                     "title": title

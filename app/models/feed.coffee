@@ -46,8 +46,9 @@ getFeed = (feed, url, callback) ->
                     zlib.unzip(data,
                                (err, buffer) -> saveFeedBuffer(feed, buffer))
             else if res["headers"]? and res["headers"]["location"]?
-                url = getAbsoluteLocation(url, res["headers"]["location"])
-                getFeed(feed, url, () ->)
+                feed.url = getAbsoluteLocation(url, res["headers"]["location"])
+                feed.save()
+                getFeed(feed, feed.url, () ->)
             else
                 saveFeedBuffer(feed, data)
 

@@ -5,20 +5,26 @@ Follow your favorite sites here !
 # To do ...
 
 * add filter for links
-* add import function
-* note : v1.0 is far from being a good version
 * code review (a lot of cleaning is needed)
 * bug : needs to load feed 2 times before to get updated title : still ?
 * bug : first display of a feed cant be deleted : still ?
-* to know : some feeds change link params at everyupdate
+* bug : first display of a feed with redirection fails
 * to finish : store parsed links into db, 
               in order to manage old/new/read feeds in a simplier way
-* was looking for atom link in "id", changed it to link ?? need to check why
 * pb : too many counter reload implies couchdb size to grow
+* was looking for atom link in "id", changed it to link ?? need to check why
+
+* to know : some feeds change link params at everyupdate
+
+* note : v1.0 is far from being a good version
+* note : i've been lazy doing it well so there is no "tag" model
+* note : i wanted to see how client would deal with feed parsing
 
 
 # Changelog
 
+* v1.1.2
+  * can import opml files and feeds from a firefox export of bookmarks file
 * v1.1.1
   * add new elements counters
 * v1.1

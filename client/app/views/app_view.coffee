@@ -15,6 +15,8 @@ module.exports = class AppView extends View
         "click .icon-new": "displayNewForm"
         "click .icon-help": "toggleHelp"
         "click .icon-settings": "toggleSettings"
+        "click .icon-import": "import"
+        "change #feeds-file": "uploadFile"
         
         "click form.new-feed .icon-add": "addFeed"
         
@@ -138,3 +140,82 @@ module.exports = class AppView extends View
     
     linkDetails: (evt) =>
         $(evt.target).parents(".link:first").find(".description").toggle()
+    
+    addFeedFromFile: (feedObj) ->
+            feed = new Feed feedObj
+            @feedsView.collection.create feed,
+                success: (elem) =>
+                    imported = $(".imported")
+                    if imported.text()
+                        imported.text(parseInt(imported.text()) + 1)
+                    else
+                        imported.text(1)
+                    $("." + elem.cid).parents(".tag").find(".feed").show()
+                error: =>
+                    notImported = $(".import-failed")
+                    if notImported.text()
+                        notImported.text(parseInt(notImported.text()) + 1)
+                    else
+                        notImported.text(1)
+
+    addFeedFromHTMLFile: (link) ->
+        $link = $ link
+        if $link.attr("feedurl")
+            url         = $link.attr "feedurl"
+            title       = $link.text()
+            description = ""
+            next = $link.parents(":first").next()
+            if next.is("dd")
+                description = next.text()
+            feedObj =
+                url: url
+                tags: [""]
+                description: description
+            @addFeedFromFile feedObj
+    
+    addFeedsFromHTMLFile: (loaded) ->
+        links = loaded.find "dt a"
+        for link in links
+            @addFeedFromHTMLFile link
+
+    addFeedFromOPMLFile: (link) ->
+        $link = $ link
+        if $link.attr("xmlUrl")
+            url         = $link.attr "xmlUrl"
+            title       = $link.attr "title"
+            description = $link.attr "text"
+
+            feedObj =
+                url: url
+                tags: [""]
+                description: description
+            @addFeedFromFile feedObj
+    
+    addFeedsFromOPMLFile: (loaded) ->
+        links = loaded.find "outline"
+        for link in links
+            @addFeedFromOPMLFile link
+
+    addFeedsFromFile: (file) ->
+        loaded = $(file)
+        if loaded.is("opml")
+            @addFeedsFromOPMLFile loaded
+        else
+            @addFeedsFromHTMLFile loaded
+
+    uploadFile: (evt) ->
+        file = evt.target.files[0]
+        if file.type != "text/html" and file.type != "text/xml"
+            alertify.alert "This file cannot be imported"
+            return
+
+        reader = new FileReader()
+        reader.onload = (evt) => @addFeedsFromFile(evt.target.result)
+        reader.readAsText(file)
+
+    import: (evt) ->
+        alertify.confirm "Import opml rss file or " + 
+                         "html bookmarks file containing feeds exported by " +
+                         "firefox or chrome",
+            (ok) -> if ok
+                $("#feeds-file").click()
