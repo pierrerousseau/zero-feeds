@@ -142,21 +142,21 @@ module.exports = class AppView extends View
         $(evt.target).parents(".link:first").find(".description").toggle()
     
     addFeedFromFile: (feedObj) ->
-            feed = new Feed feedObj
-            @feedsView.collection.create feed,
-                success: (elem) =>
-                    imported = $(".imported")
-                    if imported.text()
-                        imported.text(parseInt(imported.text()) + 1)
-                    else
-                        imported.text(1)
-                    $("." + elem.cid).parents(".tag").find(".feed").show()
-                error: =>
-                    notImported = $(".import-failed")
-                    if notImported.text()
-                        notImported.text(parseInt(notImported.text()) + 1)
-                    else
-                        notImported.text(1)
+        feed = new Feed feedObj
+        @feedsView.collection.create feed,
+            success: (elem) =>
+                imported = $(".imported")
+                if imported.text()
+                    imported.text(parseInt(imported.text()) + 1)
+                else
+                    imported.text(1)
+                $("." + elem.cid).parents(".tag").find(".feed").show()
+            error: =>
+                notImported = $(".import-failed")
+                if notImported.text()
+                    notImported.text(parseInt(notImported.text()) + 1)
+                else
+                    notImported.text(1)
 
     addFeedFromHTMLFile: (link) ->
         $link = $ link
@@ -178,7 +178,7 @@ module.exports = class AppView extends View
         for link in links
             @addFeedFromHTMLFile link
 
-    addFeedFromOPMLFile: (link) ->
+    addFeedFromOPMLFile: (link, tag) ->
         $link = $ link
         if $link.attr("xmlUrl")
             url         = $link.attr "xmlUrl"
@@ -187,14 +187,21 @@ module.exports = class AppView extends View
 
             feedObj =
                 url: url
-                tags: [""]
+                tags: [tag]
                 description: description
             @addFeedFromFile feedObj
     
     addFeedsFromOPMLFile: (loaded) ->
-        links = loaded.find "outline"
+        links = loaded.find "> outline"
         for link in links
-            @addFeedFromOPMLFile link
+            $link = $ link
+            if $link.attr("xmlUrl")
+                @addFeedFromOPMLFile link, ""
+            else
+                tag = $link.attr("title")
+                taggedLinks = $link.find "outline"
+                for taggedLink in taggedLinks
+                    @addFeedFromOPMLFile taggedLink, tag
 
     addFeedsFromFile: (file) ->
         loaded = $(file)
@@ -203,9 +210,13 @@ module.exports = class AppView extends View
         else
             @addFeedsFromHTMLFile loaded
 
+    isUnknownFormat: (file) ->
+        return file.type != "text/html" and file.type != "text/xml" and 
+            file.type != "text/x-opml+xml"
+
     uploadFile: (evt) ->
         file = evt.target.files[0]
-        if file.type != "text/html" and file.type != "text/xml"
+        if @isUnknownFormat file
             alertify.alert "This file cannot be imported"
             return
 

@@ -819,7 +819,7 @@ window.require.define({"views/app_view": function(exports, require, module) {
       return _results;
     };
 
-    AppView.prototype.addFeedFromOPMLFile = function(link) {
+    AppView.prototype.addFeedFromOPMLFile = function(link, tag) {
       var $link, description, feedObj, title, url;
       $link = $(link);
       if ($link.attr("xmlUrl")) {
@@ -828,7 +828,7 @@ window.require.define({"views/app_view": function(exports, require, module) {
         description = $link.attr("text");
         feedObj = {
           url: url,
-          tags: [""],
+          tags: [tag],
           description: description
         };
         return this.addFeedFromFile(feedObj);
@@ -836,12 +836,27 @@ window.require.define({"views/app_view": function(exports, require, module) {
     };
 
     AppView.prototype.addFeedsFromOPMLFile = function(loaded) {
-      var link, links, _i, _len, _results;
-      links = loaded.find("outline");
+      var $link, link, links, tag, taggedLink, taggedLinks, _i, _len, _results;
+      links = loaded.find("> outline");
       _results = [];
       for (_i = 0, _len = links.length; _i < _len; _i++) {
         link = links[_i];
-        _results.push(this.addFeedFromOPMLFile(link));
+        $link = $(link);
+        if ($link.attr("xmlUrl")) {
+          _results.push(this.addFeedFromOPMLFile(link, ""));
+        } else {
+          tag = $link.attr("title");
+          taggedLinks = $link.find("outline");
+          _results.push((function() {
+            var _j, _len1, _results1;
+            _results1 = [];
+            for (_j = 0, _len1 = taggedLinks.length; _j < _len1; _j++) {
+              taggedLink = taggedLinks[_j];
+              _results1.push(this.addFeedFromOPMLFile(taggedLink, tag));
+            }
+            return _results1;
+          }).call(this));
+        }
       }
       return _results;
     };
@@ -856,11 +871,15 @@ window.require.define({"views/app_view": function(exports, require, module) {
       }
     };
 
+    AppView.prototype.isUnknownFormat = function(file) {
+      return file.type !== "text/html" && file.type !== "text/xml" && file.type !== "text/x-opml+xml";
+    };
+
     AppView.prototype.uploadFile = function(evt) {
       var file, reader,
         _this = this;
       file = evt.target.files[0];
-      if (file.type !== "text/html" && file.type !== "text/xml") {
+      if (this.isUnknownFormat(file)) {
         alertify.alert("This file cannot be imported");
         return;
       }
