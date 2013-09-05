@@ -3,6 +3,18 @@ https = require('https')
 
 zlib = require('zlib')
 
+americano = require 'americano-cozy'
+
+module.exports = Feed = americano.getModel 'Feed',
+    'title': type: String
+    'url': type: String
+    'last': type: String
+    'tags': type: String
+    'description': type: String
+    'content': type: String
+    'created': type: Date, default: Date
+    'updated': type: Date, default: Date
+
 Feed.all = (params, callback) ->
     Feed.request "all", params, callback
 

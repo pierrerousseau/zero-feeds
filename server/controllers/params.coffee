@@ -1,17 +1,11 @@
-before ->
-    Param.find req.params.id, (err, param) =>
-        if err or !param
-            send error: true, msg: "Param not found", 404
-        else
-            @param = param
-            next()
-, only: ['update']
+Param = require '../models/param'
 
-action 'all', ->
+module.exports.all = (req, res) ->
     Param.all (err, params) ->
-        if err
-            railway.logger.write err
-            send error: true, msg: "Server error occured while retrieving data."
+        if err?
+            console.log err
+            errorMsg = "Server error occured while retrieving data."
+            res.send error: true, msg: errorMsg
         else
             paramsNames = ["cozy-bookmarks-name", "show-new-links"]
             for param in params
@@ -26,7 +20,7 @@ action 'all', ->
                             found = true
                             newParams.push(param)
                     if !found
-                        if paramName == "cozy-bookmarks-name"
+                        if paramName is "cozy-bookmarks-name"
                             newParam = new Param
                                 paramId: "cozy-bookmarks-name"
                                 name: "Cozy bookmarks application name"
@@ -38,19 +32,22 @@ action 'all', ->
                                 value: true
                         Param.create newParam
                         newParams.push(newParam)
-                send newParams
+                res.send newParams
             else
-                send params
+                res.send params
 
-action 'update', ->
-    ['value'].forEach (field) =>
-        if field == 'value'
-            @param[field] = req.body[field] if req.body[field]?
-
-    console.log(@param)
-    @param.update params, (err) ->
-        if err
-            railway.logger.write err
-            send error: 'Cannot update param', 500
+module.exports.update = (req, res) ->
+    Param.find req.params.id, (err, param) ->
+        if err? or not param?
+            res.send error: true, msg: "Param not found", 404
         else
-            send @
+            ['value'].forEach (field) ->
+                if field is 'value'
+                    param[field] = req.body[field] if req.body[field]?
+
+            param.update req.params, (err) ->
+                if err
+                    console.log err
+                    res.send error: 'Cannot update param', 500
+                else
+                    res.send param

@@ -1,6 +1,6 @@
 fs = require 'fs'
 
-# Grab test files 
+# Grab test files
 walk = (dir, fileList) ->
   list = fs.readdirSync(dir)
   if list
@@ -20,7 +20,7 @@ uiTestFiles = walk("client/test", [])
 
 task 'tests', 'run tests through mocha', ->
     runTests testFiles
-    
+
 task 'tests:client', 'run tests through mocha', ->
     runTests uiTestFiles
 
@@ -58,4 +58,18 @@ task "xunit:client", "", ->
   command += " --require should --compilers coffee:coffee-script -R xunit > xunitclient.xml"
   exec command, (err, stdout, stderr) ->
     console.log stdout
+
+task 'compile', 'Compile CoffeeScript into JavaScript (server)', ->
+  files = walk "server", []
+  console.log "Compilation..."
+  command = "coffee -cb server.coffee #{files.join ' '} "
+  exec command, (err, stdout, stderr) ->
+    console.log stdout
+    if err
+      console.log "Running compilation caught exception: \n" + err
+      process.exit 1
+    else
+      console.log "Sucessful compilation!"
+      process.exit 0
+
 
