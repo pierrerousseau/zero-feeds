@@ -12,6 +12,7 @@ Follow your favorite sites here !
 * to finish : store parsed links into db, 
               in order to manage old/new/read feeds in a simplier way
 * pb : too many counter reload implies couchdb size to grow
+* pb : i dont know how to define a model (server side) with a list for tags
 * was looking for atom link in "id", changed it to link ?? need to check why
 
 * to know : some feeds change link params at everyupdate
@@ -23,6 +24,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.1.3
+  * use of americano instead of compound
 * v1.1.2
   * can import opml files and feeds from a firefox export of bookmarks file
 * v1.1.1

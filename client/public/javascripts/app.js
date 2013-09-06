@@ -1011,6 +1011,9 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         return;
       }
       tags = this.model.attributes.tags || ["untagged"];
+      if (typeof tags === "string") {
+        tags = tags.split(",");
+      }
       for (_i = 0, _len = tags.length; _i < _len; _i++) {
         tag = tags[_i];
         this.addToTag(tag);

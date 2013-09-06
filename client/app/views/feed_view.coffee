@@ -76,6 +76,8 @@ module.exports = class FeedView extends View
             return
 
         tags = @model.attributes.tags or ["untagged"]
+        if typeof tags is "string"
+            tags = tags.split ","
         for tag in tags
             @addToTag(tag)
 
