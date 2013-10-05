@@ -1155,6 +1155,12 @@ div.main-title form button {
 .feeds .feed.loading .count {
   display: none;
 }
+.feeds .feed .icon-delete {
+  visibility: hidden;
+}
+.feeds .feed:hover .icon-delete {
+  visibility: visible;
+}
 .feeds .feed.show div.title {
   font-weight: bold;
 }

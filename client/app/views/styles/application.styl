@@ -114,13 +114,18 @@ div.main-title
             a:hover
                 text-decoration: none
                 color: #72fa72
-         .loader
-             display: none
-         &.loading
-             .loader
-                 display: inline
-             .count
-                 display: none
+        .loader
+            display: none
+        &.loading
+            .loader
+                display: inline
+            .count
+                display: none
+        .icon-delete
+            visibility: hidden
+        &:hover
+            .icon-delete
+                visibility: visible
     .feed.show div.title
         font-weight: bold
 
