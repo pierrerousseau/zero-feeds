@@ -29,7 +29,7 @@
       "description": "Allow you to manage your feeds"
     },
     "param": {
-      "description": "Allow you you to change options of the app"
+      "description": "Allow you to change options of the app"
     }
   }
 }
