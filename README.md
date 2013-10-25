@@ -5,6 +5,7 @@ Follow your favorite sites here !
 # To do ...
 
 * add filter for links
+* add links to resources used
 * code review (a lot of cleaning is needed)
 * bug : needs to load feed 2 times before to get updated title : still ?
 * bug : first display of a feed cant be deleted : still ?

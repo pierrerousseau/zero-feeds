@@ -621,9 +621,13 @@ window.require.define({"views/app_view": function(exports, require, module) {
       _results = [];
       for (_i = 0, _len = parameters.length; _i < _len; _i++) {
         parameter = parameters[_i];
-        if (parameter.paramId === "show-new-links" && !parameter.value) {
-          this.toggleOldLinks();
-          break;
+        if (parameter.paramId === "show-new-links") {
+          if (parameter.value === "false") {
+            this.toggleOldLinks();
+            break;
+          } else {
+            _results.push(void 0);
+          }
         } else {
           _results.push(void 0);
         }
@@ -1353,7 +1357,7 @@ window.require.define({"views/templates/param": function(exports, require, modul
   buf.push('<p><label>' + escape((interp = model.name) == null ? '' : interp) + '');
    if (model.paramId == "show-new-links")
   {
-   if (model.value)
+   if (model.value == "true")
   {
   buf.push('<input');
   buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + ""), "class": ("" + (model.paramId) + "") }, {"id":true,"name":true,"class":true,"type":true,"checked":true,"value":true}));

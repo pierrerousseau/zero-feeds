@@ -43,9 +43,10 @@ module.exports = class AppView extends View
     applyParameters: (parameters) ->
         # TODO: check what to do for cozy bookmarks update
         for parameter in parameters
-            if parameter.paramId == "show-new-links" and not parameter.value
-                @toggleOldLinks()
-                break
+            if parameter.paramId == "show-new-links"
+                if parameter.value == "false"
+                    @toggleOldLinks()
+                    break
 
     afterRender: ->
         @feedsView = new FeedsView()

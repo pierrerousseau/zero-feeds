@@ -1,7 +1,7 @@
 p
     label #{model.name}
         - if (model.paramId == "show-new-links")
-            - if (model.value)
+            - if (model.value == "true")
                 input(id="#{model.paramId}",
                       name="#{model.paramId}",
                       class="#{model.paramId}",
