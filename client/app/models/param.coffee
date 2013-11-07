@@ -4,4 +4,3 @@ module.exports = class Param extends Backbone.Model
 
     isNew: () ->
         not @id?
-

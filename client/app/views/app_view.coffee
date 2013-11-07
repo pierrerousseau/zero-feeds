@@ -17,9 +17,9 @@ module.exports = class AppView extends View
         "click .icon-settings": "toggleSettings"
         "click .icon-import": "import"
         "change #feeds-file": "uploadFile"
-        
+
         "click form.new-feed .icon-add": "addFeed"
-        
+
         "click form.settings .icon-update": "updateSettings"
         "change #show-new-links": "toggleOldLinks"
 
@@ -27,9 +27,9 @@ module.exports = class AppView extends View
         "click .link .icon-more": "linkDetails"
 
     startWaiter: ($elem) ->
-        html = "<img " + 
-               "src='images/loader.gif' " + 
-               "class='main loader' " + 
+        html = "<img " +
+               "src='images/loader.gif' " +
+               "class='main loader' " +
                "alt='loading ...' />"
         $elem.append html
 
@@ -54,7 +54,7 @@ module.exports = class AppView extends View
         @feedsView.collection.fetch
             success: =>
                 @stopWaiter(@feedsView.$el)
-        
+
         @paramsView = new ParamsView()
         @startWaiter(@paramsView.$el)
         @paramsView.collection.fetch
@@ -72,18 +72,32 @@ module.exports = class AppView extends View
         $(".settings").hide()
         $(".help").hide()
 
+    hideToggled: ->
+        $(".new-feed").slideUp()
+        $(".help").slideUp()
+        $(".settings").slideUp()
+
     displayNewForm: ->
-        $(".new-feed").show()
-        $(".url-field").focus()
+        @hideToggled()
+        unless $(".new-feed").is(':visible')
+            $(".new-feed").slideDown()
+            $(".url-field").focus()
         false
 
     toggleHelp: ->
-        $(".help").toggle()
+        @hideToggled()
+        unless $(".help").is(':visible')
+            $(".help").slideDown()
         false
 
     toggleSettings: ->
-        $(".settings").toggle()
+        @hideToggled()
+        unless $(".settings").is(':visible')
+            $(".settings").slideDown()
         false
+
+    cleanAddFeedForm: ->
+        $("form.new-feed").find("input").val("")
 
     cleanAddFeedForm: ->
         $("form.new-feed").find("input").val("")
@@ -120,7 +134,7 @@ module.exports = class AppView extends View
                 checked = $("." + parameter.attributes.paramId).attr("checked")
                 parameter.attributes.value = checked != undefined
             else
-                parameter.attributes.value = 
+                parameter.attributes.value =
                     $("." + parameter.attributes.paramId).val()
             parameter.save()
 
@@ -138,10 +152,10 @@ module.exports = class AppView extends View
                 alertify.alert "link wasn't added to cozy-bookmarks"
         $.ajax(ajaxOptions)
         false
-    
+
     linkDetails: (evt) =>
         $(evt.target).parents(".link:first").find(".description").toggle()
-    
+
     addFeedFromFile: (feedObj) ->
         feed = new Feed feedObj
         @feedsView.collection.create feed,
@@ -173,7 +187,7 @@ module.exports = class AppView extends View
                 tags: [""]
                 description: description
             @addFeedFromFile feedObj
-    
+
     addFeedsFromHTMLFile: (loaded) ->
         links = loaded.find "dt a"
         for link in links
@@ -191,7 +205,7 @@ module.exports = class AppView extends View
                 tags: [tag]
                 description: description
             @addFeedFromFile feedObj
-    
+
     addFeedsFromOPMLFile: (loaded) ->
         links = loaded.find "> outline"
         for link in links
@@ -212,7 +226,7 @@ module.exports = class AppView extends View
             @addFeedsFromHTMLFile loaded
 
     isUnknownFormat: (file) ->
-        return file.type != "text/html" and file.type != "text/xml" and 
+        return file.type != "text/html" and file.type != "text/xml" and
             file.type != "text/x-opml+xml"
 
     uploadFile: (evt) ->
@@ -226,7 +240,7 @@ module.exports = class AppView extends View
         reader.readAsText(file)
 
     import: (evt) ->
-        alertify.confirm "Import opml rss file or " + 
+        alertify.confirm "Import opml rss file or " +
                          "html bookmarks file containing feeds exported by " +
                          "firefox or chrome",
             (ok) -> if ok

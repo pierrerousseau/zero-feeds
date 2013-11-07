@@ -1,22 +1,25 @@
 #content
-    input(type="file", name="feeds-file", id="feeds-file")
-    span.import
-        img(src="icons/import.png", 
-            alt="import", 
-            title="import opml rss files or html bookmarks files exported from your browser"
-            class="icon-import")
-        p.imported
-        p.importe-failed
-
     div.main-title
-        h1 My Cozy Feeds
+        input(type="file", name="feeds-file", id="feeds-file")
+        span.import
+            p.imported
+            p.importe-failed
+
+
+        .title-header
             .buttons
-                button.icon-new(title="add a feed")
+               button.icon-new(title="add a feed")
                     img(src="icons/new.png", alt="new")
                 button.icon-help(title="help")
                     img(src="icons/help.png", alt="help")
                 button.icon-settings(title="settings")
                     img(src="icons/settings.png", alt="settings")
+                button.icon-import(title="add a feed")
+                    img(src="icons/import.png", 
+                        alt="import", 
+                        title="import opml rss files or html bookmarks files exported from your browser")
+ 
+            h1 Feed Reader
         form.new-feed
             h2 Add a feed
             p
@@ -27,9 +30,6 @@
                         img(src="icons/add.png", alt="add")
         form.settings
             h2 Settings
-                .buttons
-                    button.icon-update(title="remember settings")
-                        img(src="icons/validate.png", alt="update")
             div.values
         .help
             h2 Help

@@ -1037,7 +1037,7 @@ a:focus {
   outline: none;
 }
 #content {
-  padding: 0.5em;
+  padding: 0px;
 }
 button,
 input[type=button] {
@@ -1045,21 +1045,25 @@ input[type=button] {
 }
 div.main-title {
   margin: 0;
-  padding: 0 1em;
+  padding: 0;
   background: #232323;
-  border: 1px solid #262626;
+  border: O;
 }
-div.main-title h1 {
+div.main-title .title-header {
   background: #1f1f1f;
   border-top: 1px solid #262626;
   border-bottom: 1px solid #161712;
   padding: 0.5em 0.7em;
+  margin-top: 0;
 }
-div.main-title h1 .buttons {
+div.main-title .title-header h1 {
+  margin: 5px 0;
+}
+div.main-title .title-header .buttons {
   cursor: pointer;
   float: right;
 }
-div.main-title h1 .buttons button {
+div.main-title .title-header .buttons button {
   border: none;
 }
 div.main-title form {
@@ -1069,12 +1073,12 @@ div.main-title form .buttons {
   display: inline;
 }
 div.main-title form label {
-  margin: 0.5em;
+  margin-right: 20px;
 }
 div.main-title form input {
   display: inline-block;
-  margin: 0.5em;
-  padding: 0.5em;
+  margin: 0 10px 0 0;
+  padding: 5px;
   min-width: 45%;
   background: #262626;
   border: 1px double #171717;
@@ -1086,6 +1090,11 @@ div.main-title form button {
   border: none;
   vertical-align: middle;
 }
+div.main-title .help,
+div.main-title .settings,
+div.main-title .new-feed {
+  padding: 10px 20px;
+}
 .contents {
   margin-top: 1em;
   display: table-row;
@@ -1093,7 +1102,7 @@ div.main-title form button {
 }
 .contents > div,
 .contents > ul {
-  border: 3px solid #353535;
+  border: 0;
 }
 .feeds {
   margin: 2em 0;
@@ -1136,6 +1145,7 @@ div.main-title form button {
 }
 .feeds .feed div.title {
   overflow: hidden;
+  -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   vertical-align: top;
 }
@@ -1238,7 +1248,6 @@ ul.links.show-old li.old {
 }
 .icon-import {
   cursor: pointer;
-  width: 16px;
 }
 .chromeframe { margin: 0.2em 0; background: #ccc; color: #000; padding: 0.2em 0; }
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
