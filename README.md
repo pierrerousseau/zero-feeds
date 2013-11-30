@@ -25,6 +25,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.1.4
+  * change default port (all apps with same port may disturb cozy)
 * v1.1.3
   * use of americano instead of compound
 * v1.1.2
