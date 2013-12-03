@@ -8,6 +8,15 @@
     font-family: maintext
     src: url('../fonts/district-pro-thin.otf')
 
+lightblue = #CDDDFF
+grey = #777
+blue = #47F
+red = #F47
+green = #4F7
+lightgreen = #72fa72
+flashyblue =  #27aaf2
+
+
 *
   box-sizing: border-box
 
@@ -24,6 +33,11 @@ input
     color #444
     font 300 16px Geneva, Verdana, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif
     line-height 1.2
+
+body.application, input, textarea
+    color: #bbb
+    background: none repeat scroll 0 0 rgba(40, 40, 40, 0.8)
+    padding: 0
 
 a,
 a:visited
@@ -54,7 +68,15 @@ a, span
 a, a:visited
     text-decoration: none
 
+a:visited
+    color: lightblue
+
+    &:hover
+        color: blue
+
 a:focus
     outline: none
 
+button, input[type=button]
+    background-color: inherit
 

@@ -1,48 +1,323 @@
-// UI
+#content
+    padding: 0px
 
-// Button
-.ui-button,
-a.ui-button,
-button.ui-button
-    background-color #eee
-    background-image linear-gradient(top, #fafafa, #eaeaea)
-    background-repeat repeat-x
-    border 1px solid #c9c9c9
-    border-radius 3px
-    box-shadow inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1)
-    color #777
-    font-weight bold
-    cursor pointer
-    display inline-block
-    font-size 14px
-    line-height 18px
-    text-align center
-    text-decoration none
-    text-shadow -1px -1px 0 #fff
-    transition all 0.1s linear
-    padding 5px 10px
-    vertical-align middle
+[class^="icon-"]
+a [class^="icon-"]
+.links [class^="icon-"]
+.links a [class^="icon-"]
+    border: none
+    color: lightblue
+    font-size: 24px
+    transition: 0.2s all linear
 
-    &:hover
-        color #777
-        text-decoration none
+[class^="icon-"]:hover
+a [class^="icon-"]:hover
+    color: blue
 
-    &:active,
-    &[data-state="selected"]
-        box-shadow inset 0 1px 10px rgba(0, 0, 0, 0.2)
+.active
+    color: grey
+    background: black
 
-// List
-.ui-list
-    margin 0
-    padding 0
-    list-style none
+[class^="icon-"].active:hover
+   menucolor: blue
 
-.ui-grid
-    @extend .ui-list
+.main
+    margin: 0
+    padding: 0
+    background: #2A2A2A
+    border: 0
+    margin-bottom: 2px
+    display: table-cell
+    max-width: 800px
+
+    form 
+        display: none
+        .buttons
+            display: inline
+        label
+            margin-right: 20px
+        input
+            display: inline-block
+            margin: 0 10px 0 0
+            padding: 5px
+            min-width: 45%
+            background: #363636
+            border: 1px double #171717
+
+        .url-field
+            min-width: 45%
+
+        button
+            border: 0
+            vertical-align: middle
+
+    .help
+    .settings
+    .new-feed
+        padding: 10px 20px
+
+    .save-info
+        em
+            display: none
+
+    .menu-toggle
+        display: none
+
+        button
+            border: 0
+            color: lightblue
+            margin: 5px
+
+.contents
+    margin-top: 1em
+    display: table-row
+    width: 100%
+
+
+.menu
+    display: table-cell
+    
+    border: 0
+    vertical-align: top
+    min-width: 200px
+    max-width: 300px
+    background: #1C1C1C
+    margin-top: 0
+    margin-right: 2px
+    padding: 0
+    padding-left: 2px
+
+    h1
+        margin: 5px 0
+
+    .buttons
+        margin-top: 10px
+        margin-bottom: 10px
+        cursor: pointer
+        margin-right: 0px
+
+        button
+            border: none
+            font-size: 30px
+            padding: 5px 2px
+            transition: 0.2s all linear
+
+    .icon-new
+        color: flashyblue
+        
+        &:hover
+            color: blue
+
+    .icon-new.active
+        color: grey
+
+
+.feeds
+    .tag
+        cursor: pointer
+        margin-bottom: 1em
+        padding: 5px
+        
+        button
+            border: none
+            vertical-align: middle
+
+            font-size: 16px
+            color: lightblue
+
+            &:hover
+                color: blue
+
+        &.show
+            .feed
+                display: block
+
+        .tag-header
+            white-space: nowrap
+
+    .feed
+        font-size: .9em;
+        display: none
+        cursor: pointer
+        margin: .2em
+        white-space: nowrap
+        font-family: title
+        font-weight: bold
+
+
+        .buttons
+            display: inline-block
+            vertical-align: middle
+
+        .title
+            padding: 5px
+            overflow: hidden
+            text-overflow: ellipsis
+            vertical-align: top
+            color: lightblue
+
+            a
+                color: flashyblue
+                margin: 0 .3em
+
+                &:hover
+                    color: blue
+                    text-decoration: none
+
+        .loader
+            display: none
+
+        &.loading
+            .loader
+                display: inline
+            .count
+                display: none
+
+        .delete
+            visibility: hidden
+            padding-left: 0
+
+        .spinner
+            display: inline
+
+        &:hover
+            .delete
+                visibility: visible
+
+        .delete:hover
+            color: red
+
+    .feed.show .title
+        a
+            color: lightgreen
+
+            &:hover
+                color: blue
+
+.options
+    width: 800px
+
+ul.links
+    padding: 20px 0
+    background: #232323
+    display: table-cell
+    width: 100%
+    max-width: 800px
+    vertical-align: top
+    list-style: none
+    margin-top: 1em
 
     li
-        display inline-block
-        margin-right -1px
+        padding: 10px
+        margin: 0 0px 10px 0px
+        width: 100%
 
-        &:last-child
-            margin-right 0
+        &:hover
+            background: #000
+
+        button
+            transition: 0.2s all linear
+
+        button
+        a
+            border: none
+            color: lightblue
+            font-size: 20px
+            padding: 0 5px
+            line-height: 28px
+
+        button:hover
+        a:hover
+            color: blue
+
+        .active
+            color: grey
+
+        [class^="icon-"].active:hover
+            color: blue
+
+
+        .buttons
+            display: inline-block
+            white-space: nowrap
+            padding-right: .5em
+            height: 100%
+
+            button
+                border: none
+                width: auto
+
+        .description
+            padding: .5em
+            margin: .5em
+
+            display: none
+
+            a
+                font-size: 16px
+
+        &.new
+            a:visited
+                color: #777
+
+            a:visited
+                &:hover
+                    color: blue
+
+        &.old
+            display: none
+            a
+                color: lightblue
+                text-decoration: none
+
+            a:hover
+                color: blue
+
+            a:visited
+                color: #777
+
+            a:visited
+                &:hover
+                    color: blue
+
+    &.show-old
+        li.old
+            display: list-item
+
+.help
+    display: none
+    overflow: visible
+    p
+        font-size: 20px
+
+.description
+    box-shadow: 1px 1px 2px #000
+    background: black
+
+
+    p
+        font-family: title
+        font-size: 16px
+        color: #DDD
+        padding: 10px
+
+    li
+        margin-bottom: 0
+
+#feeds-file
+    display: none
+
+.import
+    position: absolute
+    top: 1.5em
+    right: 1.5em
+    .import-failed
+        padding: 0
+        margin: 0
+    .imported
+        padding: 0
+        margin: 0
+
+.icon-import
+    cursor: pointer
+
