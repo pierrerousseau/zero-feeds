@@ -12,11 +12,7 @@ module.exports = class FeedsView extends ViewCollection
         "click .tag .icon-reload": "onReloadTagClicked"
 
     onReloadTagClicked: (evt) ->
-        target = $(evt.currentTarget).parent().parent().parent()
-        feeds  = target.find ".feed"
-
-        for feed in feeds
-            $(feed).trigger 'click'
+        @$(".feed").trigger 'click'
         false
 
     onTagClicked: (evt) ->
@@ -24,8 +20,7 @@ module.exports = class FeedsView extends ViewCollection
         feeds  = target.find ".feed"
         target.toggleClass 'active'
         target.find(".feed").toggle()
-        for feed in feeds
-            $(feed).find(".count").click()
+        $(feed).find(".count").click() for feed in feeds
         false
 
     initialize: ->

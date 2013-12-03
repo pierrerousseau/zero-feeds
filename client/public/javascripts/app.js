@@ -1259,13 +1259,7 @@ window.require.register("views/feeds_view", function(exports, require, module) {
     };
 
     FeedsView.prototype.onReloadTagClicked = function(evt) {
-      var feed, feeds, target, _i, _len;
-      target = $(evt.currentTarget).parent().parent().parent();
-      feeds = target.find(".feed");
-      for (_i = 0, _len = feeds.length; _i < _len; _i++) {
-        feed = feeds[_i];
-        $(feed).trigger('click');
-      }
+      this.$(".feed").trigger('click');
       return false;
     };
 
