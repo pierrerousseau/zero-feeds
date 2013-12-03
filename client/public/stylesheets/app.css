@@ -2038,7 +2038,6 @@ input {
 }
 a,
 a:visited {
-  color: #0086cc;
   text-decoration: none;
 }
 a:hover,
@@ -2070,7 +2069,6 @@ span {
 }
 a,
 a:visited {
-  color: #27aaf2;
   text-decoration: none;
 }
 a:focus {
@@ -2255,6 +2253,12 @@ button,
 input[type=button] {
   background-color: inherit;
 }
+a:visited {
+  color: #cdddff;
+}
+a:visited:hover {
+  color: #47f;
+}
 [class^="icon-"],
 a [class^="icon-"],
 .links [class^="icon-"],
@@ -2280,13 +2284,13 @@ a [class^="icon-"]:hover {
   menucolor: #47f;
 }
 .main {
-  width: 100%;
   margin: 0;
   padding: 0;
   background: #2a2a2a;
   border: 0;
   margin-bottom: 2px;
   display: table-cell;
+  max-width: 800px;
 }
 .main form {
   display: none;
@@ -2356,6 +2360,15 @@ a [class^="icon-"]:hover {
   -ms-transition: 0.2s all linear;
   transition: 0.2s all linear;
 }
+.menu .icon-new {
+  color: #27aaf2;
+}
+.menu .icon-new:hover {
+  color: #47f;
+}
+.menu .icon-new.active {
+  color: #777;
+}
 .feeds .tag {
   cursor: pointer;
   margin-bottom: 1em;
@@ -2383,24 +2396,28 @@ a [class^="icon-"]:hover {
   padding: 0.2em;
   margin: 0.2em;
   white-space: nowrap;
+  font-family: title;
+  font-weight: bold;
 }
 .feeds .feed .buttons {
   display: inline-block;
   vertical-align: middle;
 }
-.feeds .feed div.title {
+.feeds .feed .title {
   padding: 5px;
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   vertical-align: top;
+  color: #cdddff;
 }
-.feeds .feed div.title a {
+.feeds .feed .title a {
+  color: #27aaf2;
   margin: 0 0.3em;
 }
-.feeds .feed div.title a:hover {
+.feeds .feed .title a:hover {
+  color: #47f;
   text-decoration: none;
-  color: #72fa72;
 }
 .feeds .feed .loader {
   display: none;
@@ -2411,47 +2428,59 @@ a [class^="icon-"]:hover {
 .feeds .feed.loading .count {
   display: none;
 }
-.feeds .feed .icon-delete {
+.feeds .feed .delete,
+.feeds .feed .spinner {
   visibility: hidden;
   padding-left: 0;
 }
 .feeds .feed .icon-spin1 {
   font-size: 12px;
 }
-.feeds .feed:hover .icon-delete {
+.feeds .feed:hover .delete {
   visibility: visible;
 }
-.feeds .feed.show div.title {
-  background-color: #222;
-  -webkit-box-shadow: inset 2px 2px 2px #000;
-  box-shadow: inset 2px 2px 2px #000;
+.feeds .feed .delete:hover {
+  color: #f47;
+}
+.feeds .feed.show .title a {
+  color: #72fa72;
+}
+.feeds .feed.show .title a:hover {
+  color: #47f;
 }
 .options {
-  width: 100%;
+  width: 800px;
 }
 ul.links {
   padding: 20px 0;
   background: #232323;
   display: table-cell;
-  width: 99%;
+  width: 100%;
+  max-width: 800px;
   vertical-align: top;
   list-style: none;
   margin-top: 1em;
 }
 ul.links li {
-  padding: 1em 0.5em 0;
-  margin: 0 1em 1em 1em;
+  padding: 10px;
+  margin: 0 10px 10px 10px;
+  width: 98%;
 }
-ul.links li button,
-ul.links li a {
-  border: none;
-  color: #cdddff;
-  font-size: 24px;
+ul.links li:hover {
+  background: #000;
+}
+ul.links li button {
   -webkit-transition: 0.2s all linear;
   -moz-transition: 0.2s all linear;
   -o-transition: 0.2s all linear;
   -ms-transition: 0.2s all linear;
   transition: 0.2s all linear;
+}
+ul.links li button,
+ul.links li a {
+  border: none;
+  color: #cdddff;
+  font-size: 20px;
   padding: 0 5px;
 }
 ul.links li button:hover,

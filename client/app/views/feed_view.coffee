@@ -17,7 +17,7 @@ module.exports = class FeedView extends View
     events:
         "click": "onUpdateClicked"
         "click .count": "setUpdate"
-        "click .icon-delete": "onDeleteClicked"
+        "click .delete": "onDeleteClicked"
 
     startWaiter: () ->
         @$el.find(".icon-spin1").show()
@@ -148,18 +148,20 @@ module.exports = class FeedView extends View
 
         $("form.new-feed .url-field").val(url)
         $("form.new-feed .tags-field").val(tags)
-        $(".icon-new").click()
+
+        unless $('.new-feed').is(':visible')
+            $('.icon-new').trigger 'click'
 
     fullRemove: ->
         myTag = @$el.parents(".tag")
-        if myTag.find(".feed").length == 1
+        if myTag.find(".feed").length is 1
             myTag.remove()
 
         @destroy()
 
         $(".clone." + @model.cid).remove()
 
-        title = @$el.find(".title span").html()
+        title = @$(".title a").html()
         alertify.log "" + title + " removed and placed in form"
 
     onDeleteClicked: (evt) ->

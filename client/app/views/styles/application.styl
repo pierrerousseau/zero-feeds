@@ -18,13 +18,24 @@ body.application, input, textarea
 lightblue = #CDDDFF
 grey = #777
 blue = #47F
+red = #F47
 green = #4F7
+lightgreen = #72fa72
+flashyblue =  #27aaf2
 
 #content
     padding: 0px
 
 button, input[type=button]
     background-color: inherit
+
+a:visited
+    color: lightblue
+
+    &:hover
+        color: blue
+    
+
 
 [class^="icon-"]
 a [class^="icon-"]
@@ -47,13 +58,13 @@ a [class^="icon-"]:hover
    menucolor: blue
 
 .main
-    width: 100%
     margin: 0
     padding: 0
     background: #2A2A2A
     border: 0
     margin-bottom: 2px
     display: table-cell
+    max-width: 800px
 
     form 
         display: none
@@ -118,6 +129,16 @@ a [class^="icon-"]:hover
             padding: 5px 2px
             transition: 0.2s all linear
 
+    .icon-new
+        color: flashyblue
+        
+        &:hover
+            color: blue
+
+    .icon-new.active
+        color: grey
+
+
 .feeds
     .tag
         cursor: pointer
@@ -148,21 +169,28 @@ a [class^="icon-"]:hover
         padding: .2em
         margin: .2em
         white-space: nowrap
+        font-family: title
+        font-weight: bold
+
 
         .buttons
             display: inline-block
             vertical-align: middle
 
-        div.title
+        .title
             padding: 5px
             overflow: hidden
             text-overflow: ellipsis
             vertical-align: top
+            color: lightblue
+
             a
+                color: flashyblue
                 margin: 0 .3em
-            a:hover
-                text-decoration: none
-                color: #72fa72
+
+                &:hover
+                    color: blue
+                    text-decoration: none
 
         .loader
             display: none
@@ -173,7 +201,8 @@ a [class^="icon-"]:hover
             .count
                 display: none
 
-        .icon-delete
+        .delete
+        .spinner
             visibility: hidden
             padding-left: 0
 
@@ -181,34 +210,48 @@ a [class^="icon-"]:hover
             font-size: 12px
 
         &:hover
-            .icon-delete
+            .delete
                 visibility: visible
-    .feed.show div.title
-        background-color: #222
-        box-shadow: inset 2px 2px 2px black
+
+        .delete:hover
+            color: red
+
+    .feed.show .title
+        a
+            color: lightgreen
+
+            &:hover
+                color: blue
 
 .options
-    width: 100%
+    width: 800px
 
 ul.links
     padding: 20px 0
     background: #232323
     display: table-cell
-    width: 99%
+    width: 100%
+    max-width: 800px
     vertical-align: top
     list-style: none
     margin-top: 1em
 
     li
-        padding: 1em .5em 0
-        margin: 0 1em 1em 1em
+        padding: 10px
+        margin: 0 10px 10px 10px
+        width: 98%
+
+        &:hover
+            background: #000
+
+        button
+            transition: 0.2s all linear
 
         button
         a
             border: none
             color: lightblue
-            font-size: 24px
-            transition: 0.2s all linear
+            font-size: 20px
             padding: 0 5px
 
         button:hover

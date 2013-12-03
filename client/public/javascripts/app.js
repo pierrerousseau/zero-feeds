@@ -959,7 +959,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
     FeedView.prototype.events = {
       "click": "onUpdateClicked",
       "click .count": "setUpdate",
-      "click .icon-delete": "onDeleteClicked"
+      "click .delete": "onDeleteClicked"
     };
 
     FeedView.prototype.startWaiter = function() {
@@ -1123,7 +1123,9 @@ window.require.register("views/feed_view", function(exports, require, module) {
       tags = title.find("span").attr("tags") || "";
       $("form.new-feed .url-field").val(url);
       $("form.new-feed .tags-field").val(tags);
-      return $(".icon-new").click();
+      if (!$('.new-feed').is(':visible')) {
+        return $('.icon-new').trigger('click');
+      }
     };
 
     FeedView.prototype.fullRemove = function() {
@@ -1134,7 +1136,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
       }
       this.destroy();
       $(".clone." + this.model.cid).remove();
-      title = this.$el.find(".title span").html();
+      title = this.$(".title a").html();
       return alertify.log("" + title + " removed and placed in form");
     };
 
@@ -1302,7 +1304,7 @@ window.require.register("views/templates/feed", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><button class="icon-spin1 animate-spin">&nbsp;</button>');
+  buf.push('<div class="title"><div class="spinner">&nbsp;&nbsp;</div><span title="remove this feed and place its details on the new feed form" class="delete">x</span>');
   if ( model.title)
   {
   buf.push('<span class="count"></span><span');
@@ -1319,7 +1321,7 @@ window.require.register("views/templates/feed", function(exports, require, modul
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a></span>');
   }
-  buf.push('<button title="remove this feed and place its details on the new feed form" class="icon-delete">X</button></div>');
+  buf.push('</div>');
   }
   return buf.join("");
   };

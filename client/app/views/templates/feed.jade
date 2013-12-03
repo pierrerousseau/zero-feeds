@@ -1,5 +1,7 @@
 .title
-    button.icon-spin1.animate-spin &nbsp;
+    .spinner &nbsp;&nbsp;
+    span.delete(title="remove this feed and place its details on the new feed form")
+        | x
     if model.title
         span.count
         span(title="#{model.title}", tags="#{model.tags}")
@@ -8,5 +10,3 @@
         span.count
         span(title="#{model.url}", tags="#{model.tags}")
             a(href="#{model.url}") #{model.url}
-    button.icon-delete(title="remove this feed and place its details on the new feed form")
-        | X
