@@ -8,7 +8,7 @@ module.exports =
     'feeds/:id':
         put: feeds.update
         delete: feeds.destroy
-    'params': 
+    'params':
         get: params.all
-    'params/:id': 
+    'params/:id':
         put: params.update

@@ -20,10 +20,10 @@ module.exports = class FeedView extends View
         "click .icon-delete": "onDeleteClicked"
 
     startWaiter: () ->
-        @$el.addClass "loading"
+        @$el.find(".icon-spin1").show()
 
     stopWaiter: () ->
-        @$el.removeClass "loading"
+        @$el.find(".icon-spin1").hide()
 
     addToTag: (tag) ->
         tmpl = tagTemplate
@@ -60,10 +60,10 @@ module.exports = class FeedView extends View
                 success: =>
                     @stopWaiter()
                     @setCount()
-                    setTimeout _.bind(@setUpdate, @), 
+                    setTimeout _.bind(@setUpdate, @),
                          ((1 + Math.floor(Math.random()*14)) * 60000)
                 error: =>
-                    setTimeout _.bind(@setUpdate, @), 
+                    setTimeout _.bind(@setUpdate, @),
                          ((11 + Math.floor(Math.random()*14)) * 60000)
                     @stopWaiter()
         false
@@ -87,15 +87,15 @@ module.exports = class FeedView extends View
         title = $.trim(@model.attributes.title)
         if title
             title.replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g,
-                          '');
+                          '')
         else
             "link" + @model.cid
 
     renderXml: ->
         withCozyBookmarks = $("#cozy-bookmarks-name").val()
-        
+
         tmpl   = linkTemplate
-        
+
         links  = @model.links
             "feedClass": @feedClass()
         if not links.length
@@ -124,6 +124,7 @@ module.exports = class FeedView extends View
                 alertify.alert "Can't parse feed, please check feed address." +
                                "no redirection, valid feed, ..."
                 @stopWaiter()
+            $allThat.addClass "show"
             @model.save { "title": title },
                 success: =>
                     @renderXml()
@@ -131,7 +132,6 @@ module.exports = class FeedView extends View
                     last  = @model.last
                     @model.save { "title": title, "last": last }
                     $allThat.find("a").html title
-                    $allThat.addClass "show"
                     alertify.log "" + title + " reloaded"
                     @stopWaiter()
                 error: =>

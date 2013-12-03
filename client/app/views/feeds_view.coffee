@@ -15,13 +15,14 @@ module.exports = class FeedsView extends ViewCollection
         feeds = $(evt.currentTarget).parents("div:first").find ".feed"
         feeds.show () ->
             $this = $(this)
-            if not $this.hasClass("loading")
-                $this.click()
+            #if not $this.hasClass("loading")
+            $this.click()
         false
 
     onTagClicked: (evt) ->
         target = $(evt.currentTarget)
         feeds  = target.find ".feed"
+        target.toggleClass 'active'
         target.find(".feed").toggle()
         for feed in feeds
             $(feed).find(".count").click()
@@ -29,7 +30,7 @@ module.exports = class FeedsView extends ViewCollection
 
     initialize: ->
         @collection = new FeedCollection @
-    
+
     renderAll: ->
         @collection.models.reverse()
         super()

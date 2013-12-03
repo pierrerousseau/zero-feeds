@@ -1,5 +1,13 @@
 // Base Styles
 
+@font-face
+    font-family: title
+    src: url('/fonts/earthbound.otf')
+
+@font-face
+    font-family: maintext
+    src: url('/fonts/district-pro-thin.otf')
+
 *
   box-sizing: border-box
 
@@ -24,3 +32,30 @@ a:visited
 
     &:hover
         text-decoration underline
+
+h1, h2, h3, h4
+    font-family: title
+    padding: 10px
+
+h2
+h4
+    padding: 0
+
+h5
+    font-family: title
+    font-size: 16px
+
+p
+    font-family: maintext
+    font-size: 20px
+
+a, span
+    font-family: title
+
+a, a:visited
+    color: #27aaf2
+    text-decoration: none
+a:focus
+    outline: none
+
+

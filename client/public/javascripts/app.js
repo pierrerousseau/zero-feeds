@@ -582,7 +582,7 @@ window.require.register("views/app_view", function(exports, require, module) {
       "click .icon-import": "import",
       "change #feeds-file": "uploadFile",
       "click form.new-feed .icon-add": "addFeed",
-      "click form.settings .icon-update": "updateSettings",
+      "keyup #cozy-bookmarks-name": "updateSettings",
       "change #show-new-links": "toggleOldLinks",
       "click .link .to-cozy-bookmarks": "toCozyBookMarks",
       "click .link .icon-more": "linkDetails"
@@ -600,6 +600,7 @@ window.require.register("views/app_view", function(exports, require, module) {
 
     AppView.prototype.toggleOldLinks = function(evt) {
       $("ul.links").toggleClass("show-old");
+      this.updateSettings();
       return false;
     };
 
@@ -657,12 +658,14 @@ window.require.register("views/app_view", function(exports, require, module) {
     AppView.prototype.hideToggled = function() {
       $(".new-feed").slideUp();
       $(".help").slideUp();
-      return $(".settings").slideUp();
+      $(".settings").slideUp();
+      return $(".menu .buttons .active").removeClass('active');
     };
 
     AppView.prototype.displayNewForm = function() {
       this.hideToggled();
       if (!$(".new-feed").is(':visible')) {
+        $(".menu .buttons .icon-new").addClass('active');
         $(".new-feed").slideDown();
         $(".url-field").focus();
       }
@@ -672,6 +675,7 @@ window.require.register("views/app_view", function(exports, require, module) {
     AppView.prototype.toggleHelp = function() {
       this.hideToggled();
       if (!$(".help").is(':visible')) {
+        $(".menu .buttons .icon-help").addClass('active');
         $(".help").slideDown();
       }
       return false;
@@ -680,6 +684,7 @@ window.require.register("views/app_view", function(exports, require, module) {
     AppView.prototype.toggleSettings = function() {
       this.hideToggled();
       if (!$(".settings").is(':visible')) {
+        $(".menu .buttons .icon-cog").addClass('active');
         $(".settings").slideDown();
       }
       return false;
@@ -743,6 +748,13 @@ window.require.register("views/app_view", function(exports, require, module) {
         }
         parameter.save();
       }
+      $('.save-info em').fadeIn(200);
+      if (this.settingsSaveTimer != null) {
+        clearTimeout(this.settingsSaveTimer);
+      }
+      this.settingsSaveTimer = setTimeout(function() {
+        return $('.save-info em').fadeOut(200);
+      }, 3000);
       return false;
     };
 
@@ -768,7 +780,8 @@ window.require.register("views/app_view", function(exports, require, module) {
     };
 
     AppView.prototype.linkDetails = function(evt) {
-      return $(evt.target).parents(".link:first").find(".description").toggle();
+      $(evt.target).parents(".link:first").find(".icon-more").toggleClass('active');
+      return $(evt.target).parents(".link:first").find(".description").slideToggle();
     };
 
     AppView.prototype.addFeedFromFile = function(feedObj) {
@@ -950,11 +963,11 @@ window.require.register("views/feed_view", function(exports, require, module) {
     };
 
     FeedView.prototype.startWaiter = function() {
-      return this.$el.addClass("loading");
+      return this.$el.find(".icon-spin1").show();
     };
 
     FeedView.prototype.stopWaiter = function() {
-      return this.$el.removeClass("loading");
+      return this.$el.find(".icon-spin1").hide();
     };
 
     FeedView.prototype.addToTag = function(tag) {
@@ -1076,6 +1089,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
           alertify.alert("Can't parse feed, please check feed address." + "no redirection, valid feed, ...");
           this.stopWaiter();
         }
+        $allThat.addClass("show");
         this.model.save({
           "title": title
         }, {
@@ -1089,7 +1103,6 @@ window.require.register("views/feed_view", function(exports, require, module) {
               "last": last
             });
             $allThat.find("a").html(title);
-            $allThat.addClass("show");
             alertify.log("" + title + " reloaded");
             return _this.stopWaiter();
           },
@@ -1179,9 +1192,7 @@ window.require.register("views/feeds_view", function(exports, require, module) {
       feeds.show(function() {
         var $this;
         $this = $(this);
-        if (!$this.hasClass("loading")) {
-          return $this.click();
-        }
+        return $this.click();
       });
       return false;
     };
@@ -1190,6 +1201,7 @@ window.require.register("views/feeds_view", function(exports, require, module) {
       var feed, feeds, target, _i, _len;
       target = $(evt.currentTarget);
       feeds = target.find(".feed");
+      target.toggleClass('active');
       target.find(".feed").toggle();
       for (_i = 0, _len = feeds.length; _i < _len; _i++) {
         feed = feeds[_i];
@@ -1290,7 +1302,7 @@ window.require.register("views/templates/feed", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="buttons"><button title="remove this feed and place its details on the new feed form" class="icon-delete"><img src="icons/delete.png" alt="delete"/></button><img src="images/loader.gif" alt="loading ..." class="loader"/></div>');
+  buf.push('<div class="title"><button class="icon-spin1 animate-spin">&nbsp;</button>');
   if ( model.title)
   {
   buf.push('<span class="count"></span><span');
@@ -1307,7 +1319,7 @@ window.require.register("views/templates/feed", function(exports, require, modul
   buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
   buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a></span>');
   }
-  buf.push('</div>');
+  buf.push('<button title="remove this feed and place its details on the new feed form" class="icon-delete">X</button></div>');
   }
   return buf.join("");
   };
@@ -1318,7 +1330,7 @@ window.require.register("views/templates/home", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><div class="main-title"><input type="file" name="feeds-file" id="feeds-file"/><span class="import"><p class="imported"></p><p class="importe-failed"></p></span><div class="title-header"><div class="buttons"><button title="add a feed" class="icon-new"><img src="icons/new.png" alt="new"/></button><button title="help" class="icon-help"><img src="icons/help.png" alt="help"/></button><button title="settings" class="icon-settings"><img src="icons/settings.png" alt="settings"/></button><button title="add a feed" class="icon-import"><img src="icons/import.png" alt="import" title="import opml rss files or html bookmarks files exported from your browser"/></button></div><h1>Feed Reader</h1></div><form class="new-feed"><h2>Add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add"><img src="icons/add.png" alt="add"/></button></span></p></form><form class="settings"><h2>Settings</h2><div class="values"></div></form><div class="help"><h2>Help</h2><h4>This is a tool to follow your rss/atom feeds.</h4><p> <h5>How do I start ? </h5>Please put your mouse over the icons that you see, a tooltip should help you.</p><p> <h5>I\'m not sure, how to add a feed ? </h5>Just click on the top right "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the right panel.</p><p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5>Just click on red cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><p><h5>What are these "tags" ?</h5>They will be used to classify your feeds in the left panel.\nThe "reload all feeds" icon on the left of a tag name will display all feeds having this tag and the new items of these feeds.</p><p><h5>I don\'t want to reload all the feeds of a tag.</h5>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing it means that there is no new link to help you to procrastinate.</p><p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. If you prefer this behavior and don\'t want to click there every time, click on the "update" button of the settings panel.</p><p> <h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5>You are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><p> <h5>Now that the feed form, the settings panel and this help are displayed, I have to scroll to see my links.</h5>Just click on "My Cozy Feeds" on the top left and all should be fine.</p><p> <h5>It still doesn\'t work !</h5>Please <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><p> <h5>I want to use only free softwares.</h5><a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div><div class="contents"><div class="feeds"></div><ul class="links"></ul></div></div>');
+  buf.push('<div id="content"><div class="contents"><div class="menu"><div class="clearfix"><input type="file" name="feeds-file" id="feeds-file"/><span class="import"><p class="imported"></p><p class="imported-failed"></p></span></div><div class="buttons"><button title="add a feed" class="icon-new icon-plus-circled"></button><button title="help" class="icon-help"></button><button title="settings" class="icon-settings icon-cog"></button><button title="import opml rss files or html bookmarks files exported from your browser" class="icon-import icon-upload"></button></div><div style="padding-top: 20px" class="feeds"></div></div><div class="main"><div class="options"><form class="new-feed"><h2>Add a feed</h2><p><input placeholder="url" class="url-field"/><input placeholder="tags, separated by \',\'" class="tags-field"/><span class="buttons"><button title="add" class="icon-add icon-plus-circled"></button></span></p></form><form class="settings"><h2>Settings</h2><div class="values"></div><div class="save-info"><em>Your parameter changes are saved.</em></div></form><div class="help"><h2>Help</h2><h4>This is a tool to follow your rss/atom feeds.</h4><h5>How do I start ? </h5><p> \nPlease put your mouse over the icons that you see, a tooltip should help you.</p><h5>I\'m not sure, how to add a feed ? </h5><p> \nJust click on the top right "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the right panel.</p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5><p>Just click on red cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h5>What are these "tags" ?</h5><p>They will be used to classify your feeds in the left panel.\nThe "reload all feeds" icon on the left of a tag name will display all feeds having this tag and the new items of these feeds.</p><h5>I don\'t want to reload all the feeds of a tag.</h5><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing it means that there is no new link to help you to procrastinate.</p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5><p>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. If you prefer this behavior and don\'t want to click there every time, click on the "update" button of the settings panel.</p><h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5><p> \nYou are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><h5>Now that the feed form, the settings panel and this help are displayed, I have to scroll to see my links.</h5><p> \nJust click on "My Cozy Feeds" on the top left and all should be fine.</p><h5>It still doesn\'t work !</h5><p> \nPlease <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h5>I want to use only free softwares.</h5><p> <a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div><ul class="links"></ul></div></div></div>');
   }
   return buf.join("");
   };
@@ -1332,13 +1344,13 @@ window.require.register("views/templates/link", function(exports, require, modul
   buf.push('<li');
   buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
   buf.push('><div class="buttons"><a');
-  buf.push(attrs({ 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
-  buf.push('><button title="send to tweeter" class="to-tweeter"><img src="icons/tweet.png" alt="tweet"/></button></a>');
+  buf.push(attrs({ 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), 'title':("send to tweeter"), "class": ('to-tweeter') + ' ' + ('icon-twitter') }, {"href":true,"target":true,"title":true}));
+  buf.push('></a>');
   if ( toCozyBookMarks)
   {
-  buf.push('<button title="send to cozy bookmarks" class="to-cozy-bookmarks"><img src="icons/cozy-bookmarks.png" alt="bookmark"/></button>');
+  buf.push('<button title="send to cozy bookmarks" class="to-cozy-bookmarks icon-bookmark-empty"></button>');
   }
-  buf.push('<button title="view description" class="icon-more"><img src="icons/more.png" alt="more"/></button></div><a');
+  buf.push('<button title="view description" class="icon-more icon-doc-text-inv"></button></div><a');
   buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
   buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
   }
@@ -1386,7 +1398,7 @@ window.require.register("views/templates/tag", function(exports, require, module
   var interp;
   buf.push('<div');
   buf.push(attrs({ "class": ("tag " + (name) + "") }, {"class":true}));
-  buf.push('><div class="tag-header"><span class="buttons"><button title="reload all feeds" class="icon-reload"><img src="icons/refresh.png" alt="refresh"/></button></span><span class="name">' + escape((interp = name) == null ? '' : interp) + '</span></div></div>');
+  buf.push('><div class="tag-header"><span class="buttons"><button title="reload all feeds" class="icon-reload icon-cw"></button></span><button class="name">' + escape((interp = name) == null ? '' : interp) + '</button></div></div>');
   }
   return buf.join("");
   };

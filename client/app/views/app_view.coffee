@@ -20,7 +20,7 @@ module.exports = class AppView extends View
 
         "click form.new-feed .icon-add": "addFeed"
 
-        "click form.settings .icon-update": "updateSettings"
+        "keyup #cozy-bookmarks-name": "updateSettings"
         "change #show-new-links": "toggleOldLinks"
 
         "click .link .to-cozy-bookmarks": "toCozyBookMarks"
@@ -38,13 +38,14 @@ module.exports = class AppView extends View
 
     toggleOldLinks: (evt) ->
         $("ul.links").toggleClass("show-old")
+        @updateSettings()
         false
 
     applyParameters: (parameters) ->
         # TODO: check what to do for cozy bookmarks update
         for parameter in parameters
-            if parameter.paramId == "show-new-links"
-                if parameter.value == "false"
+            if parameter.paramId is "show-new-links"
+                if parameter.value is "false"
                     @toggleOldLinks()
                     break
 
@@ -76,10 +77,12 @@ module.exports = class AppView extends View
         $(".new-feed").slideUp()
         $(".help").slideUp()
         $(".settings").slideUp()
+        $(".menu .buttons .active").removeClass 'active'
 
     displayNewForm: ->
         @hideToggled()
         unless $(".new-feed").is(':visible')
+            $(".menu .buttons .icon-new").addClass 'active'
             $(".new-feed").slideDown()
             $(".url-field").focus()
         false
@@ -87,12 +90,14 @@ module.exports = class AppView extends View
     toggleHelp: ->
         @hideToggled()
         unless $(".help").is(':visible')
+            $(".menu .buttons .icon-help").addClass 'active'
             $(".help").slideDown()
         false
 
     toggleSettings: ->
         @hideToggled()
         unless $(".settings").is(':visible')
+            $(".menu .buttons .icon-cog").addClass 'active'
             $(".settings").slideDown()
         false
 
@@ -130,13 +135,18 @@ module.exports = class AppView extends View
 
     updateSettings: (evt) =>
         for parameter in @paramsView.collection.models
-            if parameter.attributes.paramId == "show-new-links"
+            if parameter.attributes.paramId is "show-new-links"
                 checked = $("." + parameter.attributes.paramId).attr("checked")
-                parameter.attributes.value = checked != undefined
+                parameter.attributes.value = checked isnt undefined
             else
                 parameter.attributes.value =
                     $("." + parameter.attributes.paramId).val()
             parameter.save()
+        $('.save-info em').fadeIn 200
+        clearTimeout @settingsSaveTimer if @settingsSaveTimer?
+        @settingsSaveTimer = setTimeout ->
+            $('.save-info em').fadeOut 200
+        , 3000
 
         false
 
@@ -154,7 +164,9 @@ module.exports = class AppView extends View
         false
 
     linkDetails: (evt) =>
-        $(evt.target).parents(".link:first").find(".description").toggle()
+        $(evt.target).parents(".link:first")
+            .find(".icon-more").toggleClass 'active'
+        $(evt.target).parents(".link:first").find(".description").slideToggle()
 
     addFeedFromFile: (feedObj) ->
         feed = new Feed feedObj
@@ -226,8 +238,8 @@ module.exports = class AppView extends View
             @addFeedsFromHTMLFile loaded
 
     isUnknownFormat: (file) ->
-        return file.type != "text/html" and file.type != "text/xml" and
-            file.type != "text/x-opml+xml"
+        return file.type isnt "text/html" and file.type isnt "text/xml" and
+            file.type isnt "text/x-opml+xml"
 
     uploadFile: (evt) ->
         file = evt.target.files[0]
