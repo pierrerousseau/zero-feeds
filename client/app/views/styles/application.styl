@@ -82,8 +82,9 @@ a [class^="icon-"]:hover
 
         .url-field
             min-width: 45%
+
         button
-            border: none
+            border: 0
             vertical-align: middle
 
     .help
@@ -94,6 +95,14 @@ a [class^="icon-"]:hover
     .save-info
         em
             display: none
+
+    .menu-toggle
+        display: none
+
+        button
+            border: 0
+            color: lightblue
+            margin: 5px
 
 .contents
     margin-top: 1em
@@ -253,6 +262,7 @@ ul.links
             color: lightblue
             font-size: 20px
             padding: 0 5px
+            line-height: 28px
 
         button:hover
         a:hover
@@ -265,11 +275,11 @@ ul.links
             color: blue
 
 
-
         .buttons
             display: inline-block
             white-space: nowrap
             padding-right: .5em
+            height: 100%
 
             button
                 border: none
@@ -348,3 +358,34 @@ ul.links
 
 .icon-import
     cursor: pointer
+
+@media (max-width: 1000px)
+    .main
+        width: 100%
+
+        form
+            input
+            .url-field
+                width: 90%
+
+    .options
+        display: block
+        max-width: 100%
+        width: 100%
+
+@media (max-width: 600px)
+    .menu
+        display: none
+        max-width: 200px
+
+    .main
+        .menu-toggle
+            display: table-cell
+            display: block
+            background: #1C1C1C
+            width: 100%
+
+    ul.links
+        li.link
+            a
+                font-size: 16px

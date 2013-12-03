@@ -17,6 +17,7 @@ module.exports = class AppView extends View
         "click .icon-settings": "toggleSettings"
         "click .icon-import": "import"
         "change #feeds-file": "uploadFile"
+        "click .menu-toggle button": "toggleMenu"
 
         "click form.new-feed .icon-add": "addFeed"
 
@@ -257,3 +258,11 @@ module.exports = class AppView extends View
                          "firefox or chrome",
             (ok) -> if ok
                 $("#feeds-file").click()
+
+    toggleMenu: ->
+        unless $(".menu").is ":visible"
+            $(".menu").attr 'style', 'display: table-cell'
+            $(".menu-toggle button").html "hide menu"
+        else
+            $(".menu").attr 'style', 'display: none'
+            $(".menu-toggle button").html "show menu"
