@@ -132,6 +132,8 @@ window.require.register("collections/param_collection", function(exports, requir
   
 });
 window.require.register("initialize", function(exports, require, module) {
+  var initializeJQueryExtensions;
+
   if (this.CozyApp == null) {
     this.CozyApp = {};
   }
@@ -155,12 +157,68 @@ window.require.register("initialize", function(exports, require, module) {
   $(function() {
     var AppView;
     require('../lib/app_helpers');
+    initializeJQueryExtensions();
     CozyApp.Views.appView = new (AppView = require('views/app_view'));
     CozyApp.Views.appView.render();
     return Backbone.history.start({
       pushState: true
     });
   });
+
+  initializeJQueryExtensions = function() {
+    return $.fn.spin = function(opts, color) {
+      var presets;
+      presets = {
+        tiny: {
+          lines: 8,
+          length: 1,
+          width: 1,
+          radius: 3
+        },
+        small: {
+          lines: 8,
+          length: 1,
+          width: 2,
+          radius: 5
+        },
+        large: {
+          lines: 10,
+          length: 8,
+          width: 4,
+          radius: 8
+        }
+      };
+      if (Spinner) {
+        return this.each(function() {
+          var $this, spinner;
+          $this = $(this);
+          spinner = $this.data("spinner");
+          if (spinner != null) {
+            spinner.stop();
+            return $this.data("spinner", null);
+          } else if (opts !== false) {
+            if (typeof opts === "string") {
+              opts = presets[opts];
+            }
+            if (opts == null) {
+              opts = {};
+            }
+            opts.color = $this.css('color');
+            if (color) {
+              opts.color = color;
+            }
+            console.log(opts.color);
+            spinner = new Spinner(opts);
+            spinner.spin(this);
+            return $this.data("spinner", spinner);
+          }
+        });
+      } else {
+        console.log("Spinner class not available.");
+        return null;
+      }
+    };
+  };
   
 });
 window.require.register("lib/app_helpers", function(exports, require, module) {
@@ -974,11 +1032,11 @@ window.require.register("views/feed_view", function(exports, require, module) {
     };
 
     FeedView.prototype.startWaiter = function() {
-      return this.$el.find(".icon-spin1").show();
+      return this.$el.find(".spinner").spin('tiny', 'white');
     };
 
     FeedView.prototype.stopWaiter = function() {
-      return this.$el.find(".icon-spin1").hide();
+      return this.$el.find(".spinner").spin(false);
     };
 
     FeedView.prototype.addToTag = function(tag) {
@@ -1099,6 +1157,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
           error = _error;
           alertify.alert("Can't parse feed, please check feed address." + "no redirection, valid feed, ...");
           this.stopWaiter();
+          return;
         }
         $allThat.addClass("show");
         this.model.save({
@@ -1200,13 +1259,13 @@ window.require.register("views/feeds_view", function(exports, require, module) {
     };
 
     FeedsView.prototype.onReloadTagClicked = function(evt) {
-      var feeds;
-      feeds = $(evt.currentTarget).parents("div:first").find(".feed");
-      feeds.show(function() {
-        var $this;
-        $this = $(this);
-        return $this.click();
-      });
+      var feed, feeds, target, _i, _len;
+      target = $(evt.currentTarget).parent().parent().parent();
+      feeds = target.find(".feed");
+      for (_i = 0, _len = feeds.length; _i < _len; _i++) {
+        feed = feeds[_i];
+        $(feed).trigger('click');
+      }
       return false;
     };
 
@@ -1315,7 +1374,7 @@ window.require.register("views/templates/feed", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="spinner">&nbsp;&nbsp;</div><span title="remove this feed and place its details on the new feed form" class="delete">x</span>');
+  buf.push('<div class="title"><div class="spinner">&nbsp;&nbsp;&nbsp;</div><span title="remove this feed and place its details on the new feed form" class="delete">x</span>');
   if ( model.title)
   {
   buf.push('<span class="count"></span><span');

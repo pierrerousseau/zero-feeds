@@ -2401,7 +2401,6 @@ a [class^="icon-"]:hover {
   font-size: 0.9em;
   display: none;
   cursor: pointer;
-  padding: 0.2em;
   margin: 0.2em;
   white-space: nowrap;
   font-family: title;
@@ -2436,13 +2435,12 @@ a [class^="icon-"]:hover {
 .feeds .feed.loading .count {
   display: none;
 }
-.feeds .feed .delete,
-.feeds .feed .spinner {
+.feeds .feed .delete {
   visibility: hidden;
   padding-left: 0;
 }
-.feeds .feed .icon-spin1 {
-  font-size: 12px;
+.feeds .feed .spinner {
+  display: inline;
 }
 .feeds .feed:hover .delete {
   visibility: visible;

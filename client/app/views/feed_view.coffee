@@ -20,17 +20,17 @@ module.exports = class FeedView extends View
         "click .delete": "onDeleteClicked"
 
     startWaiter: () ->
-        @$el.find(".icon-spin1").show()
+        @$el.find(".spinner").spin 'tiny', 'white'
 
     stopWaiter: () ->
-        @$el.find(".icon-spin1").hide()
+        @$el.find(".spinner").spin false
 
     addToTag: (tag) ->
         tmpl = tagTemplate
         tag  = tag or "untagged"
 
         tagPlace = $ "." + tag
-        if tagPlace.length == 0
+        if tagPlace.length is 0
             tagPlace = $(tmpl({ "name": tag }))
             $("#content .feeds").prepend tagPlace
 
@@ -124,6 +124,7 @@ module.exports = class FeedView extends View
                 alertify.alert "Can't parse feed, please check feed address." +
                                "no redirection, valid feed, ..."
                 @stopWaiter()
+                return
             $allThat.addClass "show"
             @model.save { "title": title },
                 success: =>
