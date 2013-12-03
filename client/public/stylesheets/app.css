@@ -698,8 +698,8 @@ a [class^="icon-"]:hover {
 .main {
   margin: 0;
   padding: 0;
-  background: #2a2a2a;
   border: 0;
+  background: #2a2a2a;
   margin-bottom: 2px;
   display: table-cell;
   max-width: 800px;
@@ -715,11 +715,11 @@ a [class^="icon-"]:hover {
 }
 .main form input {
   display: inline-block;
-  margin: 0 10px 0 0;
   padding: 5px;
+  margin: 0 10px 0 0;
   min-width: 45%;
-  background: #363636;
   border: 1px double #171717;
+  background: #363636;
 }
 .main form .url-field {
   min-width: 45%;
@@ -745,21 +745,21 @@ a [class^="icon-"]:hover {
   margin: 5px;
 }
 .contents {
-  margin-top: 1em;
   display: table-row;
+  margin-top: 1em;
   width: 100%;
 }
 .menu {
   display: table-cell;
-  border: 0;
-  vertical-align: top;
-  min-width: 200px;
-  max-width: 300px;
-  background: #1c1c1c;
-  margin-top: 0;
-  margin-right: 2px;
   padding: 0;
   padding-left: 2px;
+  margin-top: 0;
+  margin-right: 2px;
+  border: 0;
+  min-width: 200px;
+  max-width: 300px;
+  vertical-align: top;
+  background: #1c1c1c;
 }
 .menu h1 {
   margin: 5px 0;
@@ -767,13 +767,13 @@ a [class^="icon-"]:hover {
 .menu .buttons {
   margin-top: 10px;
   margin-bottom: 10px;
-  cursor: pointer;
   margin-right: 0px;
+  cursor: pointer;
 }
 .menu .buttons button {
+  padding: 5px 2px;
   border: none;
   font-size: 30px;
-  padding: 5px 2px;
   -webkit-transition: 0.2s all linear;
   -moz-transition: 0.2s all linear;
   -o-transition: 0.2s all linear;
@@ -791,8 +791,8 @@ a [class^="icon-"]:hover {
 }
 .feeds .tag {
   cursor: pointer;
-  margin-bottom: 1em;
   padding: 5px;
+  margin-bottom: 1em;
 }
 .feeds .tag button {
   border: none;
@@ -810,13 +810,13 @@ a [class^="icon-"]:hover {
   white-space: nowrap;
 }
 .feeds .feed {
-  font-size: 0.9em;
   display: none;
   cursor: pointer;
   margin: 0.2em;
   white-space: nowrap;
   font-family: title;
   font-weight: bold;
+  font-size: 0.9em;
 }
 .feeds .feed .buttons {
   display: inline-block;
@@ -870,14 +870,13 @@ a [class^="icon-"]:hover {
   width: 800px;
 }
 ul.links {
-  padding: 20px 0;
-  background: #232323;
   display: table-cell;
-  width: 100%;
-  max-width: 800px;
-  vertical-align: top;
-  list-style: none;
+  padding: 20px 0;
   margin-top: 1em;
+  width: 800px;
+  list-style: none;
+  vertical-align: top;
+  background: #232323;
 }
 ul.links li {
   padding: 10px;
@@ -896,10 +895,10 @@ ul.links li button {
 }
 ul.links li button,
 ul.links li a {
+  padding: 0 5px;
   border: none;
   color: #cdddff;
   font-size: 20px;
-  padding: 0 5px;
   line-height: 28px;
 }
 ul.links li button:hover,
@@ -914,8 +913,8 @@ ul.links li [class^="icon-"].active:hover {
 }
 ul.links li .buttons {
   display: inline-block;
-  white-space: nowrap;
   padding-right: 0.5em;
+  white-space: nowrap;
   height: 100%;
 }
 ul.links li .buttons button {
@@ -923,9 +922,9 @@ ul.links li .buttons button {
   width: auto;
 }
 ul.links li .description {
+  display: none;
   padding: 0.5em;
   margin: 0.5em;
-  display: none;
 }
 ul.links li .description a {
   font-size: 16px;
@@ -968,10 +967,10 @@ ul.links.show-old li.old {
   background: #000;
 }
 .description p {
-  font-family: title;
-  font-size: 16px;
   color: #ddd;
   padding: 10px;
+  font-family: title;
+  font-size: 16px;
 }
 .description li {
   margin-bottom: 0;
@@ -1079,13 +1078,14 @@ cursor not-allowed {
   .main form .url-field {
     width: 90%;
   }
-  .options {
+  .options,
+  ul.links {
     display: block;
     max-width: 100%;
     width: 100%;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .menu {
     display: none;
     max-width: 200px;
