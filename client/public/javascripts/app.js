@@ -61,25 +61,20 @@
     throw new Error('Cannot find module "' + name + '"');
   };
 
-  var define = function(bundle, fn) {
-    if (typeof bundle === 'object') {
-      for (var key in bundle) {
-        if (has(bundle, key)) {
-          modules[key] = bundle[key];
-        }
+  var define = function(bundle) {
+    for (var key in bundle) {
+      if (has(bundle, key)) {
+        modules[key] = bundle[key];
       }
-    } else {
-      modules[bundle] = fn;
     }
-  };
+  }
 
   globals.require = require;
   globals.require.define = define;
-  globals.require.register = define;
   globals.require.brunch = true;
 })();
 
-window.require.register("collections/feed_collection", function(exports, require, module) {
+window.require.define({"collections/feed_collection": function(exports, require, module) {
   var Feed, FeedCollection,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -87,6 +82,7 @@ window.require.register("collections/feed_collection", function(exports, require
   Feed = require('../models/feed');
 
   module.exports = FeedCollection = (function(_super) {
+
     __extends(FeedCollection, _super);
 
     FeedCollection.prototype.model = Feed;
@@ -104,8 +100,9 @@ window.require.register("collections/feed_collection", function(exports, require
 
   })(Backbone.Collection);
   
-});
-window.require.register("collections/param_collection", function(exports, require, module) {
+}});
+
+window.require.define({"collections/param_collection": function(exports, require, module) {
   var Param, ParamCollection,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -113,6 +110,7 @@ window.require.register("collections/param_collection", function(exports, requir
   Param = require('../models/param');
 
   module.exports = ParamCollection = (function(_super) {
+
     __extends(ParamCollection, _super);
 
     ParamCollection.prototype.model = Param;
@@ -130,27 +128,28 @@ window.require.register("collections/param_collection", function(exports, requir
 
   })(Backbone.Collection);
   
-});
-window.require.register("initialize", function(exports, require, module) {
-  var initializeJQueryExtensions;
+}});
 
-  if (this.CozyApp == null) {
+window.require.define({"initialize": function(exports, require, module) {
+  var initializeJQueryExtensions, _ref, _ref1, _ref2, _ref3, _ref4;
+
+  if ((_ref = this.CozyApp) == null) {
     this.CozyApp = {};
   }
 
-  if (CozyApp.Routers == null) {
+  if ((_ref1 = CozyApp.Routers) == null) {
     CozyApp.Routers = {};
   }
 
-  if (CozyApp.Views == null) {
+  if ((_ref2 = CozyApp.Views) == null) {
     CozyApp.Views = {};
   }
 
-  if (CozyApp.Models == null) {
+  if ((_ref3 = CozyApp.Models) == null) {
     CozyApp.Models = {};
   }
 
-  if (CozyApp.Collections == null) {
+  if ((_ref4 = CozyApp.Collections) == null) {
     CozyApp.Collections = {};
   }
 
@@ -220,8 +219,10 @@ window.require.register("initialize", function(exports, require, module) {
     };
   };
   
-});
-window.require.register("lib/app_helpers", function(exports, require, module) {
+}});
+
+window.require.define({"lib/app_helpers": function(exports, require, module) {
+  
   (function() {
     return (function() {
       var console, dummy, method, methods, _results;
@@ -229,8 +230,8 @@ window.require.register("lib/app_helpers", function(exports, require, module) {
       method = void 0;
       dummy = function() {};
       methods = 'assert,count,debug,dir,dirxml,error,exception,\
-                   group,groupCollapsed,groupEnd,info,log,markTimeline,\
-                   profile,profileEnd,time,timeEnd,trace,warn'.split(',');
+                     group,groupCollapsed,groupEnd,info,log,markTimeline,\
+                     profile,profileEnd,time,timeEnd,trace,warn'.split(',');
       _results = [];
       while (method = methods.pop()) {
         _results.push(console[method] = console[method] || dummy);
@@ -239,18 +240,19 @@ window.require.register("lib/app_helpers", function(exports, require, module) {
     })();
   })();
   
-});
-window.require.register("lib/view", function(exports, require, module) {
-  var View, _ref,
+}});
+
+window.require.define({"lib/view": function(exports, require, module) {
+  var View,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   module.exports = View = (function(_super) {
+
     __extends(View, _super);
 
     function View() {
-      _ref = View.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return View.__super__.constructor.apply(this, arguments);
     }
 
     View.prototype.tagName = 'section';
@@ -262,9 +264,9 @@ window.require.register("lib/view", function(exports, require, module) {
     };
 
     View.prototype.getRenderData = function() {
-      var _ref1;
+      var _ref;
       return {
-        model: (_ref1 = this.model) != null ? _ref1.toJSON() : void 0
+        model: (_ref = this.model) != null ? _ref.toJSON() : void 0
       };
     };
 
@@ -290,9 +292,10 @@ window.require.register("lib/view", function(exports, require, module) {
 
   })(Backbone.View);
   
-});
-window.require.register("lib/view_collection", function(exports, require, module) {
-  var View, ViewCollection, methods, _ref,
+}});
+
+window.require.define({"lib/view_collection": function(exports, require, module) {
+  var View, ViewCollection, methods,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -300,13 +303,14 @@ window.require.register("lib/view_collection", function(exports, require, module
   View = require('./view');
 
   ViewCollection = (function(_super) {
+
     __extends(ViewCollection, _super);
 
     function ViewCollection() {
       this.renderAll = __bind(this.renderAll, this);
+
       this.renderOne = __bind(this.renderOne, this);
-      _ref = ViewCollection.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return ViewCollection.__super__.constructor.apply(this, arguments);
     }
 
     ViewCollection.prototype.collection = new Backbone.Collection();
@@ -382,14 +386,14 @@ window.require.register("lib/view_collection", function(exports, require, module
     };
 
     ViewCollection.prototype.reset = function(views, options) {
-      var view, _i, _j, _len, _len1, _ref1;
+      var view, _i, _j, _len, _len1, _ref;
       if (options == null) {
         options = {};
       }
       views = _.isArray(views) ? views.slice() : [views];
-      _ref1 = this.views;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        view = _ref1[_i];
+      _ref = this.views;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view = _ref[_i];
         this.destroy(view, options);
       }
       if (views.length !== 0) {
@@ -430,18 +434,19 @@ window.require.register("lib/view_collection", function(exports, require, module
 
   module.exports = ViewCollection;
   
-});
-window.require.register("models/feed", function(exports, require, module) {
-  var Feed, _ref,
+}});
+
+window.require.define({"models/feed": function(exports, require, module) {
+  var Feed,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   module.exports = Feed = (function(_super) {
+
     __extends(Feed, _super);
 
     function Feed() {
-      _ref = Feed.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Feed.__super__.constructor.apply(this, arguments);
     }
 
     Feed.prototype.urlRoot = 'feeds';
@@ -544,49 +549,51 @@ window.require.register("models/feed", function(exports, require, module) {
     };
 
     Feed.prototype.isNew = function() {
-      return this.id == null;
+      return !(this.id != null);
     };
 
     return Feed;
 
   })(Backbone.Model);
   
-});
-window.require.register("models/param", function(exports, require, module) {
-  var Param, _ref,
+}});
+
+window.require.define({"models/param": function(exports, require, module) {
+  var Param,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   module.exports = Param = (function(_super) {
+
     __extends(Param, _super);
 
     function Param() {
-      _ref = Param.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Param.__super__.constructor.apply(this, arguments);
     }
 
     Param.prototype.urlRoot = 'params';
 
     Param.prototype.isNew = function() {
-      return this.id == null;
+      return !(this.id != null);
     };
 
     return Param;
 
   })(Backbone.Model);
   
-});
-window.require.register("routers/app_router", function(exports, require, module) {
-  var AppRouter, _ref,
+}});
+
+window.require.define({"routers/app_router": function(exports, require, module) {
+  var AppRouter,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   module.exports = AppRouter = (function(_super) {
+
     __extends(AppRouter, _super);
 
     function AppRouter() {
-      _ref = AppRouter.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return AppRouter.__super__.constructor.apply(this, arguments);
     }
 
     AppRouter.prototype.routes = {
@@ -597,9 +604,10 @@ window.require.register("routers/app_router", function(exports, require, module)
 
   })(Backbone.Router);
   
-});
-window.require.register("views/app_view", function(exports, require, module) {
-  var AppRouter, AppView, Feed, FeedsView, ParamsView, View, _ref,
+}});
+
+window.require.define({"views/app_view": function(exports, require, module) {
+  var AppRouter, AppView, Feed, FeedsView, ParamsView, View,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -615,15 +623,18 @@ window.require.register("views/app_view", function(exports, require, module) {
   Feed = require('../models/feed');
 
   module.exports = AppView = (function(_super) {
+
     __extends(AppView, _super);
 
     function AppView() {
       this.linkDetails = __bind(this.linkDetails, this);
+
       this.toCozyBookMarks = __bind(this.toCozyBookMarks, this);
+
       this.updateSettings = __bind(this.updateSettings, this);
+
       this.addFeed = __bind(this.addFeed, this);
-      _ref = AppView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return AppView.__super__.constructor.apply(this, arguments);
     }
 
     AppView.prototype.el = 'body.application';
@@ -795,10 +806,10 @@ window.require.register("views/app_view", function(exports, require, module) {
     };
 
     AppView.prototype.updateSettings = function(evt) {
-      var checked, parameter, _i, _len, _ref1;
-      _ref1 = this.paramsView.collection.models;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        parameter = _ref1[_i];
+      var checked, parameter, _i, _len, _ref;
+      _ref = this.paramsView.collection.models;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        parameter = _ref[_i];
         if (parameter.attributes.paramId === "show-new-links") {
           checked = $("." + parameter.attributes.paramId).attr("checked");
           parameter.attributes.value = checked !== void 0;
@@ -994,8 +1005,9 @@ window.require.register("views/app_view", function(exports, require, module) {
 
   })(View);
   
-});
-window.require.register("views/feed_view", function(exports, require, module) {
+}});
+
+window.require.define({"views/feed_view": function(exports, require, module) {
   var FeedView, View, linkTemplate, tagTemplate,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1007,6 +1019,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
   tagTemplate = require('./templates/tag');
 
   module.exports = FeedView = (function(_super) {
+
     __extends(FeedView, _super);
 
     FeedView.prototype.className = 'feed';
@@ -1140,7 +1153,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
     };
 
     FeedView.prototype.onUpdateClicked = function(evt, full) {
-      var $allThat, error, existingLinks, title,
+      var $allThat, existingLinks, title,
         _this = this;
       this.startWaiter();
       $allThat = $("." + this.model.cid);
@@ -1153,8 +1166,7 @@ window.require.register("views/feed_view", function(exports, require, module) {
       } else {
         try {
           title = this.model.titleText();
-        } catch (_error) {
-          error = _error;
+        } catch (error) {
           alertify.alert("Can't parse feed, please check feed address." + "no redirection, valid feed, ...");
           this.stopWaiter();
           return;
@@ -1229,9 +1241,10 @@ window.require.register("views/feed_view", function(exports, require, module) {
 
   })(View);
   
-});
-window.require.register("views/feeds_view", function(exports, require, module) {
-  var FeedCollection, FeedView, FeedsView, ViewCollection, _ref,
+}});
+
+window.require.define({"views/feeds_view": function(exports, require, module) {
+  var FeedCollection, FeedView, FeedsView, ViewCollection,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -1242,11 +1255,11 @@ window.require.register("views/feeds_view", function(exports, require, module) {
   FeedCollection = require('../collections/feed_collection');
 
   module.exports = FeedsView = (function(_super) {
+
     __extends(FeedsView, _super);
 
     function FeedsView() {
-      _ref = FeedsView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FeedsView.__super__.constructor.apply(this, arguments);
     }
 
     FeedsView.prototype.el = '.feeds';
@@ -1289,8 +1302,9 @@ window.require.register("views/feeds_view", function(exports, require, module) {
 
   })(ViewCollection);
   
-});
-window.require.register("views/param_view", function(exports, require, module) {
+}});
+
+window.require.define({"views/param_view": function(exports, require, module) {
   var ParamView, View,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1298,6 +1312,7 @@ window.require.register("views/param_view", function(exports, require, module) {
   View = require('../lib/view');
 
   module.exports = ParamView = (function(_super) {
+
     __extends(ParamView, _super);
 
     ParamView.prototype.className = 'param';
@@ -1319,9 +1334,10 @@ window.require.register("views/param_view", function(exports, require, module) {
 
   })(View);
   
-});
-window.require.register("views/params_view", function(exports, require, module) {
-  var ParamCollection, ParamView, ParamsView, ViewCollection, _ref,
+}});
+
+window.require.define({"views/params_view": function(exports, require, module) {
+  var ParamCollection, ParamView, ParamsView, ViewCollection,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1333,12 +1349,12 @@ window.require.register("views/params_view", function(exports, require, module) 
   ParamCollection = require('../collections/param_collection');
 
   module.exports = ParamsView = (function(_super) {
+
     __extends(ParamsView, _super);
 
     function ParamsView() {
       this.renderOne = __bind(this.renderOne, this);
-      _ref = ParamsView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return ParamsView.__super__.constructor.apply(this, arguments);
     }
 
     ParamsView.prototype.el = '.settings .values';
@@ -1361,8 +1377,9 @@ window.require.register("views/params_view", function(exports, require, module) 
 
   })(ViewCollection);
   
-});
-window.require.register("views/templates/feed", function(exports, require, module) {
+}});
+
+window.require.define({"views/templates/feed": function(exports, require, module) {
   module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
   attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
   var buf = [];
@@ -1389,8 +1406,9 @@ window.require.register("views/templates/feed", function(exports, require, modul
   }
   return buf.join("");
   };
-});
-window.require.register("views/templates/home", function(exports, require, module) {
+}});
+
+window.require.define({"views/templates/home": function(exports, require, module) {
   module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
   attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
   var buf = [];
@@ -1400,8 +1418,9 @@ window.require.register("views/templates/home", function(exports, require, modul
   }
   return buf.join("");
   };
-});
-window.require.register("views/templates/link", function(exports, require, module) {
+}});
+
+window.require.define({"views/templates/link": function(exports, require, module) {
   module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
   attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
   var buf = [];
@@ -1422,8 +1441,9 @@ window.require.register("views/templates/link", function(exports, require, modul
   }
   return buf.join("");
   };
-});
-window.require.register("views/templates/param", function(exports, require, module) {
+}});
+
+window.require.define({"views/templates/param": function(exports, require, module) {
   module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
   attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
   var buf = [];
@@ -1455,8 +1475,9 @@ window.require.register("views/templates/param", function(exports, require, modu
   }
   return buf.join("");
   };
-});
-window.require.register("views/templates/tag", function(exports, require, module) {
+}});
+
+window.require.define({"views/templates/tag": function(exports, require, module) {
   module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
   attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
   var buf = [];
@@ -1468,4 +1489,5 @@ window.require.register("views/templates/tag", function(exports, require, module
   }
   return buf.join("");
   };
-});
+}});
+
