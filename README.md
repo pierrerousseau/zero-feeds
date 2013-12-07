@@ -7,6 +7,7 @@ Follow your favorite sites here !
 * add filter for links
 * add links to resources used
 * code review (a lot of cleaning is needed)
+** use a model for every "element" (link, tag, ...)
 * bug : needs to load feed 2 times before to get updated title : still ?
 * bug : first display of a feed cant be deleted : still ?
 * bug : first display of a feed with redirection fails
@@ -25,13 +26,12 @@ Follow your favorite sites here !
 
 # Changelog
 
-* v1.1.4
+* v1.3
+  * UX improvement
+* v1.2
   * change default port (all apps with same port may disturb cozy)
-* v1.1.3
   * use of americano instead of compound
-* v1.1.2
   * can import opml files and feeds from a firefox export of bookmarks file
-* v1.1.1
   * add new elements counters
 * v1.1
   * handle http redirection
@@ -90,10 +90,6 @@ http://cozycloud.cc
 # Tools & resources used :
 
 * please, check package.json files
-* main icon from IconTexto (http://icontexto.blogspot.fr/ - CC by-nc-sa)
-* other icons from
-  * Icojam (http://www.icojam.com/ - free for use)
-  * Jonas Rask (http://jonasraskdesign.com/ - free for commercial use)
-  * http://en.wikipedia.org/wiki/File:Loading.gif - CC by-sa
+* loader icon: http://en.wikipedia.org/wiki/File:Loading.gif - CC by-sa
 * alertify.js (http://fabien-d.github.com/alertify.js/ - MIT)
 
