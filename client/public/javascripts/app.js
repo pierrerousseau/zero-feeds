@@ -850,8 +850,11 @@ window.require.define({"views/app_view": function(exports, require, module) {
     };
 
     AppView.prototype.linkDetails = function(evt) {
-      $(evt.target).parents(".link:first").find(".icon-more").toggleClass('active');
-      return $(evt.target).parents(".link:first").find(".description").slideToggle();
+      var link;
+      link = $(evt.target).parents(".link:first");
+      link.toggleClass('active');
+      link.find(".icon-more").toggleClass('active');
+      return link.find(".description").slideToggle();
     };
 
     AppView.prototype.addFeedFromFile = function(feedObj) {

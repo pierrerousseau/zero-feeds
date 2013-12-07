@@ -165,9 +165,11 @@ module.exports = class AppView extends View
         false
 
     linkDetails: (evt) =>
-        $(evt.target).parents(".link:first")
-            .find(".icon-more").toggleClass 'active'
-        $(evt.target).parents(".link:first").find(".description").slideToggle()
+        link = $(evt.target).parents(".link:first")
+        
+        link.toggleClass 'active'
+        link.find(".icon-more").toggleClass 'active'
+        link.find(".description").slideToggle()
 
     addFeedFromFile: (feedObj) ->
         feed = new Feed feedObj

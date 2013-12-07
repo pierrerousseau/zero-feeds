@@ -829,7 +829,7 @@ a [class^="icon-"]:hover {
   color: #cdddff;
 }
 .feeds .feed .title a {
-  color: #27aaf2;
+  color: #777;
   margin: 0 0.3em;
 }
 .feeds .feed .title a:hover {
@@ -931,7 +931,7 @@ ul.links li .description a {
   font-size: 16px;
 }
 ul.links li.new a:visited {
-  color: #777;
+  color: #72fa72;
 }
 ul.links li.new a:visited:hover {
   color: #47f;
@@ -940,14 +940,14 @@ ul.links li.old {
   display: none;
 }
 ul.links li.old a {
-  color: #cdddff;
+  color: #777;
   text-decoration: none;
 }
 ul.links li.old a:hover {
   color: #47f;
 }
 ul.links li.old a:visited {
-  color: #777;
+  color: #72fa72;
 }
 ul.links li.old a:visited:hover {
   color: #47f;
@@ -968,7 +968,6 @@ ul.links.show-old li.old {
   background: #000;
 }
 .description p {
-  color: #ddd;
   padding: 10px;
   font-family: title;
   font-size: 16px;
