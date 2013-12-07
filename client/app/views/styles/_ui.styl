@@ -118,7 +118,6 @@ a [class^="icon-"]:hover
     .tag
         cursor: pointer
         padding: 5px
-        margin-bottom: 1em
         
         button
             border: none
@@ -165,26 +164,28 @@ a [class^="icon-"]:hover
                 &:hover
                     color: blue
                     text-decoration: none
-
-        .loader
-            display: none
-
-        &.loading
-            .loader
-                display: inline
-            .count
-                display: none
-
         .delete
             visibility: hidden
-            padding-left: 0
-
-        .spinner
-            display: inline
+            padding: 5px
 
         &:hover
             .delete
                 visibility: visible
+
+        .spinner 
+            vertical-align: top
+            display: none
+        &.loading
+            .spinner
+                display: inline-block
+            .count
+                display: none
+            .delete
+                display: none
+            &:hover
+                .delete
+                    display: none
+
 
         .delete:hover
             color: red

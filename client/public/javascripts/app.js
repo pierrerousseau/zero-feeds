@@ -1045,11 +1045,11 @@ window.require.define({"views/feed_view": function(exports, require, module) {
     };
 
     FeedView.prototype.startWaiter = function() {
-      return this.$el.find(".spinner").spin('tiny', 'white');
+      return this.$el.addClass("loading");
     };
 
     FeedView.prototype.stopWaiter = function() {
-      return this.$el.find(".spinner").spin(false);
+      return this.$el.removeClass("loading");
     };
 
     FeedView.prototype.addToTag = function(tag) {
@@ -1385,7 +1385,7 @@ window.require.define({"views/templates/feed": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="title"><div class="spinner">&nbsp;&nbsp;&nbsp;</div><span title="remove this feed and place its details on the new feed form" class="delete">x</span>');
+  buf.push('<div class="title"><div class="spinner"><img src="images/loader.gif" alt="loading ..." class="loader"/></div><span title="remove this feed and place its details on the new feed form" class="delete">x</span>');
   if ( model.title)
   {
   buf.push('<span class="count"></span><span');

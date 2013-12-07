@@ -792,7 +792,6 @@ a [class^="icon-"]:hover {
 .feeds .tag {
   cursor: pointer;
   padding: 5px;
-  margin-bottom: 1em;
 }
 .feeds .tag button {
   border: none;
@@ -837,24 +836,28 @@ a [class^="icon-"]:hover {
   color: #47f;
   text-decoration: none;
 }
-.feeds .feed .loader {
+.feeds .feed .delete {
+  visibility: hidden;
+  padding: 5px;
+}
+.feeds .feed:hover .delete {
+  visibility: visible;
+}
+.feeds .feed .spinner {
+  vertical-align: top;
   display: none;
 }
-.feeds .feed.loading .loader {
-  display: inline;
+.feeds .feed.loading .spinner {
+  display: inline-block;
 }
 .feeds .feed.loading .count {
   display: none;
 }
-.feeds .feed .delete {
-  visibility: hidden;
-  padding-left: 0;
+.feeds .feed.loading .delete {
+  display: none;
 }
-.feeds .feed .spinner {
-  display: inline;
-}
-.feeds .feed:hover .delete {
-  visibility: visible;
+.feeds .feed.loading:hover .delete {
+  display: none;
 }
 .feeds .feed .delete:hover {
   color: #f47;

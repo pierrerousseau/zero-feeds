@@ -20,10 +20,11 @@ module.exports = class FeedView extends View
         "click .delete": "onDeleteClicked"
 
     startWaiter: () ->
-        @$el.find(".spinner").spin 'tiny', 'white'
+        @$el.addClass("loading")
+
 
     stopWaiter: () ->
-        @$el.find(".spinner").spin false
+        @$el.removeClass("loading")
 
     addToTag: (tag) ->
         tmpl = tagTemplate
