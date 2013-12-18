@@ -26,6 +26,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.3.1
+  * config update
 * v1.3
   * UX improvement
 * v1.2
