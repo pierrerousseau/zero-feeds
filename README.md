@@ -26,7 +26,8 @@ Follow your favorite sites here !
 
 # Changelog
 
-* v1.3.1
+* v1.4
+  * stop to store the feeds content as we dont use it yet ... speed up
   * config update
 * v1.3
   * UX improvement

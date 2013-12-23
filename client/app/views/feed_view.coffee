@@ -57,7 +57,7 @@ module.exports = class FeedView extends View
     setUpdate: () ->
         if @$el.is ":visible"
             @startWaiter()
-            @model.save { },
+            @model.save { "content": "" },
                 success: =>
                     @stopWaiter()
                     @setCount()
@@ -127,12 +127,12 @@ module.exports = class FeedView extends View
                 @stopWaiter()
                 return
             $allThat.addClass "show"
-            @model.save { "title": title },
+            @model.save { "title": title, "content": "" },
                 success: =>
                     @renderXml()
                     title = @model.titleText()
                     last  = @model.last
-                    @model.save { "title": title, "last": last }
+                    @model.save { "title": title, "last": last, "content": "" }
                     $allThat.find("a").html title
                     alertify.log "" + title + " reloaded"
                     @stopWaiter()

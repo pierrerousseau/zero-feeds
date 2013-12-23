@@ -1094,7 +1094,9 @@ window.require.define({"views/feed_view": function(exports, require, module) {
       var _this = this;
       if (this.$el.is(":visible")) {
         this.startWaiter();
-        this.model.save({}, {
+        this.model.save({
+          "content": ""
+        }, {
           success: function() {
             _this.stopWaiter();
             _this.setCount();
@@ -1176,7 +1178,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
         }
         $allThat.addClass("show");
         this.model.save({
-          "title": title
+          "title": title,
+          "content": ""
         }, {
           success: function() {
             var last;
@@ -1185,7 +1188,8 @@ window.require.define({"views/feed_view": function(exports, require, module) {
             last = _this.model.last;
             _this.model.save({
               "title": title,
-              "last": last
+              "last": last,
+              "content": ""
             });
             $allThat.find("a").html(title);
             alertify.log("" + title + " reloaded");

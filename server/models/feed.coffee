@@ -18,10 +18,8 @@ module.exports = Feed = americano.getModel 'Feed',
 Feed.all = (params, callback) ->
     Feed.request "all", params, callback
 
-saveFeedBuffer = (feed, buffer) ->
+getFeedBuffer = (feed, buffer) ->
     feed.content = buffer.toString("UTF-8")
-    feed.updated = new Date
-    feed.save()
 
 isHttp = (url) ->
     url.slice(0, 4) == "http"
@@ -56,17 +54,20 @@ getFeed = (feed, url, callback) ->
             if res["headers"]? and res["headers"]["content-encoding"]?
                 if res["headers"]["content-encoding"] == "x-gzip"
                     zlib.unzip(data,
-                               (err, buffer) -> saveFeedBuffer(feed, buffer))
+                               (err, buffer) -> getFeedBuffer(feed, buffer))
             else if res["headers"]? and res["headers"]["location"]?
                 feed.url = getAbsoluteLocation(url, res["headers"]["location"])
                 feed.save()
                 getFeed(feed, feed.url, () ->)
             else
-                saveFeedBuffer(feed, data)
+                getFeedBuffer(feed, data)
 
             callback.call(feed)).on 'error',  ->
                 callback.call("Error: can't join url")
 
 Feed.prototype.update = (params, callback) ->
     feed = @
+    feed.updated = new Date
+    feed.content = ""
+    feed.save()
     getFeed(feed, feed.url, callback)
