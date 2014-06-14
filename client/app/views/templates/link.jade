@@ -1,10 +1,16 @@
 li(class="link #{from} #{state}")
     .buttons
-        a(href="https://twitter.com/intent/tweet?text=#{encodedTitle}&url=#{url}", 
-          target="_blank").to-tweeter.icon-twitter(title="send to tweeter")
+        a.btn(title="send to tweeter",
+            class="to-tweeter",
+            href="https://twitter.com/intent/tweet?text=#{encodedTitle}&url=#{url}", 
+            target="_blank")
+            span.glyphicon.glyphicon-bookmark
         if toCozyBookMarks
-            button.to-cozy-bookmarks.icon-bookmark-empty(title="send to cozy bookmarks")
-        button.icon-more.icon-doc-text-inv(title="view description")
+            button.btn(title="send to cozy bookmarks",
+                       class="to-cozy-bookmarks")
+                span.glyphicon.glyphicon-bookmark
+        button.btn(title="view description", class="view-description")
+            span.glyphicon.glyphicon-plus
     a(href="#{url}", target="_blank") #{title}
     .description
         | !{description}

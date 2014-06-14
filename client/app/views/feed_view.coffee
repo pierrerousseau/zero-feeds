@@ -152,7 +152,7 @@ module.exports = class FeedView extends View
         $("form.new-feed .tags-field").val(tags)
 
         unless $('.new-feed').is(':visible')
-            $('.icon-new').trigger 'click'
+            $('.new').trigger 'click'
 
     fullRemove: ->
         myTag = @$el.parents(".tag")

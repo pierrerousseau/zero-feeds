@@ -1,133 +1,108 @@
+main-color       = #bbb
+panel-background = #1f1f1f
+hover-color      = blue
+highlight-color  = #6ae
+active-color     = #ea6
+
 #content
-    padding: 0px
-
-[class^="icon-"]
-a [class^="icon-"]
-.links [class^="icon-"]
-.links a [class^="icon-"]
-    border: none
-    color: lightblue
-    font-size: 24px
-    transition: 0.2s all linear
-
-[class^="icon-"]:hover
-a [class^="icon-"]:hover
-    color: blue
-
-.active
-    color: grey
-    background: black
-
-[class^="icon-"].active:hover
-   menucolor: blue
-
-.main
-    width: 100%
-    margin: 0
     padding: 0
-    border: 0
-    background: #2A2A2A
-    margin-bottom: 2px
-    display: table-cell
 
-    form 
-        display: none
-
-        .buttons
-            display: inline
-
-        label
-            margin-right: 20px
-
-        input
-            display: inline-block
-            padding: 5px
-            margin: 0 10px 0 0
-            min-width: 45%
-            border: 1px double #171717
-            background: #363636
-
-        .url-field
-            min-width: 45%
-
-        button
-            border: 0
-            vertical-align: middle
-
-    .help
-    .settings
-    .new-feed
-        padding: 10px 20px
-
-    .save-info
-        em
-            display: none
-
-    .menu-toggle
-        display: none
-
-        button
-            border: 0
-            color: lightblue
-            margin: 5px
-
-.contents
-    display: table-row
-    margin-top: 1em
-    width: 100%
+    .contents
+        display: table-row
+        margin-top: 1em
+        width: 100%
 
 
-.menu
-    display: table-cell
-    padding: 0
-    padding-left: 2px
-    margin-top: 0
-    margin-right: 2px
-    border: 0
-    min-width: 200px
-    max-width: 300px
-    vertical-align: top
-    background: #1C1C1C
+    input
+        background: #262626
+        border-color: #262626
+        margin: 0 1em
+        color: main-color
 
-    h1
-        margin: 5px 0
+    .panel
+        border: panel-background
+        background: main-color
+    .panel-heading
+        background: panel-background
+        border: panel-background
+        color: main-color
+        .panel-title
+            font-weight: bold
+            font-size: 2em
+    .panel-body
+        background: panel-background
+        color: main-color
+
+    button
+        border: none
+        font-size: 2em
+        transition: 0.2s all linear
 
     .buttons
-        margin-top: 10px
-        margin-bottom: 10px
-        margin-right: 0px
-        cursor: pointer
+        white-space: nowrap
 
-        button
-            padding: 5px 2px
-            border: none
-            font-size: 30px
-            transition: 0.2s all linear
+    .options
+        .buttons
+            .btn
+                margin: 0
+                padding: .1em
+                font-size: 1.5em
+                &:hover
+                    color: hover-color
+        .settings
+            input
+                width: 20em
+                &[type=checkbox]
+                    width: 1.5em
+            label
+                vertical-align: middle
+     div.help
+        overflow: visible
+        p
+            font-size: 20px
 
-    .icon-new
-        color: flashyblue
-        
+     .panel.settings, .panel.new-feed, div.help
+        display: none
+
+    .menu
+        display: table-cell
+        padding: 0 2px
+        border: 0
+        min-width: 200px
+        max-width: 300px
+        vertical-align: top
+        background: #1C1C1C
+
+    .main
+        display: table-cell
+        width: 100%
+        margin: 0
+        padding: 0
+        border: 0
+        background: #2A2A2A
+
+
+    .btn
+        color: lightblue
         &:hover
             color: blue
+        &.new
+            color: flashyblue
 
-    .icon-new.active
-        color: grey
-
-
-.feeds
     .tag
         cursor: pointer
         padding: 5px
         
         button
+            padding: .25em
             border: none
             vertical-align: middle
-
-            font-size: 16px
-            color: lightblue
+            color: main-color
 
             &:hover
-                color: blue
+                color: highlight-color
+
+            font-size: 1em
 
         &.show
             .feed
@@ -136,164 +111,153 @@ a [class^="icon-"]:hover
         .tag-header
             white-space: nowrap
 
-    .feed
-        display: none
-        cursor: pointer
-        margin: .2em
-        white-space: nowrap
-        font-family: title
-        font-weight: bold
-        font-size: .9em;
-
-
-        .buttons
-            display: inline-block
-            vertical-align: middle
-
-        .title
-            padding: 5px
-            overflow: hidden
-            text-overflow: ellipsis
-            vertical-align: top
-            color: lightblue
-
-            a
-                color: grey
-                margin: 0 .3em
-
-                &:hover
-                    color: blue
-                    text-decoration: none
-        .delete
-            visibility: hidden
-            padding: 5px
-
-        &:hover
-            .delete
-                visibility: visible
-
-        .spinner 
-            vertical-align: top
+    .feeds
+        .feed
             display: none
-        &.loading
-            .spinner
+            cursor: pointer
+            margin: .2em
+            white-space: nowrap
+            font-family: title
+            font-weight: bold
+
+
+            .buttons
                 display: inline-block
-            .count
+                vertical-align: middle
+
+            .spinner 
                 display: none
-            .delete
-                display: none
-            &:hover
+                padding: 5px
+
+            &.loading
+                .spinner
+                    display: inline
                 .delete
                     display: none
 
+            .title
+                padding: 5px
+                overflow: hidden
+                text-overflow: ellipsis
+                vertical-align: top
+                color: highlight-color
 
-        .delete:hover
-            color: red
+                a
+                    color: main-color
+                    margin: 0 .3em
 
-    .feed.show .title
-        a
-            color: lightgreen
+                    &:hover
+                        color: highlight-color
+                        text-decoration: none
+            .delete
+                visibility: hidden
+                padding: 5px
 
             &:hover
-                color: blue
+                .delete
+                    visibility: visible
 
-.options
-    width: 100%
+            .delete:hover
+                color: red
 
-ul.links
-    padding: 20px 0
-    margin-top: 1em
-    width: 100%
-    list-style: none
-    vertical-align: top
-    background: #232323
-
-    li
-        padding: 10px
-        margin: 0 0px 10px 0px
-        width: 100%
-
-        &:hover
-            background: #000
-
-        button
-            transition: 0.2s all linear
-
-        button, a
-            padding: 0 5px
-            border: none
-            color: lightblue
-            font-size: 20px
-            line-height: 28px
-
-        button:hover
-        a:hover
-            color: blue
-
-        .active
-            color: grey
-
-        [class^="icon-"].active:hover
-            color: blue
-
-
-        .buttons
-            display: inline-block
-            padding-right: .5em
-            white-space: nowrap
-            height: 100%
-
-            button
-                border: none
-                width: auto
-
-        .description
-            display: none
-            padding: .5em
-            margin: .5em
-
+        .feed.show .title
             a
-                font-size: 16px
-
-        &.new
-            a:visited
-                color: lightgreen
-
-            a:visited
-                &:hover
-                    color: blue
-
-        &.old
-            display: none
-            a
-                color: grey
+                color: active-color
                 text-decoration: none
 
-            a:hover
-                color: blue
-
-            a:visited
-                color: lightgreen
-
-            a:visited
                 &:hover
-                    color: blue
+                    color: highlight-color
 
-    &.show-old
-        li.old
-            display: list-item
+    ul.links
+        padding: 20px 0
+        margin-top: 1em
+        width: 100%
+        list-style: none
+        vertical-align: top
+        background: #232323
 
-.help
-    display: none
-    overflow: visible
-    p
-        font-size: 20px
+        li
+            padding: 10px
+            margin: 0 0px 10px 0px
+            width: 100%
+
+            &:hover
+                background: #000
+
+            button
+                transition: 0.2s all linear
+
+            button, a
+                padding: 0 5px
+                border: none
+                font-size: 20px
+                line-height: 28px
+
+            button:hover
+            a:hover
+                color: highlight-color
+
+            .active
+                color: main-color
+
+            .buttons
+                display: inline-block
+                padding-right: .5em
+                white-space: nowrap
+                height: 100%
+                color: main-color
+                vertical-align: top
+
+                .btn
+                    color: main-color
+                    border: none
+                    width: auto
+                    a
+                        padding: 0
+
+            .description
+                display: none
+                margin: .5em 4em
+                color: #eee
+                border-radius: 4px
+                background: #262626
+                padding: .5em
+                opacity: 0.6
+                max-width: 800px
+
+            &.new
+                :visited
+                    color: active-color
+
+                :visited
+                    &:hover
+                        color: highlight-color
+
+            &.old
+                display: none
+                a, .btn
+                    opacity: 0.8
+                    text-decoration: none
+
+                :hover
+                    color: highlight-color
+
+                :visited
+                    color: active-color
+
+                :visited
+                    &:hover
+                        color: highlight-color
+
+        &.show-old
+            li.old
+                display: list-item
+
 
 .description
-    box-shadow: 1px 1px 2px #000
-    background: black
-
-
+    font-size: 16px
+    a
+        font-size: 16px
     p
         padding: 10px
         font-family: title
@@ -305,7 +269,7 @@ ul.links
 #feeds-file
     display: none
 
-.import
+div.import
     position: absolute
     top: 1.5em
     right: 1.5em
@@ -316,6 +280,17 @@ ul.links
         padding: 0
         margin: 0
 
-.icon-import
+div.import
     cursor: pointer
 
+
+.alertify-dialog, .alertify-buttons, .alertify-log
+    background: #000
+    opacity: 0.8
+    text-align: center
+    color: main-color
+.alertify-button-ok:
+    background: #000
+    box-shadow: none
+.alertify-message
+    font-size: 1.5em

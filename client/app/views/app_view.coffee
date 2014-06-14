@@ -11,21 +11,19 @@ module.exports = class AppView extends View
         require('./templates/home')
 
     events:
-        "click h1": "showOnlyTitle"
-        "click .icon-new": "displayNewForm"
-        "click .icon-help": "toggleHelp"
-        "click .icon-settings": "toggleSettings"
-        "click .icon-import": "import"
+        "click .btn.new": "displayNewForm"
+        "click .btn.help": "toggleHelp"
+        "click .btn.settings": "toggleSettings"
+        "click .btn.import": "import"
         "change #feeds-file": "uploadFile"
-        "click .menu-toggle button": "toggleMenu"
 
-        "click form.new-feed .icon-add": "addFeed"
+        "submit form.new-feed": "addFeed"
 
         "keyup #cozy-bookmarks-name": "updateSettings"
         "change #show-new-links": "toggleOldLinks"
 
         "click .link .to-cozy-bookmarks": "toCozyBookMarks"
-        "click .link .icon-more": "linkDetails"
+        "click .link .btn.view-description": "linkDetails"
 
     startWaiter: ($elem) ->
         html = "<img " +
@@ -39,7 +37,7 @@ module.exports = class AppView extends View
 
     toggleOldLinks: (evt) ->
         $("ul.links").toggleClass("show-old")
-        @updateSettings()
+        @updateSettings(evt)
         false
 
     applyParameters: (parameters) ->
@@ -69,37 +67,32 @@ module.exports = class AppView extends View
     initialize: ->
         @router = CozyApp.Routers.AppRouter = new AppRouter()
 
-    showOnlyTitle: ->
-        $(".new-feed").hide()
-        $(".settings").hide()
-        $(".help").hide()
-
     hideToggled: ->
         $(".new-feed").slideUp()
-        $(".help").slideUp()
-        $(".settings").slideUp()
+        $("div.help").slideUp()
+        $("form.settings").slideUp()
         $(".menu .buttons .active").removeClass 'active'
 
     displayNewForm: ->
         @hideToggled()
         unless $(".new-feed").is(':visible')
-            $(".menu .buttons .icon-new").addClass 'active'
+            $(".menu .buttons .btn.new").addClass 'active'
             $(".new-feed").slideDown()
             $(".url-field").focus()
         false
 
     toggleHelp: ->
         @hideToggled()
-        unless $(".help").is(':visible')
-            $(".menu .buttons .icon-help").addClass 'active'
-            $(".help").slideDown()
+        unless $("div.help").is(':visible')
+            $(".menu .buttons .btn.help").addClass 'active'
+            $("div.help").slideDown()
         false
 
     toggleSettings: ->
         @hideToggled()
-        unless $(".settings").is(':visible')
-            $(".menu .buttons .icon-cog").addClass 'active'
-            $(".settings").slideDown()
+        unless $("form.settings").is(':visible')
+            $(".menu .buttons .btn.cog").addClass 'active'
+            $("form.settings").slideDown()
         false
 
     cleanAddFeedForm: ->
@@ -135,19 +128,32 @@ module.exports = class AppView extends View
         false
 
     updateSettings: (evt) =>
+        if not evt
+            return false
         for parameter in @paramsView.collection.models
-            if parameter.attributes.paramId is "show-new-links"
-                checked = $("." + parameter.attributes.paramId).attr("checked")
-                parameter.attributes.value = checked isnt undefined
-            else
-                parameter.attributes.value =
-                    $("." + parameter.attributes.paramId).val()
-            parameter.save()
-        $('.save-info em').fadeIn 200
-        clearTimeout @settingsSaveTimer if @settingsSaveTimer?
-        @settingsSaveTimer = setTimeout ->
-            $('.save-info em').fadeOut 200
-        , 3000
+            paramId = parameter.attributes.paramId
+            name    = parameter.attributes.name
+            $elem = $("#" + paramId)
+            if paramId is "show-new-links" and paramId is evt.target.id
+                checked = $elem.prop("checked")
+                parameter.save { "value": checked },
+                    success: () ->
+                        alertify.log name + " saved"
+                    error: () ->
+                        alertify.alert name + " not saved"
+                break
+            else if paramId is evt.target.id
+                app = $elem.val()
+                if @settingsSaveTimer?
+                    clearTimeout @settingsSaveTimer
+                @settingsSaveTimer = setTimeout (() ->
+                    parameter.save { "value": app },
+                        success: () ->
+                            alertify.log name + " saved"
+                        error: () ->
+                            alertify.alert name + " not saved")
+                    , 1000
+                break
 
         false
 
@@ -168,7 +174,7 @@ module.exports = class AppView extends View
         link = $(evt.target).parents(".link:first")
         
         link.toggleClass 'active'
-        link.find(".icon-more").toggleClass 'active'
+        link.find(".btn.view-description").toggleClass 'active'
         link.find(".description").slideToggle()
 
     addFeedFromFile: (feedObj) ->
@@ -260,11 +266,3 @@ module.exports = class AppView extends View
                          "firefox or chrome",
             (ok) -> if ok
                 $("#feeds-file").click()
-
-    toggleMenu: ->
-        unless $(".menu").is ":visible"
-            $(".menu").attr 'style', 'display: table-cell'
-            $(".menu-toggle button").html "hide menu"
-        else
-            $(".menu").attr 'style', 'display: none'
-            $(".menu-toggle button").html "show menu"
