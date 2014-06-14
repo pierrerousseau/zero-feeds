@@ -29,6 +29,5 @@ module.exports = class FeedsView extends ViewCollection
     initialize: ->
         @collection = new FeedCollection @
 
-    renderAll: ->
+    beforeRender: ->
         @collection.models.reverse()
-        super()

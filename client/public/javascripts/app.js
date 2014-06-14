@@ -884,9 +884,9 @@ module.exports = AppView = (function(_super) {
   AppView.prototype.linkDetails = function(evt) {
     var link;
     link = $(evt.target).parents(".link:first");
-    link.toggleClass('active');
-    link.find(".btn.view-description").toggleClass('active');
-    return link.find(".description").slideToggle();
+    link.toggleClass("active");
+    link.find(".btn.view-description").toggleClass("active");
+    return link.find(".description").toggle();
   };
 
   AppView.prototype.addFeedFromFile = function(feedObj) {
@@ -1086,7 +1086,7 @@ module.exports = FeedView = (function(_super) {
       tagPlace = $(tmpl({
         "name": tag
       }));
-      $("#content .feeds").prepend(tagPlace);
+      $("#content .feeds").append(tagPlace);
     }
     exists = tagPlace.find("." + this.model.cid);
     if ($("." + this.model.cid).length) {
@@ -1326,9 +1326,8 @@ module.exports = FeedsView = (function(_super) {
     return this.collection = new FeedCollection(this);
   };
 
-  FeedsView.prototype.renderAll = function() {
-    this.collection.models.reverse();
-    return FeedsView.__super__.renderAll.call(this);
+  FeedsView.prototype.beforeRender = function() {
+    return this.collection.models.reverse();
   };
 
   return FeedsView;

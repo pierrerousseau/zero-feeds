@@ -604,9 +604,9 @@ input[type=button] {
   border-radius: 4px;
   background: #262626;
   padding: 0.5em;
-  opacity: 0.6;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
-  filter: alpha(opacity=60);
+  opacity: 0.7;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
+  filter: alpha(opacity=70);
   max-width: 800px;
 }
 #content ul.links li.new :visited {
