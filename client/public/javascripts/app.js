@@ -1098,7 +1098,7 @@ module.exports = FeedView = (function(_super) {
     if (exists.length) {
       return exists.replaceAll(elem);
     } else {
-      return tagPlace.append(elem);
+      return tagPlace.find(".tag-header").after(elem);
     }
   };
 
@@ -1324,10 +1324,6 @@ module.exports = FeedsView = (function(_super) {
 
   FeedsView.prototype.initialize = function() {
     return this.collection = new FeedCollection(this);
-  };
-
-  FeedsView.prototype.beforeRender = function() {
-    return this.collection.models.reverse();
   };
 
   return FeedsView;

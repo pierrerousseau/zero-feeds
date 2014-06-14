@@ -45,7 +45,7 @@ module.exports = class FeedView extends View
         if exists.length
             exists.replaceAll elem
         else
-            tagPlace.append elem
+            tagPlace.find(".tag-header").after elem
 
     setCount: () ->
         count = @model.count()
