@@ -17,7 +17,7 @@ Follow your favorite sites here !
 * pb : i dont know how to define a model (server side) with a list for tags
 * was looking for atom link in "id", changed it to link ?? need to check why
 
-* to know : some feeds change link params at everyupdate
+* to know : some feeds change link params at every update
 
 * note : v1.0 is far from being a good version
 * note : i've been lazy doing it well so there is no "tag" model
@@ -26,6 +26,8 @@ Follow your favorite sites here !
 
 # Changelog
 
+* v1.4.1
+  * update vendor librairies versions + review of UI
 * v1.4
   * stop to store the feeds content as we dont use it yet ... speed up
   * config update

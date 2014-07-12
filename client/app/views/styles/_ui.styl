@@ -97,7 +97,7 @@ active-color     = #ea6
             padding: .25em
             border: none
             vertical-align: middle
-            color: main-color
+            color: #999
 
             &:hover
                 color: highlight-color
@@ -160,7 +160,7 @@ active-color     = #ea6
             .delete:hover
                 color: red
 
-        .feed.show .title
+        .feed.showing .title
             a
                 color: active-color
                 text-decoration: none
@@ -176,7 +176,7 @@ active-color     = #ea6
         vertical-align: top
         background: #232323
 
-        li
+        > li
             padding: 10px
             margin: 0 0px 10px 0px
             width: 100%
@@ -236,6 +236,7 @@ active-color     = #ea6
             &.old
                 display: none
                 a, .btn
+                    color: #676
                     opacity: 0.8
                     text-decoration: none
 

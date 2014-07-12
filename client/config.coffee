@@ -18,7 +18,7 @@ exports.config =
         stylesheets:
             joinTo: 'stylesheets/app.css'
             order:
-                before: []
+                before: ['vendor/stylesheets/font-awesome.min.css']
                 after: ['vendor/stylesheets/helpers.css']
         templates:
             defaultExtension: 'jade'

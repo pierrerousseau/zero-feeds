@@ -1,6 +1,6 @@
 {
   "name": "cozy-feeds",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "engines": [
     "node = 0.8.x"
   ],

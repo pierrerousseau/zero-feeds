@@ -1187,7 +1187,7 @@ module.exports = FeedView = (function(_super) {
     existingLinks = $(".links ." + this.feedClass() + ", .link" + this.model.cid);
     if (existingLinks.length) {
       existingLinks.remove();
-      $allThat.removeClass("show");
+      $allThat.removeClass("showing");
       this.setCount();
       this.stopWaiter();
     } else {
@@ -1198,7 +1198,7 @@ module.exports = FeedView = (function(_super) {
         this.stopWaiter();
         return;
       }
-      $allThat.addClass("show");
+      $allThat.addClass("showing");
       this.model.save({
         "title": title,
         "content": ""
@@ -1458,7 +1458,7 @@ buf.push('<li');
 buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
 buf.push('><div class="buttons"><a');
 buf.push(attrs({ 'title':("send to tweeter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), "class": ('btn') + ' ' + ("to-tweeter") }, {"class":true,"title":true,"href":true,"target":true}));
-buf.push('><span class="glyphicon glyphicon-bookmark"></span></a>');
+buf.push('><span class="fa fa-twitter"></span></a>');
 if ( toCozyBookMarks)
 {
 buf.push('<button title="send to cozy bookmarks" class="btn to-cozy-bookmarks"><span class="glyphicon glyphicon-bookmark"></span></button>');

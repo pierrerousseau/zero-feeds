@@ -115,7 +115,7 @@ module.exports = class FeedView extends View
         existingLinks = $(".links ." + @feedClass() + ", .link" + @model.cid)
         if existingLinks.length
             existingLinks.remove()
-            $allThat.removeClass "show"
+            $allThat.removeClass "showing"
             @setCount()
             @stopWaiter()
         else
@@ -126,7 +126,7 @@ module.exports = class FeedView extends View
                                "no redirection, valid feed, ..."
                 @stopWaiter()
                 return
-            $allThat.addClass "show"
+            $allThat.addClass "showing"
             @model.save { "title": title, "content": "" },
                 success: =>
                     @renderXml()
