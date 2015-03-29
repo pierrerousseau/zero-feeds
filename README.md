@@ -1,6 +1,8 @@
 # Feeds reader application
 
-Follow your favorite sites here !
+ZeroFeeds is a RSS feeds reader for CozyCloud that aims to minimize the 
+procrastination effect related to reading RSS feeds.
+
 
 # To do ...
 

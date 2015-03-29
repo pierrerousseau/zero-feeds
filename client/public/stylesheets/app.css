@@ -391,12 +391,12 @@ input[type=button] {
   color: #bbb;
 }
 #content .panel {
-  border: #1f1f1f;
+  border: 1px solid #1f1f1f;
   background: #bbb;
 }
 #content .panel-heading {
   background: #1f1f1f;
-  border: #1f1f1f;
+  border: 1px solid #1f1f1f;
   color: #bbb;
 }
 #content .panel-heading .panel-title {
@@ -518,6 +518,7 @@ input[type=button] {
 #content .feeds .feed .title {
   padding: 5px;
   overflow: hidden;
+  -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   vertical-align: top;
   color: #6ae;
