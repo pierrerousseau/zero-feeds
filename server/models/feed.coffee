@@ -1,7 +1,9 @@
-http = require('http')
+http  = require('http')
 https = require('https')
 
-zlib = require('zlib')
+zlib  = require('zlib')
+iconv = require('iconv')
+url   = require('url')
 
 americano = require 'americano-cozy'
 
@@ -15,33 +17,66 @@ module.exports = Feed = americano.getModel 'Feed',
     'created': type: Date, default: Date
     'updated': type: Date, default: Date
 
+
 Feed.all = (params, callback) ->
     Feed.request "all", params, callback
 
-getFeedBuffer = (feed, buffer) ->
-    feed.content = buffer.toString("UTF-8")
 
-isHttp = (url) ->
-    url.slice(0, 4) == "http"
+getFeedBuffer = (feed, buffer, encoding) ->
+    if encoding != "utf-8"
+        converter = new iconv.Iconv(encoding, "utf-8")
+        buffer = converter.convert(buffer)
+    feed.content = buffer.toString("utf-8")
 
-getAbsoluteLocation = (url, location) ->
+
+isHttp = (uri) ->
+    uri.slice(0, 4) == "http"
+
+
+isHttps = (uri) ->
+    uri.slice(0, 5) == "https"
+
+
+getAbsoluteLocation = (uri, location) ->
     loc = location
     if loc.charAt(0) == '/'
-        loc = url.split('/').slice(0, 3).join('/') + loc
+        loc = uri.split('/').slice(0, 3).join('/') + loc
     if not isHttp(loc)
         loc = "http://" + loc
     loc
 
 
-getFeed = (feed, url, callback) ->
-    if url.slice(0, 5) == "https"
+getEncoding = (res) ->
+    charset = "utf-8"
+    try
+        contentType = res["headers"]["content-type"].split(";")
+        for elem in contentType
+            key_value = (str.trim() for str in elem.split("="))
+            if key_value[0] == "charset"
+                charset = key_value[1]
+    catch error
+        charset = "utf-8"
+
+    charset
+
+
+getFeed = (feed, uri, callback) ->
+    if isHttps(uri)
         protocol = https
     else
         protocol = http
-        if not isHttp(url)
-            url = "http://" + url
+        if not isHttp(uri)
+            uri = "http://" + uri
 
-    protocol.get(url, (res) ->
+    parsed = url.parse(uri)
+    headers=
+        "User-Agent": "zero-feeds (nodejs)"
+    get    =
+        "hostname": parsed.hostname
+        "path": parsed.path
+        "headers": headers
+
+    protocol.get(get, (res) ->
         data   = ''
         chunks = []
         length = 0
@@ -56,14 +91,16 @@ getFeed = (feed, url, callback) ->
                     zlib.unzip(data,
                                (err, buffer) -> getFeedBuffer(feed, buffer))
             else if res["headers"]? and res["headers"]["location"]?
-                feed.url = getAbsoluteLocation(url, res["headers"]["location"])
+                feed.url = getAbsoluteLocation(uri, res["headers"]["location"])
                 feed.save()
                 getFeed(feed, feed.url, () ->)
             else
-                getFeedBuffer(feed, data)
+                encoding = getEncoding(res)
+                getFeedBuffer(feed, data, encoding)
 
             callback.call(feed)).on 'error',  ->
                 callback.call("Error: can't join url")
+
 
 Feed.prototype.update = (params, callback) ->
     feed = @

@@ -28,6 +28,8 @@ procrastination effect related to reading RSS feeds.
 
 # Changelog
 
+* v1.4.2
+  * fixed bug : some feeds require user-agent
 * v1.4.1
   * update vendor librairies versions + review of UI
 * v1.4
