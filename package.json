@@ -1,6 +1,6 @@
 {
   "name": "zero-feeds",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "engines": [
     "node = 0.8.x"
   ],
@@ -12,7 +12,8 @@
   "main": "server.coffee",
   "dependencies": {
     "americano": "0.3.3",
-    "americano-cozy": "0.2.2"
+    "americano-cozy": "0.2.2",
+    "iconv": "2.1.6"
   },
   "devDependencies": {
     "should": "= 1.2.0",
