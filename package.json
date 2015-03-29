@@ -1,5 +1,5 @@
 {
-  "name": "cozy-feeds",
+  "name": "zero-feeds",
   "version": "1.4.1",
   "engines": [
     "node = 0.8.x"
@@ -7,7 +7,7 @@
   "description": "Read your RSS feeds within your Cozy.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Piour/cozy-feeds.git"
+    "url": "https://github.com/pierrerousseau/zero-feeds.git"
   },
   "main": "server.coffee",
   "dependencies": {
@@ -23,7 +23,7 @@
     "test": "cake tests",
     "start": "node server.js"
   },
-  "cozy-displayName": "Feeds",
+  "cozy-displayName": "zero-feeds",
   "cozy-permissions": {
     "feed": {
       "description": "Allow you to manage your feeds"
