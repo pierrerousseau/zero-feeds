@@ -298,6 +298,55 @@ module.exports = View = (function(superClass) {
     return Backbone.View.prototype.remove.call(this);
   };
 
+  View.confirm = function(text, cb) {
+    return $(function() {
+      return (new PNotify({
+        "text": text,
+        "icon": false,
+        "hide": false,
+        "type": "info",
+        "confirm": {
+          "confirm": true
+        },
+        "buttons": {
+          "sticker": false
+        },
+        "width": "40%"
+      })).get().on("pnotify.confirm", function() {
+        console.log("kikoo", cb);
+        return cb();
+      });
+    });
+  };
+
+  View.error = function(text) {
+    return $(function() {
+      return new PNotify({
+        "text": text,
+        "icon": false,
+        "hide": false,
+        "type": "error",
+        "buttons": {
+          "sticker": false
+        }
+      });
+    });
+  };
+
+  View.log = function(text) {
+    return $(function() {
+      return new PNotify({
+        "text": text,
+        "icon": false,
+        "opacity": .8,
+        "delay": 2000,
+        "buttons": {
+          "sticker": false
+        }
+      });
+    });
+  };
+
   return View;
 
 })(Backbone.View);
@@ -777,15 +826,15 @@ module.exports = AppView = (function(superClass) {
         return function(elem) {
           var elems;
           elems = $("." + elem.cid);
-          elems.not(".clone").click();
           elems.parents(".tag").find(".feed").show();
-          alertify.log("" + url + " added");
-          return _this.cleanAddFeedForm();
+          View.log("" + url + " added");
+          _this.cleanAddFeedForm();
+          return elems.not(".clone").click();
         };
       })(this),
       error: (function(_this) {
         return function() {
-          return alertify.alert("Server error occured, feed was not added");
+          return View.error("Server error occured, feed was not added");
         };
       })(this)
     });
@@ -801,7 +850,7 @@ module.exports = AppView = (function(superClass) {
       this.createFeed(evt, url, tags);
       evt.preventDefault();
     } else {
-      alertify.alert("Url field is required");
+      View.error("Url field is required");
     }
     return false;
   };
@@ -823,10 +872,10 @@ module.exports = AppView = (function(superClass) {
           "value": checked
         }, {
           success: function() {
-            return alertify.log(name + " saved");
+            return View.log(name + " saved");
           },
           error: function() {
-            return alertify.alert(name + " not saved");
+            return View.error(name + " not saved");
           }
         });
         break;
@@ -840,10 +889,10 @@ module.exports = AppView = (function(superClass) {
             "value": app
           }, {
             success: function() {
-              return alertify.log(name + " saved");
+              return View.log(name + " saved");
             },
             error: function() {
-              return alertify.alert(name + " not saved");
+              return View.error(name + " not saved");
             }
           });
         }), 1000);
@@ -864,10 +913,10 @@ module.exports = AppView = (function(superClass) {
         tags: ["cozy-feeds"]
       },
       success: function() {
-        return alertify.log("link added to cozy-bookmarks");
+        return View.log("link added to cozy-bookmarks");
       },
       error: function() {
-        return alertify.alert("link wasn't added to cozy-bookmarks");
+        return View.error("link wasn't added to cozy-bookmarks");
       }
     };
     $.ajax(ajaxOptions);
@@ -1003,7 +1052,7 @@ module.exports = AppView = (function(superClass) {
     var file, reader;
     file = evt.target.files[0];
     if (this.isUnknownFormat(file)) {
-      alertify.alert("This file cannot be imported");
+      View.error("This file cannot be imported");
       return;
     }
     reader = new FileReader();
@@ -1016,10 +1065,8 @@ module.exports = AppView = (function(superClass) {
   };
 
   AppView.prototype["import"] = function(evt) {
-    return alertify.confirm("Import opml rss file or " + "html bookmarks file containing feeds exported by " + "firefox or chrome", function(ok) {
-      if (ok) {
-        return $("#feeds-file").click();
-      }
+    return View.confirm("Import opml rss file or " + "html bookmarks file containing feeds exported by " + "firefox or chrome", function() {
+      return $("#feeds-file").click();
     });
   };
 
@@ -1168,7 +1215,7 @@ module.exports = FeedView = (function(superClass) {
       "feedClass": this.feedClass()
     });
     if (!links.length) {
-      alertify.alert("No link found, are you sure this is a feed url ?");
+      View.error("No link found, are you sure that the url is correct ?");
       return;
     }
     links.reverse();
@@ -1193,7 +1240,7 @@ module.exports = FeedView = (function(superClass) {
         title = this.model.titleText();
       } catch (_error) {
         error = _error;
-        alertify.alert("Can't parse feed, please check feed address." + "no redirection, valid feed, ...");
+        View.error("Can't parse feed, please check feed address.");
         this.stopWaiter();
         return;
       }
@@ -1207,20 +1254,22 @@ module.exports = FeedView = (function(superClass) {
             var last;
             _this.renderXml();
             title = _this.model.titleText();
-            last = _this.model.last;
-            _this.model.save({
-              "title": title,
-              "last": last,
-              "content": ""
-            });
-            $allThat.find("a").html(title);
-            alertify.log("" + title + " reloaded");
+            if (title) {
+              last = _this.model.last;
+              _this.model.save({
+                "title": title,
+                "last": last,
+                "content": ""
+              });
+              $allThat.find("a").html(title);
+              View.log("" + title + " reloaded");
+            }
             return _this.stopWaiter();
           };
         })(this),
         error: (function(_this) {
           return function() {
-            alertify.alert("Server error occured, feed was not updated.");
+            View.error("Server error occured, feed was not updated.");
             return _this.stopWaiter();
           };
         })(this)
@@ -1251,7 +1300,7 @@ module.exports = FeedView = (function(superClass) {
     this.destroy();
     $(".clone." + this.model.cid).remove();
     title = this.$(".title a").html();
-    return alertify.log("" + title + " removed and placed in form");
+    return View.log("" + title + " removed and placed in form");
   };
 
   FeedView.prototype.onDeleteClicked = function(evt) {
@@ -1264,7 +1313,7 @@ module.exports = FeedView = (function(superClass) {
       })(this),
       error: (function(_this) {
         return function() {
-          return alertify.alert("Server error occured, feed was not deleted.");
+          return View.error("Server error occured, feed was not deleted.");
         };
       })(this)
     });

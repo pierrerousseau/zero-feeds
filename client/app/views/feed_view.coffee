@@ -100,7 +100,7 @@ module.exports = class FeedView extends View
         links  = @model.links
             "feedClass": @feedClass()
         if not links.length
-            alertify.alert "No link found, are you sure this is a feed url ?"
+            View.error "No link found, are you sure that the url is correct ?"
             return
         links.reverse()
         $.each links,
@@ -122,8 +122,7 @@ module.exports = class FeedView extends View
             try
                 title = @model.titleText()
             catch error
-                alertify.alert "Can't parse feed, please check feed address." +
-                               "no redirection, valid feed, ..."
+                View.error "Can't parse feed, please check feed address."
                 @stopWaiter()
                 return
             $allThat.addClass "showing"
@@ -131,13 +130,14 @@ module.exports = class FeedView extends View
                 success: =>
                     @renderXml()
                     title = @model.titleText()
-                    last  = @model.last
-                    @model.save { "title": title, "last": last, "content": "" }
-                    $allThat.find("a").html title
-                    alertify.log "" + title + " reloaded"
+                    if title
+                        last  = @model.last
+                        @model.save { "title": title, "last": last, "content": "" }
+                        $allThat.find("a").html title
+                        View.log "" + title + " reloaded"
                     @stopWaiter()
                 error: =>
-                    alertify.alert "Server error occured, feed was not updated."
+                    View.error "Server error occured, feed was not updated."
                     @stopWaiter()
 
         evt.preventDefault()
@@ -164,7 +164,7 @@ module.exports = class FeedView extends View
         $(".clone." + @model.cid).remove()
 
         title = @$(".title a").html()
-        alertify.log "" + title + " removed and placed in form"
+        View.log "" + title + " removed and placed in form"
 
     onDeleteClicked: (evt) ->
         @model.destroy
@@ -172,7 +172,7 @@ module.exports = class FeedView extends View
                 @refillAddForm()
                 @fullRemove()
             error: =>
-                alertify.alert "Server error occured, feed was not deleted."
+                View.error "Server error occured, feed was not deleted."
         evt.preventDefault()
 
         false
