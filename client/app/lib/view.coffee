@@ -25,3 +25,36 @@ module.exports = class View extends Backbone.View
         @$el.removeData().unbind()
         @remove()
         Backbone.View::remove.call @
+
+    @confirm: (text, cb) ->
+        $ -> (new PNotify
+            "text": text
+            "icon": false
+            "hide": false
+            "type": "info"
+            "confirm":
+                "confirm": true
+            "buttons":
+                "sticker": false
+            "width": "40%").get().on "pnotify.confirm", () ->
+                console.log "kikoo", cb
+                cb()
+
+    @error: (text) ->
+        $ -> new PNotify
+            "text": text
+            "icon": false
+            "hide": false
+            "type": "error"
+            "buttons":
+                "sticker": false
+
+    @log: (text) ->
+        $ -> new PNotify
+            "text": text
+            "icon": false
+            "opacity": .8
+            "delay": 2000
+            "buttons":
+                "sticker": false
+

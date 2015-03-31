@@ -13,7 +13,7 @@ exports.config =
                     'vendor/javascripts/underscore-1.8.2.min.js'
                     'vendor/javascripts/backbone-1.1.2.min.js'
                     'vendor/javascripts/bootstrap-3.3.4.min.js'
-                    'vendor/javascripts/alertify-3.1.1.min.js'
+                    'vendor/javascripts/pnotify-2.0.1.min.js'
                 ]
 
         stylesheets:
@@ -23,6 +23,7 @@ exports.config =
                 after: [
                     'vendor/stylesheets/bootstrap-3.3.4.min.css'
                     'vendor/stylesheets/bootstrap-theme-3.3.4.min.css'
+                    'vendor/stylesheets/pnotify-2.0.1.min.css'
                     'vendor/stylesheets/helpers.css'
                 ]
         templates:

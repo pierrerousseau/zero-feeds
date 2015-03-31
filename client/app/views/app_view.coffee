@@ -108,12 +108,12 @@ module.exports = class AppView extends View
         @feedsView.collection.create feed,
             success: (elem) =>
                 elems = $("." + elem.cid)
-                elems.not(".clone").click()
                 elems.parents(".tag").find(".feed").show()
-                alertify.log "" + url + " added"
+                View.log "" + url + " added"
                 @cleanAddFeedForm()
+                elems.not(".clone").click()
             error: =>
-                alertify.alert "Server error occured, feed was not added"
+                View.error "Server error occured, feed was not added"
 
     addFeed: (evt) =>
         url  = $('.url-field').val()
@@ -123,7 +123,7 @@ module.exports = class AppView extends View
             @createFeed(evt, url, tags)
             evt.preventDefault()
         else
-            alertify.alert "Url field is required"
+            View.error "Url field is required"
 
         false
 
@@ -138,9 +138,9 @@ module.exports = class AppView extends View
                 checked = $elem.prop("checked")
                 parameter.save { "value": checked },
                     success: () ->
-                        alertify.log name + " saved"
+                        View.log name + " saved"
                     error: () ->
-                        alertify.alert name + " not saved"
+                        View.error name + " not saved"
                 break
             else if paramId is evt.target.id
                 app = $elem.val()
@@ -149,9 +149,9 @@ module.exports = class AppView extends View
                 @settingsSaveTimer = setTimeout (() ->
                     parameter.save { "value": app },
                         success: () ->
-                            alertify.log name + " saved"
+                            View.log name + " saved"
                         error: () ->
-                            alertify.alert name + " not saved")
+                            View.error name + " not saved")
                     , 1000
                 break
 
@@ -164,9 +164,9 @@ module.exports = class AppView extends View
             url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
             data: { url: url, tags: ["cozy-feeds"] }
             success: () ->
-                alertify.log "link added to cozy-bookmarks"
+                View.log "link added to cozy-bookmarks"
             error: () ->
-                alertify.alert "link wasn't added to cozy-bookmarks"
+                View.error "link wasn't added to cozy-bookmarks"
         $.ajax(ajaxOptions)
         false
 
@@ -253,7 +253,7 @@ module.exports = class AppView extends View
     uploadFile: (evt) ->
         file = evt.target.files[0]
         if @isUnknownFormat file
-            alertify.alert "This file cannot be imported"
+            View.error "This file cannot be imported"
             return
 
         reader = new FileReader()
@@ -261,8 +261,7 @@ module.exports = class AppView extends View
         reader.readAsText(file)
 
     import: (evt) ->
-        alertify.confirm "Import opml rss file or " +
-                         "html bookmarks file containing feeds exported by " +
-                         "firefox or chrome",
-            (ok) -> if ok
-                $("#feeds-file").click()
+        View.confirm "Import opml rss file or " +
+                          "html bookmarks file containing feeds exported by " +
+                          "firefox or chrome",
+            () -> $("#feeds-file").click()
