@@ -1351,7 +1351,7 @@ module.exports = FeedsView = (function(superClass) {
 
   FeedsView.prototype.events = {
     "click .tag": "onTagClicked",
-    "click .tag .refresh": "onReloadTagClicked"
+    "click .tag-refresh": "onReloadTagClicked"
   };
 
   FeedsView.prototype.onReloadTagClicked = function(evt) {
@@ -1567,7 +1567,7 @@ with (locals || {}) {
 var interp;
 buf.push('<div');
 buf.push(attrs({ "class": ("tag " + (name) + "") }, {"class":true}));
-buf.push('><div class="tag-header"><span class="buttons"><button title="reload all feeds" class="btn glyphicon glyphicon-refresh refresh"></button></span><button class="name">' + escape((interp = name) == null ? '' : interp) + '</button></div></div>');
+buf.push('><div class="tag-header"><span class="tag-actions"><button title="reload all feeds" class="btn glyphicon glyphicon-refresh tag-refresh"></button></span><button class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</button></div></div>');
 }
 return buf.join("");
 };
