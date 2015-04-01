@@ -9,7 +9,7 @@ module.exports = class FeedsView extends ViewCollection
 
     events:
         "click .tag": "onTagClicked"
-        "click .tag .refresh": "onReloadTagClicked"
+        "click .tag-refresh": "onReloadTagClicked"
 
     onReloadTagClicked: (evt) ->
         target = $(evt.currentTarget).parents ".tag:first"

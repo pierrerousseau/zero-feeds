@@ -195,20 +195,23 @@ input[type=button] {
   cursor: pointer;
   padding: 5px;
 }
+#content .tag.show .feed {
+  display: block;
+}
 #content .tag button {
   padding: 0.25em;
   border: none;
   vertical-align: middle;
-  color: #999;
   font-size: 1em;
+  color: #999;
 }
 #content .tag button:hover {
   color: #6ae;
 }
-#content .tag.show .feed {
-  display: block;
-}
 #content .tag .tag-header {
+  white-space: nowrap;
+}
+#content .tag .tag-actions {
   white-space: nowrap;
 }
 #content .feeds .feed {

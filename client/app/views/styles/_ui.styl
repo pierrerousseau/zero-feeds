@@ -93,22 +93,24 @@ active-color     = #ea6
         cursor: pointer
         padding: 5px
         
+        &.show
+            .feed
+                display: block
+
         button
             padding: .25em
             border: none
             vertical-align: middle
+            font-size: 1em
             color: #999
 
             &:hover
                 color: highlight-color
 
-            font-size: 1em
-
-        &.show
-            .feed
-                display: block
-
         .tag-header
+            white-space: nowrap
+
+        .tag-actions
             white-space: nowrap
 
     .feeds
