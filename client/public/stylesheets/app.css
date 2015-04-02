@@ -128,14 +128,16 @@ input[type=button] {
 #content button {
   border: none;
   font-size: 2em;
+}
+#content .buttons {
+  white-space: nowrap;
+}
+#content button.btn {
   -webkit-transition: 0.2s all linear;
   -moz-transition: 0.2s all linear;
   -o-transition: 0.2s all linear;
   -ms-transition: 0.2s all linear;
   transition: 0.2s all linear;
-}
-#content .buttons {
-  white-space: nowrap;
 }
 #content .options .buttons .btn {
   margin: 0;
@@ -211,62 +213,67 @@ input[type=button] {
 #content .tag .tag-header {
   white-space: nowrap;
 }
+#content .tag .tag-header:hover {
+  background: #000;
+}
 #content .tag .tag-actions {
   white-space: nowrap;
 }
-#content .feeds .feed {
+#content .feed {
   display: none;
   cursor: pointer;
-  margin: 0.2em;
+  padding: 0.5em;
   white-space: nowrap;
   font-family: title;
   font-weight: bold;
-}
-#content .feeds .feed .buttons {
-  display: inline-block;
-  vertical-align: middle;
-}
-#content .feeds .feed .spinner {
-  display: none;
-  padding: 5px;
-}
-#content .feeds .feed.loading .spinner {
-  display: inline;
-}
-#content .feeds .feed.loading .delete {
-  display: none;
-}
-#content .feeds .feed .title {
-  padding: 5px;
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  vertical-align: top;
-  color: #6ae;
-}
-#content .feeds .feed .title a {
   color: #bbb;
-  margin: 0 0.3em;
 }
-#content .feeds .feed .title a:hover {
+#content .feed .feed-count {
   color: #6ae;
-  text-decoration: none;
+  padding-left: 0.2em;
 }
-#content .feeds .feed .delete {
+#content .feed .feed-spinner {
+  display: none;
+}
+#content .feed.loading .feed-spinner {
+  display: inline;
+}
+#content .feed.loading .feed-delete {
+  display: none;
+}
+#content .feed .feed-delete {
   visibility: hidden;
-  padding: 5px;
 }
-#content .feeds .feed:hover .delete {
+#content .feed:hover {
+  color: #6ae;
+  background-color: #000;
+}
+#content .feed:hover .feed-delete {
   visibility: visible;
 }
-#content .feeds .feed .delete:hover {
+#content .feed.to-delete {
   color: #f47;
 }
-#content .feeds .feed.showing .title a {
+#content .feed.to-delete .feed-count {
+  color: #f47;
+}
+#content .feed .feed-delete {
+  color: #f47;
+}
+#content .feed .feed-title {
+  color: inherit;
+  margin: 0 0.3em;
+  vertical-align: top;
+  text-decoration: none;
+}
+#content .feed.showing .title a {
   color: #ea6;
   text-decoration: none;
 }
-#content .feeds .feed.showing .title a:hover {
+#content .feed.showing .title a:hover {
   color: #6ae;
 }
 #content ul.links {

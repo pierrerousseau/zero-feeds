@@ -36,10 +36,12 @@ active-color     = #ea6
     button
         border: none
         font-size: 2em
-        transition: 0.2s all linear
 
     .buttons
         white-space: nowrap
+
+    button.btn
+        transition: 0.2s all linear
 
     .options
         .buttons
@@ -56,6 +58,7 @@ active-color     = #ea6
                     width: 1.5em
             label
                 vertical-align: middle
+
      div.help
         overflow: visible
         p
@@ -92,7 +95,7 @@ active-color     = #ea6
     .tag
         cursor: pointer
         padding: 5px
-        
+
         &.show
             .feed
                 display: block
@@ -109,66 +112,67 @@ active-color     = #ea6
 
         .tag-header
             white-space: nowrap
+            &:hover
+                background: black
+        
 
         .tag-actions
             white-space: nowrap
 
-    .feeds
-        .feed
+    .feed
+        display: none
+        cursor: pointer
+        padding: .5em
+        white-space: nowrap
+        font-family: title
+        font-weight: bold
+        overflow: hidden
+        text-overflow: ellipsis
+        color: main-color
+
+        .feed-count
+            color: highlight-color
+            padding-left: .2em
+
+        .feed-spinner 
             display: none
-            cursor: pointer
-            margin: .2em
-            white-space: nowrap
-            font-family: title
-            font-weight: bold
 
-
-            .buttons
-                display: inline-block
-                vertical-align: middle
-
-            .spinner 
+        &.loading
+            .feed-spinner
+                display: inline
+            .feed-delete
                 display: none
-                padding: 5px
 
-            &.loading
-                .spinner
-                    display: inline
-                .delete
-                    display: none
+        .feed-delete
+            visibility: hidden
 
-            .title
-                padding: 5px
-                overflow: hidden
-                text-overflow: ellipsis
-                vertical-align: top
-                color: highlight-color
+        &:hover
+            color: highlight-color
+            background-color: black
+            .feed-delete
+                visibility: visible
 
-                a
-                    color: main-color
-                    margin: 0 .3em
-
-                    &:hover
-                        color: highlight-color
-                        text-decoration: none
-            .delete
-                visibility: hidden
-                padding: 5px
-
-            &:hover
-                .delete
-                    visibility: visible
-
-            .delete:hover
+        &.to-delete
+            color: red
+            .feed-count
                 color: red
 
-        .feed.showing .title
-            a
-                color: active-color
-                text-decoration: none
+        .feed-delete
+            color: red
 
-                &:hover
-                    color: highlight-color
+        .feed-title
+            color: inherit
+            margin: 0 .3em
+            vertical-align: top
+            text-decoration: none
+
+    .feed.showing .title
+        a
+            color: active-color
+            text-decoration: none
+
+            &:hover
+                color: highlight-color
 
     ul.links
         padding: 20px 0

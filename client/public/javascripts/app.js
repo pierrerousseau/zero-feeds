@@ -827,7 +827,6 @@ module.exports = AppView = (function(superClass) {
           var elems;
           elems = $("." + elem.cid);
           elems.parents(".tag").find(".feed").show();
-          View.log("" + url + " added");
           _this.cleanAddFeedForm();
           return elems.not(".clone").click();
         };
@@ -1108,8 +1107,10 @@ module.exports = FeedView = (function(superClass) {
 
   FeedView.prototype.events = {
     "click": "onUpdateClicked",
-    "click .count": "setUpdate",
-    "click .delete": "onDeleteClicked"
+    "click .feed-count": "setUpdate",
+    "click .feed-delete": "onDeleteClicked",
+    "mouseenter .feed-delete": "setToDelete",
+    "mouseleave .feed-delete": "setToNotDelete"
   };
 
   FeedView.prototype.startWaiter = function() {
@@ -1118,6 +1119,14 @@ module.exports = FeedView = (function(superClass) {
 
   FeedView.prototype.stopWaiter = function() {
     return this.$el.removeClass("loading");
+  };
+
+  FeedView.prototype.setToDelete = function() {
+    return this.$el.addClass("to-delete");
+  };
+
+  FeedView.prototype.setToNotDelete = function() {
+    return this.$el.removeClass("to-delete");
   };
 
   FeedView.prototype.addToTag = function(tag) {
@@ -1149,9 +1158,9 @@ module.exports = FeedView = (function(superClass) {
     var count;
     count = this.model.count();
     if (count) {
-      return this.$el.find(".count").html("(" + count + ")");
+      return this.$el.find(".feed-count").html("(" + count + ")");
     } else {
-      return this.$el.find(".count").html("");
+      return this.$el.find(".feed-count").html("");
     }
   };
 
@@ -1281,9 +1290,9 @@ module.exports = FeedView = (function(superClass) {
 
   FeedView.prototype.refillAddForm = function() {
     var tags, title, url;
-    title = this.$el.find(".title");
-    url = title.find("a").attr("href");
-    tags = title.find("span").attr("tags") || "";
+    title = this.$el.find(".feed-title");
+    url = title.attr("href");
+    tags = title.attr("data-tags") || "";
     $("form.new-feed .url-field").val(url);
     $("form.new-feed .tags-field").val(tags);
     if (!$('.new-feed').is(':visible')) {
@@ -1292,14 +1301,13 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.fullRemove = function() {
-    var myTag, title;
+    var myTag;
     myTag = this.$el.parents(".tag");
     if (myTag.find(".feed").length === 1) {
       myTag.remove();
     }
     this.destroy();
     $(".clone." + this.model.cid).remove();
-    title = this.$(".title a").html();
     return View.log("" + title + " removed and placed in form");
   };
 
@@ -1368,10 +1376,11 @@ module.exports = FeedsView = (function(superClass) {
     feeds = target.find(".feed");
     target.toggleClass("active");
     target.find(".feed").toggle();
-    target.find(".feed.show .title").toggle();
+    target.find(".feed.showing").click();
+    target.find(".feed.show .feed-title").toggle();
     for (i = 0, len = feeds.length; i < len; i++) {
       feed = feeds[i];
-      $(feed).find(".count").click();
+      $(feed).find(".feed-count").click();
     }
     return false;
   };
@@ -1465,24 +1474,10 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="title"><div class="spinner"><img src="images/loader.gif" alt="loading ..." class="loader"/></div><span title="remove this feed and place its details on the new feed form" class="delete">x</span>');
-if ( model.title)
-{
-buf.push('<span class="count"></span><span');
-buf.push(attrs({ 'title':("" + (model.title) + ""), 'tags':("" + (model.tags) + "") }, {"title":true,"tags":true}));
-buf.push('><a');
-buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
-buf.push('>' + escape((interp = model.title) == null ? '' : interp) + '</a></span>');
-}
-else
-{
-buf.push('<span class="count"></span><span');
-buf.push(attrs({ 'title':("" + (model.url) + ""), 'tags':("" + (model.tags) + "") }, {"title":true,"tags":true}));
-buf.push('><a');
-buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
-buf.push('>' + escape((interp = model.url) == null ? '' : interp) + '</a></span>');
-}
-buf.push('</div>');
+ var title = model.title ? model.title : model.url
+buf.push('<div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><span title="remove this feed and place its details on the new feed form" class="feed-delete">&times;</span><span class="feed-count"></span><a');
+buf.push(attrs({ 'title':(title), 'data-tags':("" + (model.tags) + ""), 'href':("" + (model.url) + ""), "class": ('feed-title') }, {"title":true,"data-tags":true,"href":true}));
+buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a>');
 }
 return buf.join("");
 };

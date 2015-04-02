@@ -109,7 +109,6 @@ module.exports = class AppView extends View
             success: (elem) =>
                 elems = $("." + elem.cid)
                 elems.parents(".tag").find(".feed").show()
-                View.log "" + url + " added"
                 @cleanAddFeedForm()
                 elems.not(".clone").click()
             error: =>

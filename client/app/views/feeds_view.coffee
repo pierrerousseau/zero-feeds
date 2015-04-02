@@ -22,8 +22,9 @@ module.exports = class FeedsView extends ViewCollection
         feeds  = target.find ".feed"
         target.toggleClass "active"
         target.find(".feed").toggle()
-        target.find(".feed.show .title").toggle()
-        $(feed).find(".count").click() for feed in feeds
+        target.find(".feed.showing").click()
+        target.find(".feed.show .feed-title").toggle()
+        $(feed).find(".feed-count").click() for feed in feeds
         false
 
     initialize: ->

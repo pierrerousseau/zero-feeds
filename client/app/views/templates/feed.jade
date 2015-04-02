@@ -1,13 +1,13 @@
-.title
-    .spinner
-        img.loader(src="images/loader.gif", alt="loading ...")
-    span.delete(title="remove this feed and place its details on the new feed form")
-        | x
-    if model.title
-        span.count
-        span(title="#{model.title}", tags="#{model.tags}")
-            a(href="#{model.url}") #{model.title}
-    else
-        span.count
-        span(title="#{model.url}", tags="#{model.tags}")
-            a(href="#{model.url}") #{model.url}
+- var title = model.title ? model.title : model.url
+
+.feed-spinner
+    img.loader(src="images/loader.gif", alt="...")
+span.feed-delete(
+    title="remove this feed and place its details on the new feed form"
+) &times;
+span.feed-count
+a.feed-title(
+    title=title, 
+    data-tags="#{model.tags}"
+    href="#{model.url}"
+) #{title}
