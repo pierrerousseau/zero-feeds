@@ -16,15 +16,22 @@ module.exports = class FeedView extends View
 
     events:
         "click": "onUpdateClicked"
-        "click .count": "setUpdate"
-        "click .delete": "onDeleteClicked"
+        "click .feed-count": "setUpdate"
+        "click .feed-delete": "onDeleteClicked"
+        "mouseenter .feed-delete": "setToDelete"
+        "mouseleave .feed-delete": "setToNotDelete"
 
     startWaiter: () ->
         @$el.addClass("loading")
 
-
     stopWaiter: () ->
         @$el.removeClass("loading")
+
+    setToDelete: () ->
+        @$el.addClass("to-delete")
+
+    setToNotDelete: () ->
+        @$el.removeClass("to-delete")
 
     addToTag: (tag) ->
         tmpl = tagTemplate
@@ -50,9 +57,9 @@ module.exports = class FeedView extends View
     setCount: () ->
         count = @model.count()
         if count
-            @$el.find(".count").html "(" + count + ")"
+            @$el.find(".feed-count").html "(" + count + ")"
         else
-            @$el.find(".count").html ""
+            @$el.find(".feed-count").html ""
 
     setUpdate: () ->
         if @$el.is ":visible"
@@ -144,9 +151,9 @@ module.exports = class FeedView extends View
         false
 
     refillAddForm: ->
-        title = @$el.find(".title")
-        url   = title.find("a").attr("href")
-        tags  = title.find("span").attr("tags") or ""
+        title = @$el.find(".feed-title")
+        url   = title.attr("href")
+        tags  = title.attr("data-tags") or ""
 
         $("form.new-feed .url-field").val(url)
         $("form.new-feed .tags-field").val(tags)
@@ -163,7 +170,6 @@ module.exports = class FeedView extends View
 
         $(".clone." + @model.cid).remove()
 
-        title = @$(".title a").html()
         View.log "" + title + " removed and placed in form"
 
     onDeleteClicked: (evt) ->
