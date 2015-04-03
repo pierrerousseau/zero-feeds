@@ -11,6 +11,17 @@ module.exports = class FeedsView extends ViewCollection
         "click .tag": "onTagClicked"
         "click .tag-refresh": "onReloadTagClicked"
 
+        "mouseenter .tag-header": "setToFullHover"
+        "mouseleave .tag-header": "setToNotFullHover"
+        
+    setToFullHover: (evt) ->
+        target = $(evt.currentTarget).parents ".tag:first"
+        target.addClass("hover")
+
+    setToNotFullHover: (evt) ->
+        target = $(evt.currentTarget).parents ".tag:first"
+        target.removeClass("hover")
+
     onReloadTagClicked: (evt) ->
         target = $(evt.currentTarget).parents ".tag:first"
         feeds  = target.find ".feed"

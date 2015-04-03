@@ -195,7 +195,9 @@ input[type=button] {
 }
 #content .tag {
   cursor: pointer;
-  padding: 5px;
+}
+#content .tag.hover {
+  background: #000;
 }
 #content .tag.show .feed {
   display: block;
@@ -211,10 +213,8 @@ input[type=button] {
   color: #6ae;
 }
 #content .tag .tag-header {
+  padding: 5px;
   white-space: nowrap;
-}
-#content .tag .tag-header:hover {
-  background: #000;
 }
 #content .tag .tag-actions {
   white-space: nowrap;

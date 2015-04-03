@@ -94,7 +94,9 @@ active-color     = #ea6
 
     .tag
         cursor: pointer
-        padding: 5px
+
+        &.hover
+            background: black
 
         &.show
             .feed
@@ -111,9 +113,8 @@ active-color     = #ea6
                 color: highlight-color
 
         .tag-header
+            padding: 5px
             white-space: nowrap
-            &:hover
-                background: black
         
 
         .tag-actions
