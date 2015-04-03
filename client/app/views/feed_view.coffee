@@ -71,9 +71,9 @@ module.exports = class FeedView extends View
                     setTimeout _.bind(@setUpdate, @),
                          ((1 + Math.floor(Math.random()*14)) * 60000)
                 error: =>
+                    @stopWaiter()
                     setTimeout _.bind(@setUpdate, @),
                          ((11 + Math.floor(Math.random()*14)) * 60000)
-                    @stopWaiter()
         false
 
     render: ->
@@ -115,8 +115,9 @@ module.exports = class FeedView extends View
                 link.toCozyBookMarks = withCozyBookmarks
                 $(".links").prepend($(tmpl(link)))
 
-    onUpdateClicked: (evt, full) ->
+    onUpdateClicked: (evt) ->
         @startWaiter()
+        evt.preventDefault()
 
         $allThat      = $("." + @model.cid)
         existingLinks = $(".links ." + @feedClass() + ", .link" + @model.cid)
@@ -129,12 +130,14 @@ module.exports = class FeedView extends View
             try
                 title = @model.titleText()
             catch error
-                View.error "Can't parse feed, please check feed address."
                 @stopWaiter()
-                return
+                View.error "Can't parse feed, please check feed address."
+                return false
+
             $allThat.addClass "showing"
             @model.save { "title": title, "content": "" },
                 success: =>
+                    @stopWaiter()
                     @renderXml()
                     title = @model.titleText()
                     if title
@@ -142,12 +145,9 @@ module.exports = class FeedView extends View
                         @model.save { "title": title, "last": last, "content": "" }
                         $allThat.find("a").html title
                         View.log "" + title + " reloaded"
-                    @stopWaiter()
                 error: =>
-                    View.error "Server error occured, feed was not updated."
                     @stopWaiter()
-
-        evt.preventDefault()
+                    View.error "Server error occured, feed was not updated."
         false
 
     refillAddForm: ->
@@ -168,15 +168,20 @@ module.exports = class FeedView extends View
 
         @destroy()
 
-        $(".clone." + @model.cid).remove()
+        existingLinks = $(".links ." + @feedClass() + ", .link" + @model.cid)
+        if existingLinks.length
+            existingLinks.remove()
 
-        View.log "" + title + " removed and placed in form"
+        $(".clone." + @model.cid).remove()
 
     onDeleteClicked: (evt) ->
         @model.destroy
             success: =>
                 @refillAddForm()
                 @fullRemove()
+                title = @model.titleText()
+                if title
+                    View.log "" + title + " removed and placed in form"
             error: =>
                 View.error "Server error occured, feed was not deleted."
         evt.preventDefault()

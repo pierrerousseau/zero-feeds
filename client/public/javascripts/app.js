@@ -1179,8 +1179,8 @@ module.exports = FeedView = (function(superClass) {
         })(this),
         error: (function(_this) {
           return function() {
-            setTimeout(_.bind(_this.setUpdate, _this), (11 + Math.floor(Math.random() * 14)) * 60000);
-            return _this.stopWaiter();
+            _this.stopWaiter();
+            return setTimeout(_.bind(_this.setUpdate, _this), (11 + Math.floor(Math.random() * 14)) * 60000);
           };
         })(this)
       });
@@ -1234,9 +1234,10 @@ module.exports = FeedView = (function(superClass) {
     });
   };
 
-  FeedView.prototype.onUpdateClicked = function(evt, full) {
+  FeedView.prototype.onUpdateClicked = function(evt) {
     var $allThat, error, existingLinks, title;
     this.startWaiter();
+    evt.preventDefault();
     $allThat = $("." + this.model.cid);
     existingLinks = $(".links ." + this.feedClass() + ", .link" + this.model.cid);
     if (existingLinks.length) {
@@ -1249,9 +1250,9 @@ module.exports = FeedView = (function(superClass) {
         title = this.model.titleText();
       } catch (_error) {
         error = _error;
-        View.error("Can't parse feed, please check feed address.");
         this.stopWaiter();
-        return;
+        View.error("Can't parse feed, please check feed address.");
+        return false;
       }
       $allThat.addClass("showing");
       this.model.save({
@@ -1261,6 +1262,7 @@ module.exports = FeedView = (function(superClass) {
         success: (function(_this) {
           return function() {
             var last;
+            _this.stopWaiter();
             _this.renderXml();
             title = _this.model.titleText();
             if (title) {
@@ -1271,20 +1273,18 @@ module.exports = FeedView = (function(superClass) {
                 "content": ""
               });
               $allThat.find("a").html(title);
-              View.log("" + title + " reloaded");
+              return View.log("" + title + " reloaded");
             }
-            return _this.stopWaiter();
           };
         })(this),
         error: (function(_this) {
           return function() {
-            View.error("Server error occured, feed was not updated.");
-            return _this.stopWaiter();
+            _this.stopWaiter();
+            return View.error("Server error occured, feed was not updated.");
           };
         })(this)
       });
     }
-    evt.preventDefault();
     return false;
   };
 
@@ -1301,22 +1301,30 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.fullRemove = function() {
-    var myTag;
+    var existingLinks, myTag;
     myTag = this.$el.parents(".tag");
     if (myTag.find(".feed").length === 1) {
       myTag.remove();
     }
     this.destroy();
-    $(".clone." + this.model.cid).remove();
-    return View.log("" + title + " removed and placed in form");
+    existingLinks = $(".links ." + this.feedClass() + ", .link" + this.model.cid);
+    if (existingLinks.length) {
+      existingLinks.remove();
+    }
+    return $(".clone." + this.model.cid).remove();
   };
 
   FeedView.prototype.onDeleteClicked = function(evt) {
     this.model.destroy({
       success: (function(_this) {
         return function() {
+          var title;
           _this.refillAddForm();
-          return _this.fullRemove();
+          _this.fullRemove();
+          title = _this.model.titleText();
+          if (title) {
+            return View.log("" + title + " removed and placed in form");
+          }
         };
       })(this),
       error: (function(_this) {
@@ -1359,7 +1367,21 @@ module.exports = FeedsView = (function(superClass) {
 
   FeedsView.prototype.events = {
     "click .tag": "onTagClicked",
-    "click .tag-refresh": "onReloadTagClicked"
+    "click .tag-refresh": "onReloadTagClicked",
+    "mouseenter .tag-header": "setToFullHover",
+    "mouseleave .tag-header": "setToNotFullHover"
+  };
+
+  FeedsView.prototype.setToFullHover = function(evt) {
+    var target;
+    target = $(evt.currentTarget).parents(".tag:first");
+    return target.addClass("hover");
+  };
+
+  FeedsView.prototype.setToNotFullHover = function(evt) {
+    var target;
+    target = $(evt.currentTarget).parents(".tag:first");
+    return target.removeClass("hover");
   };
 
   FeedsView.prototype.onReloadTagClicked = function(evt) {
