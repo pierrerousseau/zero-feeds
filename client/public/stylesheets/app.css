@@ -269,12 +269,9 @@ input[type=button] {
   vertical-align: top;
   text-decoration: none;
 }
-#content .feed.showing .title a {
+#content .feed.showing {
+  background-color: #000;
   color: #ea6;
-  text-decoration: none;
-}
-#content .feed.showing .title a:hover {
-  color: #6ae;
 }
 #content ul.links {
   padding: 20px 0;
