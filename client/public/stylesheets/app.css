@@ -106,16 +106,16 @@ input[type=button] {
   background: #262626;
   border-color: #262626;
   margin: 0 1em;
-  color: #bbb;
+  color: main-color;
 }
 #content .panel {
   border: 1px solid #1f1f1f;
-  background: #bbb;
+  background: main-color;
 }
 #content .panel-heading {
   background: #1f1f1f;
   border: 1px solid #1f1f1f;
-  color: #bbb;
+  color: main-color;
 }
 #content .panel-heading .panel-title {
   font-weight: bold;
@@ -123,7 +123,7 @@ input[type=button] {
 }
 #content .panel-body {
   background: #1f1f1f;
-  color: #bbb;
+  color: main-color;
 }
 #content button {
   border: none;
@@ -229,7 +229,7 @@ input[type=button] {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  color: #bbb;
+  color: main-color;
 }
 #content .feed .feed-count {
   color: #6ae;
@@ -289,13 +289,6 @@ input[type=button] {
 #content ul.links > li:hover {
   background: #000;
 }
-#content ul.links > li button {
-  -webkit-transition: 0.2s all linear;
-  -moz-transition: 0.2s all linear;
-  -o-transition: 0.2s all linear;
-  -ms-transition: 0.2s all linear;
-  transition: 0.2s all linear;
-}
 #content ul.links > li button,
 #content ul.links > li a {
   padding: 0 5px;
@@ -307,29 +300,36 @@ input[type=button] {
 #content ul.links > li a:hover {
   color: #6ae;
 }
-#content ul.links > li .active {
-  color: #bbb;
+#content ul.links > li button {
+  -webkit-transition: 0.2s all linear;
+  -moz-transition: 0.2s all linear;
+  -o-transition: 0.2s all linear;
+  -ms-transition: 0.2s all linear;
+  transition: 0.2s all linear;
+}
+#content ul.links > li .link-active {
+  color: main-color;
 }
 #content ul.links > li .buttons {
   display: inline-block;
   padding-right: 0.5em;
   white-space: nowrap;
   height: 100%;
-  color: #bbb;
+  color: main-color;
   vertical-align: top;
 }
 #content ul.links > li .buttons .btn {
-  color: #bbb;
+  color: main-color;
   border: none;
   width: auto;
 }
 #content ul.links > li .buttons .btn a {
   padding: 0;
 }
-#content ul.links > li .description {
+#content ul.links > li .link-description {
   display: none;
   margin: 0.5em 4em;
-  color: #eee;
+  color: #000;
   -webkit-border-radius: 4px;
   border-radius: 4px;
   background: #262626;
@@ -339,33 +339,33 @@ input[type=button] {
   filter: alpha(opacity=70);
   max-width: 800px;
 }
-#content ul.links > li.new :visited {
+#content ul.links > li.link-new :visited {
   color: #ea6;
 }
-#content ul.links > li.new :visited:hover {
+#content ul.links > li.link-new :visited:hover {
   color: #6ae;
 }
-#content ul.links > li.old {
+#content ul.links > li.link-old {
   display: none;
 }
-#content ul.links > li.old a,
-#content ul.links > li.old .btn {
+#content ul.links > li.link-old a,
+#content ul.links > li.link-old .btn {
   color: #676;
   opacity: 0.8;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   filter: alpha(opacity=80);
   text-decoration: none;
 }
-#content ul.links > li.old :hover {
+#content ul.links > li.link-old :hover {
   color: #6ae;
 }
-#content ul.links > li.old :visited {
+#content ul.links > li.link-old :visited {
   color: #ea6;
 }
-#content ul.links > li.old :visited:hover {
+#content ul.links > li.link-old :visited:hover {
   color: #6ae;
 }
-#content ul.links.show-old li.old {
+#content ul.links.show-old li.link-old {
   display: list-item;
 }
 .description {
