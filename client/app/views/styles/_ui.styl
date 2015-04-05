@@ -1,8 +1,18 @@
-main-color       = #bbb
-panel-background = #1f1f1f
-hover-color      = blue
-highlight-color  = #6ae
-active-color     = #ea6
+main-color            = #bbb
+panel-back            = #1f1f1f
+hover-color           = blue
+highlight-color       = #6ae
+highlight-back        = #000
+active-color          = #ea6
+delete-color          = red
+old-color             = #676
+inputs-back           = #262626
+tag-button-color      = #999
+new-feed-color        = flashyblue
+menu-back             = #1c1c1c
+main-back             = #2a2a2a
+link-description-back = #262626
+
 
 #content
     padding: 0
@@ -12,25 +22,24 @@ active-color     = #ea6
         margin-top: 1em
         width: 100%
 
-
     input
-        background: #262626
-        border-color: #262626
+        background: inputs-back
+        border-color: inputs-back
         margin: 0 1em
         color: main-color
 
     .panel
-        border: panel-background
+        border: panel-back
         background: main-color
     .panel-heading
-        background: panel-background
-        border: panel-background
+        background: panel-back
+        border: panel-back
         color: main-color
         .panel-title
             font-weight: bold
             font-size: 2em
     .panel-body
-        background: panel-background
+        background: panel-back
         color: main-color
 
     button
@@ -74,7 +83,7 @@ active-color     = #ea6
         min-width: 200px
         max-width: 300px
         vertical-align: top
-        background: #1C1C1C
+        background: menu-back
 
     .main
         display: table-cell
@@ -82,21 +91,21 @@ active-color     = #ea6
         margin: 0
         padding: 0
         border: 0
-        background: #2A2A2A
+        background: main-back
 
 
     .btn
         color: lightblue
         &:hover
-            color: blue
+            color: hover-color
         &.new
-            color: flashyblue
+            color: new-feed-color
 
     .tag
         cursor: pointer
 
         &.hover
-            background: black
+            background: highlight-back
 
         &.show
             .feed
@@ -107,7 +116,7 @@ active-color     = #ea6
             border: none
             vertical-align: middle
             font-size: 1em
-            color: #999
+            color: tag-button-color
 
             &:hover
                 color: highlight-color
@@ -149,17 +158,17 @@ active-color     = #ea6
 
         &:hover
             color: highlight-color
-            background-color: black
+            background-color: highlight-back
             .feed-delete
                 visibility: visible
 
         &.to-delete
-            color: red
+            color: delete-color
             .feed-count
-                color: red
+                color: delete-color
 
         .feed-delete
-            color: red
+            color: delete-color
 
         .feed-title
             color: inherit
@@ -168,7 +177,7 @@ active-color     = #ea6
             text-decoration: none
 
         &.showing 
-            background-color: black
+            background-color: highlight-back
             color: active-color
 
     ul.links
@@ -185,10 +194,7 @@ active-color     = #ea6
             width: 100%
 
             &:hover
-                background: #000
-
-            button
-                transition: 0.2s all linear
+                background: highlight-back
 
             button, a
                 padding: 0 5px
@@ -196,14 +202,16 @@ active-color     = #ea6
                 font-size: 20px
                 line-height: 28px
 
-            button:hover
-            a:hover
-                color: highlight-color
+                &:hover
+                    color: highlight-color
 
-            .active
+            button
+                transition: 0.2s all linear
+
+            .link-active
                 color: main-color
 
-            .buttons
+            .link-buttons
                 display: inline-block
                 padding-right: .5em
                 white-space: nowrap
@@ -218,17 +226,18 @@ active-color     = #ea6
                     a
                         padding: 0
 
-            .description
+            .link-description
                 display: none
-                margin: .5em 4em
-                color: #eee
+                margin: .5em 1em
+                color: highlight-back
                 border-radius: 4px
-                background: #262626
-                padding: .5em
+                color: main-color
+                background: link-description-back
+                padding: 1em
                 opacity: 0.7
                 max-width: 800px
 
-            &.new
+            &.link-new
                 :visited
                     color: active-color
 
@@ -236,15 +245,12 @@ active-color     = #ea6
                     &:hover
                         color: highlight-color
 
-            &.old
+            &.link-old
                 display: none
                 a, .btn
-                    color: #676
+                    color: old-color
                     opacity: 0.8
                     text-decoration: none
-
-                :hover
-                    color: highlight-color
 
                 :visited
                     color: active-color
@@ -254,9 +260,8 @@ active-color     = #ea6
                         color: highlight-color
 
         &.show-old
-            li.old
+            li.link-old
                 display: list-item
-
 
 .description
     font-size: 16px

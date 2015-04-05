@@ -704,8 +704,8 @@ module.exports = AppView = (function(superClass) {
     "submit form.new-feed": "addFeed",
     "keyup #cozy-bookmarks-name": "updateSettings",
     "change #show-new-links": "toggleOldLinks",
-    "click .link .to-cozy-bookmarks": "toCozyBookMarks",
-    "click .link .btn.view-description": "linkDetails"
+    "click .link-send-to-cozy-bookmarks": "toCozyBookMarks",
+    "click .link-view-description": "linkDetails"
   };
 
   AppView.prototype.startWaiter = function($elem) {
@@ -903,6 +903,7 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.toCozyBookMarks = function(evt) {
     var ajaxOptions, url;
+    console.log("oooooo");
     url = $(evt.target).parents(".link:first").find("> a").attr("href");
     ajaxOptions = {
       type: "POST",
@@ -925,9 +926,9 @@ module.exports = AppView = (function(superClass) {
   AppView.prototype.linkDetails = function(evt) {
     var link;
     link = $(evt.target).parents(".link:first");
-    link.toggleClass("active");
-    link.find(".btn.view-description").toggleClass("active");
-    return link.find(".description").toggle();
+    link.toggleClass("link-active");
+    link.find(".link-view-description").toggleClass("link-active");
+    return link.find(".link-description").toggle();
   };
 
   AppView.prototype.addFeedFromFile = function(feedObj) {
@@ -1524,17 +1525,17 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<li');
-buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
-buf.push('><div class="buttons"><a');
-buf.push(attrs({ 'title':("send to tweeter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), "class": ('btn') + ' ' + ("to-tweeter") }, {"class":true,"title":true,"href":true,"target":true}));
+buf.push(attrs({ "class": ("link " + (from) + " link-" + (state) + "") }, {"class":true}));
+buf.push('><div class="link-buttons"><a');
+buf.push(attrs({ 'title':("send to tweeter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), "class": ('btn') + ' ' + ("link-send-to-tweeter") }, {"class":true,"title":true,"href":true,"target":true}));
 buf.push('><span class="fa fa-twitter"></span></a>');
 if ( toCozyBookMarks)
 {
-buf.push('<button title="send to cozy bookmarks" class="btn to-cozy-bookmarks"><span class="glyphicon glyphicon-bookmark"></span></button>');
+buf.push('<button title="send to cozy bookmarks" class="btn link-send-to-cozy-bookmarks"><span class="glyphicon glyphicon-bookmark"></span></button>');
 }
-buf.push('<button title="view description" class="btn view-description"><span class="glyphicon glyphicon-plus"></span></button></div><a');
+buf.push('<button title="view description" class="btn link-view-description"><span class="glyphicon glyphicon-plus"></span></button></div><a');
 buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
-buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
+buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="link-description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
 }
 return buf.join("");
 };

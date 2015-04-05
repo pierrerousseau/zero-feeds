@@ -289,13 +289,6 @@ input[type=button] {
 #content ul.links > li:hover {
   background: #000;
 }
-#content ul.links > li button {
-  -webkit-transition: 0.2s all linear;
-  -moz-transition: 0.2s all linear;
-  -o-transition: 0.2s all linear;
-  -ms-transition: 0.2s all linear;
-  transition: 0.2s all linear;
-}
 #content ul.links > li button,
 #content ul.links > li a {
   padding: 0 5px;
@@ -307,10 +300,17 @@ input[type=button] {
 #content ul.links > li a:hover {
   color: #6ae;
 }
-#content ul.links > li .active {
+#content ul.links > li button {
+  -webkit-transition: 0.2s all linear;
+  -moz-transition: 0.2s all linear;
+  -o-transition: 0.2s all linear;
+  -ms-transition: 0.2s all linear;
+  transition: 0.2s all linear;
+}
+#content ul.links > li .link-active {
   color: #bbb;
 }
-#content ul.links > li .buttons {
+#content ul.links > li .link-buttons {
   display: inline-block;
   padding-right: 0.5em;
   white-space: nowrap;
@@ -318,54 +318,52 @@ input[type=button] {
   color: #bbb;
   vertical-align: top;
 }
-#content ul.links > li .buttons .btn {
+#content ul.links > li .link-buttons .btn {
   color: #bbb;
   border: none;
   width: auto;
 }
-#content ul.links > li .buttons .btn a {
+#content ul.links > li .link-buttons .btn a {
   padding: 0;
 }
-#content ul.links > li .description {
+#content ul.links > li .link-description {
   display: none;
-  margin: 0.5em 4em;
-  color: #eee;
+  margin: 0.5em 1em;
+  color: #000;
   -webkit-border-radius: 4px;
   border-radius: 4px;
+  color: #bbb;
   background: #262626;
-  padding: 0.5em;
+  padding: 1em;
   opacity: 0.7;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   filter: alpha(opacity=70);
   max-width: 800px;
 }
-#content ul.links > li.new :visited {
+#content ul.links > li.link-new :visited {
   color: #ea6;
 }
-#content ul.links > li.new :visited:hover {
+#content ul.links > li.link-new :visited:hover {
   color: #6ae;
 }
-#content ul.links > li.old {
+#content ul.links > li.link-old {
   display: none;
 }
-#content ul.links > li.old a,
-#content ul.links > li.old .btn {
+#content ul.links > li.link-old a,
+#content ul.links > li.link-old .btn {
   color: #676;
   opacity: 0.8;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   filter: alpha(opacity=80);
   text-decoration: none;
 }
-#content ul.links > li.old :hover {
-  color: #6ae;
-}
-#content ul.links > li.old :visited {
+#content ul.links > li.link-old :visited {
   color: #ea6;
 }
-#content ul.links > li.old :visited:hover {
+#content ul.links > li.link-old :visited:hover {
   color: #6ae;
 }
-#content ul.links.show-old li.old {
+#content ul.links.show-old li.link-old {
   display: list-item;
 }
 .description {
