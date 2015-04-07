@@ -106,16 +106,16 @@ input[type=button] {
   background: #262626;
   border-color: #262626;
   margin: 0 1em;
-  color: main-color;
+  color: #bbb;
 }
 #content .panel {
   border: 1px solid #1f1f1f;
-  background: main-color;
+  background: #bbb;
 }
 #content .panel-heading {
   background: #1f1f1f;
   border: 1px solid #1f1f1f;
-  color: main-color;
+  color: #bbb;
 }
 #content .panel-heading .panel-title {
   font-weight: bold;
@@ -123,7 +123,7 @@ input[type=button] {
 }
 #content .panel-body {
   background: #1f1f1f;
-  color: main-color;
+  color: #bbb;
 }
 #content button {
   border: none;
@@ -229,7 +229,7 @@ input[type=button] {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  color: main-color;
+  color: #bbb;
 }
 #content .feed .feed-count {
   color: #6ae;
@@ -308,32 +308,33 @@ input[type=button] {
   transition: 0.2s all linear;
 }
 #content ul.links > li .link-active {
-  color: main-color;
+  color: #bbb;
 }
-#content ul.links > li .buttons {
+#content ul.links > li .link-buttons {
   display: inline-block;
   padding-right: 0.5em;
   white-space: nowrap;
   height: 100%;
-  color: main-color;
+  color: #bbb;
   vertical-align: top;
 }
-#content ul.links > li .buttons .btn {
-  color: main-color;
+#content ul.links > li .link-buttons .btn {
+  color: #bbb;
   border: none;
   width: auto;
 }
-#content ul.links > li .buttons .btn a {
+#content ul.links > li .link-buttons .btn a {
   padding: 0;
 }
 #content ul.links > li .link-description {
   display: none;
-  margin: 0.5em 4em;
+  margin: 0.5em 1em;
   color: #000;
   -webkit-border-radius: 4px;
   border-radius: 4px;
+  color: #bbb;
   background: #262626;
-  padding: 0.5em;
+  padding: 1em;
   opacity: 0.7;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   filter: alpha(opacity=70);
@@ -355,9 +356,6 @@ input[type=button] {
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   filter: alpha(opacity=80);
   text-decoration: none;
-}
-#content ul.links > li.link-old :hover {
-  color: #6ae;
 }
 #content ul.links > li.link-old :visited {
   color: #ea6;

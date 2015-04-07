@@ -22,8 +22,8 @@ module.exports = class AppView extends View
         "keyup #cozy-bookmarks-name": "updateSettings"
         "change #show-new-links": "toggleOldLinks"
 
-        "click .link .send-to-cozy-bookmarks": "toCozyBookMarks"
-        "click .link .link-view-description": "linkDetails"
+        "click .link-send-to-cozy-bookmarks": "toCozyBookMarks"
+        "click .link-view-description": "linkDetails"
 
     startWaiter: ($elem) ->
         html = "<img " +
@@ -157,6 +157,7 @@ module.exports = class AppView extends View
         false
 
     toCozyBookMarks: (evt) =>
+        console.log("oooooo")
         url = $(evt.target).parents(".link:first").find("> a").attr("href")
         ajaxOptions =
             type: "POST",

@@ -704,8 +704,8 @@ module.exports = AppView = (function(superClass) {
     "submit form.new-feed": "addFeed",
     "keyup #cozy-bookmarks-name": "updateSettings",
     "change #show-new-links": "toggleOldLinks",
-    "click .link .send-to-cozy-bookmarks": "toCozyBookMarks",
-    "click .link .link-view-description": "linkDetails"
+    "click .link-send-to-cozy-bookmarks": "toCozyBookMarks",
+    "click .link-view-description": "linkDetails"
   };
 
   AppView.prototype.startWaiter = function($elem) {
@@ -903,6 +903,7 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.toCozyBookMarks = function(evt) {
     var ajaxOptions, url;
+    console.log("oooooo");
     url = $(evt.target).parents(".link:first").find("> a").attr("href");
     ajaxOptions = {
       type: "POST",
@@ -1524,7 +1525,7 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<li');
-buf.push(attrs({ "class": ("link " + (from) + " " + (state) + "") }, {"class":true}));
+buf.push(attrs({ "class": ("link " + (from) + " link-" + (state) + "") }, {"class":true}));
 buf.push('><div class="link-buttons"><a');
 buf.push(attrs({ 'title':("send to tweeter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), "class": ('btn') + ' ' + ("link-send-to-tweeter") }, {"class":true,"title":true,"href":true,"target":true}));
 buf.push('><span class="fa fa-twitter"></span></a>');

@@ -1,4 +1,4 @@
-link-main-color       = #bbb
+main-color            = #bbb
 panel-back            = #1f1f1f
 hover-color           = blue
 highlight-color       = #6ae
@@ -211,7 +211,7 @@ link-description-back = #262626
             .link-active
                 color: main-color
 
-            .buttons
+            .link-buttons
                 display: inline-block
                 padding-right: .5em
                 white-space: nowrap
@@ -228,11 +228,12 @@ link-description-back = #262626
 
             .link-description
                 display: none
-                margin: .5em 4em
+                margin: .5em 1em
                 color: highlight-back
                 border-radius: 4px
+                color: main-color
                 background: link-description-back
-                padding: .5em
+                padding: 1em
                 opacity: 0.7
                 max-width: 800px
 
@@ -250,9 +251,6 @@ link-description-back = #262626
                     color: old-color
                     opacity: 0.8
                     text-decoration: none
-
-                :hover
-                    color: highlight-color
 
                 :visited
                     color: active-color
