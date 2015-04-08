@@ -702,8 +702,8 @@ module.exports = AppView = (function(superClass) {
     "click .btn.import": "import",
     "change #feeds-file": "uploadFile",
     "submit form.new-feed": "addFeed",
-    "keyup #cozy-bookmarks-name": "updateSettings",
-    "change #show-new-links": "toggleOldLinks",
+    "keyup #param-cozy-bookmarks-name": "updateSettings",
+    "change #param-show-new-links": "toggleOldLinks",
     "click .link-send-to-cozy-bookmarks": "toCozyBookMarks",
     "click .link-view-description": "linkDetails"
   };
@@ -862,10 +862,10 @@ module.exports = AppView = (function(superClass) {
     ref = this.paramsView.collection.models;
     for (i = 0, len = ref.length; i < len; i++) {
       parameter = ref[i];
-      paramId = parameter.attributes.paramId;
+      paramId = "param-" + parameter.attributes.paramId;
       name = parameter.attributes.name;
-      $elem = $("#" + paramId);
-      if (paramId === "show-new-links" && paramId === evt.target.id) {
+      $elem = $("#param-" + paramId);
+      if (paramId === "param-show-new-links" && paramId === evt.target.id) {
         checked = $elem.prop("checked");
         parameter.save({
           "value": checked
@@ -907,7 +907,7 @@ module.exports = AppView = (function(superClass) {
     url = $(evt.target).parents(".link:first").find("> a").attr("href");
     ajaxOptions = {
       type: "POST",
-      url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
+      url: "../../apps/" + $("#param-cozy-bookmarks-name").val() + "/bookmarks",
       data: {
         url: url,
         tags: ["cozy-feeds"]
@@ -1550,26 +1550,26 @@ var interp;
  if (model.paramId == "show-new-links")
 {
 buf.push('<div class="checkbox"><label');
-buf.push(attrs({ 'for':("" + (model.paramId) + "") }, {"for":true}));
-buf.push('>' + escape((interp = model.name) == null ? '' : interp) + '');
+buf.push(attrs({ 'for':("param-" + (model.paramId) + "") }, {"for":true}));
+buf.push('>');
  if (model.value == "true")
 {
 buf.push('<input');
-buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + ""), "class": ('form-control') + ' ' + ("" + (model.paramId) + "") }, {"class":true,"id":true,"name":true,"type":true,"checked":true,"value":true}));
+buf.push(attrs({ 'id':("param-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + ""), "class": ('form-control') }, {"id":true,"name":true,"type":true,"checked":true,"value":true}));
 buf.push('/>');
 }
  else
 {
 buf.push('<input');
-buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'value':("" + (model.value) + ""), "class": ('form-control') + ' ' + ("inline " + (model.paramId) + "") }, {"class":true,"id":true,"name":true,"type":true,"value":true}));
+buf.push(attrs({ 'id':("param-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'value':("" + (model.value) + ""), "class": ('form-control') }, {"id":true,"name":true,"type":true,"value":true}));
 buf.push('/>');
 }
-buf.push('</label></div>');
+buf.push('' + escape((interp = model.name) == null ? '' : interp) + '</label></div>');
 }
-else
+ else
 {
 buf.push('<div class="form-group"><input');
-buf.push(attrs({ 'id':("" + (model.paramId) + ""), 'placeholder':("" + (model.name) + ""), 'name':("" + (model.paramId) + ""), 'value':("" + (model.value) + ""), "class": ('form-control') + ' ' + ("" + (model.paramId) + "") }, {"class":true,"id":true,"placeholder":true,"name":true,"value":true}));
+buf.push(attrs({ 'id':("param-" + (model.paramId) + ""), 'placeholder':("" + (model.name) + ""), 'name':("" + (model.paramId) + ""), 'value':("" + (model.value) + ""), "class": ('form-control') }, {"id":true,"placeholder":true,"name":true,"value":true}));
 buf.push('/></div>');
 }
 }

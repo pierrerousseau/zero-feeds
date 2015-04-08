@@ -152,9 +152,11 @@ input[type=button] {
 }
 #content .options .settings input[type=checkbox] {
   width: 1.5em;
+  margin-left: -2em;
+  height: 1.5em;
 }
 #content .options .settings label {
-  vertical-align: middle;
+  padding-left: 3em;
 }
 #content div.help {
   overflow: visible;
