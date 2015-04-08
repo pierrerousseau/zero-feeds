@@ -19,8 +19,8 @@ module.exports = class AppView extends View
 
         "submit form.new-feed": "addFeed"
 
-        "keyup #cozy-bookmarks-name": "updateSettings"
-        "change #show-new-links": "toggleOldLinks"
+        "keyup #param-cozy-bookmarks-name": "updateSettings"
+        "change #param-show-new-links": "toggleOldLinks"
 
         "click .link-send-to-cozy-bookmarks": "toCozyBookMarks"
         "click .link-view-description": "linkDetails"
@@ -130,10 +130,10 @@ module.exports = class AppView extends View
         if not evt
             return false
         for parameter in @paramsView.collection.models
-            paramId = parameter.attributes.paramId
+            paramId = "param-" + parameter.attributes.paramId
             name    = parameter.attributes.name
-            $elem = $("#" + paramId)
-            if paramId is "show-new-links" and paramId is evt.target.id
+            $elem = $("#param-" + paramId)
+            if paramId is "param-show-new-links" and paramId is evt.target.id
                 checked = $elem.prop("checked")
                 parameter.save { "value": checked },
                     success: () ->
@@ -161,7 +161,7 @@ module.exports = class AppView extends View
         url = $(evt.target).parents(".link:first").find("> a").attr("href")
         ajaxOptions =
             type: "POST",
-            url: "../../apps/" + $("#cozy-bookmarks-name").val() + "/bookmarks",
+            url: "../../apps/" + $("#param-cozy-bookmarks-name").val() + "/bookmarks",
             data: { url: url, tags: ["cozy-feeds"] }
             success: () ->
                 View.log "link added to cozy-bookmarks"

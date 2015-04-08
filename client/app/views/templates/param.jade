@@ -1,23 +1,27 @@
 - if (model.paramId == "show-new-links")
     .checkbox
-        label(for="#{model.paramId}") #{model.name}
+        label(for="param-#{model.paramId}")
             - if (model.value == "true")
-                input.form-control(id="#{model.paramId}",
-                                   name="#{model.paramId}",
-                                   class="#{model.paramId}",
-                                   type="checkbox",
-                                   checked="checked",
-                                   value="#{model.value}")
+                input.form-control(
+                    id="param-#{model.paramId}",
+                    name="#{model.paramId}",
+                    type="checkbox",
+                    checked="checked",
+                    value="#{model.value}"
+                ) 
             - else
-                input.form-control(id="#{model.paramId}",
-                                   name="#{model.paramId}",
-                                   class="inline #{model.paramId}",
-                                   type="checkbox",
-                                   value="#{model.value}")
--else
+                input.form-control(
+                    id="param-#{model.paramId}",
+                    name="#{model.paramId}",
+                    type="checkbox",
+                    value="#{model.value}"
+                ) 
+            | #{model.name}
+- else
     .form-group
-        input.form-control(id="#{model.paramId}",
-                           placeholder="#{model.name}",
-                           name="#{model.paramId}",
-                           class="#{model.paramId}",
-                           value="#{model.value}")
+        input.form-control(
+            id="param-#{model.paramId}",
+            placeholder="#{model.name}",
+            name="#{model.paramId}",
+            value="#{model.value}"
+        )
