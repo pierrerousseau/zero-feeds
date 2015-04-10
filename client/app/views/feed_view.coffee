@@ -155,11 +155,11 @@ module.exports = class FeedView extends View
         url   = title.attr("href")
         tags  = title.attr("data-tags") or ""
 
-        $("form.new-feed .url-field").val(url)
-        $("form.new-feed .tags-field").val(tags)
+        $("form.new-feed .new-feed-url").val(url)
+        $("form.new-feed .new-feed-tags").val(tags)
 
         unless $('.new-feed').is(':visible')
-            $('.new').trigger 'click'
+            $('.menu-new').trigger 'click'
 
     fullRemove: ->
         myTag = @$el.parents(".tag")

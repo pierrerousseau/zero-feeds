@@ -161,8 +161,19 @@ input[type=button] {
 #content div.help {
   overflow: visible;
 }
+#content div.help h3 {
+  padding: 1em;
+  background: #000;
+}
+#content div.help h4,
+#content div.help h5 {
+  padding: 1em;
+  color: #6ae;
+  background: #2a2a2a;
+}
 #content div.help p {
-  font-size: 20px;
+  padding: 1em;
+  background: #2a2a2a;
 }
 #content .panel.settings,
 #content .panel.new-feed,
@@ -178,6 +189,9 @@ input[type=button] {
   vertical-align: top;
   background: #1c1c1c;
 }
+#content .menu .menu-buttons {
+  white-space: nowrap;
+}
 #content .main {
   display: table-cell;
   width: 100%;
@@ -192,7 +206,7 @@ input[type=button] {
 #content .btn:hover {
   color: #47f;
 }
-#content .btn.new {
+#content .btn.menu-new {
   color: #27aaf2;
 }
 #content .tag {
@@ -381,6 +395,9 @@ input[type=button] {
 }
 .description li {
   margin-bottom: 0;
+}
+.feeds {
+  padding-top: 20px;
 }
 #feeds-file {
   display: none;
