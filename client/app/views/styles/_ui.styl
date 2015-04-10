@@ -12,6 +12,7 @@ new-feed-color        = flashyblue
 menu-back             = #1c1c1c
 main-back             = #2a2a2a
 link-description-back = #262626
+btn-color             = lightblue
 
 
 #content
@@ -72,8 +73,16 @@ link-description-back = #262626
 
      div.help
         overflow: visible
+        h3
+            padding: 1em
+            background: highlight-back
+        h4, h5
+            padding: 1em
+            color: highlight-color
+            background: main-back
         p
-            font-size: 20px
+            padding: 1em
+            background: main-back
 
      .panel.settings, .panel.new-feed, div.help
         display: none
@@ -86,6 +95,10 @@ link-description-back = #262626
         max-width: 300px
         vertical-align: top
         background: menu-back
+        
+        .menu-buttons
+            white-space: nowrap
+            
 
     .main
         display: table-cell
@@ -97,10 +110,10 @@ link-description-back = #262626
 
 
     .btn
-        color: lightblue
+        color: btn-color
         &:hover
             color: hover-color
-        &.new
+        &.menu-new
             color: new-feed-color
 
     .tag
@@ -276,6 +289,10 @@ link-description-back = #262626
 
     li
         margin-bottom: 0
+
+.feeds
+    padding-top: 20px  
+
 
 #feeds-file
     display: none

@@ -1,24 +1,31 @@
 #content
-
     .contents
         .menu
-            .clearfix
+            .clearfix(class="import-file")
                 input(type="file", name="feeds-file", id="feeds-file")
                 span.import
                     p.imported
                     p.imported-failed
 
-            .buttons
-                button.btn.glyphicon.glyphicon-plus-sign(class="new", 
-                                                         title="add a feed")
-                button.btn.glyphicon.glyphicon-cog(class="settings",
-                                                   title="settings")
-                button.btn.glyphicon.glyphicon-upload(class="import",
-                    title="import opml rss files or html bookmarks files exported from your browser")
-                button.btn.glyphicon.glyphicon-question-sign(class="help",
-                                                             title="help")
+            .menu-buttons
+                button.btn.glyphicon.glyphicon-plus-sign(
+                    class="menu-new", 
+                    title="add a feed"
+                )
+                button.btn.glyphicon.glyphicon-cog(
+                    class="menu-settings",
+                    title="settings"
+                )
+                button.btn.glyphicon.glyphicon-upload(
+                    class="menu-import",
+                    title="import opml rss files or html bookmarks files exported from your browser"
+                )
+                button.btn.glyphicon.glyphicon-question-sign(
+                    class="menu-help",
+                    title="help"
+                )
  
-            .feeds(style="padding-top: 20px")
+            .feeds
 
         .main
             .options
@@ -28,17 +35,22 @@
                     .panel-body
                         .row
                             .form-group.col-xs-5
-                                input.form-control(class="url-field", 
-                                                   name="url-field",
-                                                   placeholder="url")
+                                input.form-control(
+                                    class="new-feed-url", 
+                                    name="url-field",
+                                    placeholder="url"
+                                )
                             .form-group.col-xs-5
-                                input.form-control(class="tags-field",
-                                        name="tags-field",
-                                        placeholder="tags, separated by ','")
+                                input.form-control(
+                                    class="new-feed-tags",
+                                    name="tags-field",
+                                    placeholder="tags, separated by ','"
+                                )
                             .col-xs-2(class="buttons")
                                 button.btn.glyphicon.glyphicon-plus-sign(
-                                    class="add",
-                                    title="add")
+                                    class="new-feed-add",
+                                    title="add the feed"
+                                )
 
                 form.panel.panel-default(class="settings")
                     .panel-heading

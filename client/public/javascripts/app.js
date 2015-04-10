@@ -696,10 +696,10 @@ module.exports = AppView = (function(superClass) {
   };
 
   AppView.prototype.events = {
-    "click .btn.new": "displayNewForm",
-    "click .btn.help": "toggleHelp",
-    "click .btn.settings": "toggleSettings",
-    "click .btn.import": "import",
+    "click .menu-new": "displayNewForm",
+    "click .menu-help": "toggleHelp",
+    "click .menu-settings": "toggleSettings",
+    "click .menu-import": "import",
     "change #feeds-file": "uploadFile",
     "submit form.new-feed": "addFeed",
     "keyup #param-cozy-bookmarks-name": "updateSettings",
@@ -776,15 +776,15 @@ module.exports = AppView = (function(superClass) {
     $(".new-feed").slideUp();
     $("div.help").slideUp();
     $("form.settings").slideUp();
-    return $(".menu .buttons .active").removeClass('active');
+    return $(".menu-buttons .active").removeClass('active');
   };
 
   AppView.prototype.displayNewForm = function() {
     this.hideToggled();
     if (!$(".new-feed").is(':visible')) {
-      $(".menu .buttons .btn.new").addClass('active');
+      $(".menu-new").addClass('active');
       $(".new-feed").slideDown();
-      $(".url-field").focus();
+      $(".new-feed-url").focus();
     }
     return false;
   };
@@ -792,7 +792,7 @@ module.exports = AppView = (function(superClass) {
   AppView.prototype.toggleHelp = function() {
     this.hideToggled();
     if (!$("div.help").is(':visible')) {
-      $(".menu .buttons .btn.help").addClass('active');
+      $(".menu-buttons .btn.help").addClass('active');
       $("div.help").slideDown();
     }
     return false;
@@ -801,7 +801,7 @@ module.exports = AppView = (function(superClass) {
   AppView.prototype.toggleSettings = function() {
     this.hideToggled();
     if (!$("form.settings").is(':visible')) {
-      $(".menu .buttons .btn.cog").addClass('active');
+      $(".menu-buttons .btn.cog").addClass('active');
       $("form.settings").slideDown();
     }
     return false;
@@ -841,8 +841,8 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.addFeed = function(evt) {
     var tags, url;
-    url = $('.url-field').val();
-    tags = $('.tags-field').val().split(',').map(function(tag) {
+    url = $('.new-feed-url').val();
+    tags = $('.new-feed-tags').val().split(',').map(function(tag) {
       return $.trim(tag);
     });
     if ((url != null ? url.length : void 0) > 0) {
@@ -1294,10 +1294,10 @@ module.exports = FeedView = (function(superClass) {
     title = this.$el.find(".feed-title");
     url = title.attr("href");
     tags = title.attr("data-tags") || "";
-    $("form.new-feed .url-field").val(url);
-    $("form.new-feed .tags-field").val(tags);
+    $("form.new-feed .new-feed-url").val(url);
+    $("form.new-feed .new-feed-tags").val(tags);
     if (!$('.new-feed').is(':visible')) {
-      return $('.new').trigger('click');
+      return $('.menu-new').trigger('click');
     }
   };
 
@@ -1512,7 +1512,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="content"><div class="contents"><div class="menu"><div class="clearfix"><input type="file" name="feeds-file" id="feeds-file"/><span class="import"><p class="imported"></p><p class="imported-failed"></p></span></div><div class="buttons"><button title="add a feed" class="btn glyphicon glyphicon-plus-sign new"></button><button title="settings" class="btn glyphicon glyphicon-cog settings"></button><button title="import opml rss files or html bookmarks files exported from your browser" class="btn glyphicon glyphicon-upload import"></button><button title="help" class="btn glyphicon glyphicon-question-sign help"></button></div><div style="padding-top: 20px" class="feeds"></div></div><div class="main"><div class="options"><form class="panel panel-default new-feed"><div class="panel-heading"><h3 class="panel-title">Add a feed</h3></div><div class="panel-body"><div class="row"><div class="form-group col-xs-5"><input name="url-field" placeholder="url" class="form-control url-field"/></div><div class="form-group col-xs-5"><input name="tags-field" placeholder="tags, separated by \',\'" class="form-control tags-field"/></div><div class="col-xs-2 buttons"><button title="add" class="btn glyphicon glyphicon-plus-sign add"></button></div></div></div></form><form class="panel panel-default settings"><div class="panel-heading"><h3 class="panel-title">Settings</h3></div><div class="panel-body"><div class="row values"></div></div></form><div class="panel panel-default help"><div class="panel-heading"><h3>Help</h3></div><div class="panel-body"><h4>This is a tool to follow your rss/atom feeds.</h4><h5>How do I start ? </h5><p> \nPlease put your mouse over the icons that you see, a tooltip should help you.</p><h5>I\'m not sure, how to add a feed ? </h5><p> \nJust click on the top left "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the left panel.</p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h5>What are these "tags" ?</h5><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h5>I don\'t want to reload all the feeds of a tag.</h5><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5><p>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. </p><h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5><p> \nYou are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><h5>It still doesn\'t work !</h5><p> \nPlease <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h5>I want to use only free softwares.</h5><p> <a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div></div><ul class="links"></ul></div></div></div>');
+buf.push('<div id="content"><div class="contents"><div class="menu"><div class="clearfix import-file"><input type="file" name="feeds-file" id="feeds-file"/><span class="import"><p class="imported"></p><p class="imported-failed"></p></span></div><div class="menu-buttons"><button title="add a feed" class="btn glyphicon glyphicon-plus-sign menu-new"></button><button title="settings" class="btn glyphicon glyphicon-cog menu-settings"></button><button title="import opml rss files or html bookmarks files exported from your browser" class="btn glyphicon glyphicon-upload menu-import"></button><button title="help" class="btn glyphicon glyphicon-question-sign menu-help"></button></div><div class="feeds"></div></div><div class="main"><div class="options"><form class="panel panel-default new-feed"><div class="panel-heading"><h3 class="panel-title">Add a feed</h3></div><div class="panel-body"><div class="row"><div class="form-group col-xs-5"><input name="url-field" placeholder="url" class="form-control new-feed-url"/></div><div class="form-group col-xs-5"><input name="tags-field" placeholder="tags, separated by \',\'" class="form-control new-feed-tags"/></div><div class="col-xs-2 buttons"><button title="add the feed" class="btn glyphicon glyphicon-plus-sign new-feed-add"></button></div></div></div></form><form class="panel panel-default settings"><div class="panel-heading"><h3 class="panel-title">Settings</h3></div><div class="panel-body"><div class="row values"></div></div></form><div class="panel panel-default help"><div class="panel-heading"><h3>Help</h3></div><div class="panel-body"><h4>This is a tool to follow your rss/atom feeds.</h4><h5>How do I start ? </h5><p> \nPlease put your mouse over the icons that you see, a tooltip should help you.</p><h5>I\'m not sure, how to add a feed ? </h5><p> \nJust click on the top left "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the left panel.</p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h5>What are these "tags" ?</h5><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h5>I don\'t want to reload all the feeds of a tag.</h5><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5><p>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. </p><h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5><p> \nYou are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><h5>It still doesn\'t work !</h5><p> \nPlease <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h5>I want to use only free softwares.</h5><p> <a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div></div><ul class="links"></ul></div></div></div>');
 }
 return buf.join("");
 };

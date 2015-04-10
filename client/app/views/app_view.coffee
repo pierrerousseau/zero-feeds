@@ -11,10 +11,10 @@ module.exports = class AppView extends View
         require('./templates/home')
 
     events:
-        "click .btn.new": "displayNewForm"
-        "click .btn.help": "toggleHelp"
-        "click .btn.settings": "toggleSettings"
-        "click .btn.import": "import"
+        "click .menu-new": "displayNewForm"
+        "click .menu-help": "toggleHelp"
+        "click .menu-settings": "toggleSettings"
+        "click .menu-import": "import"
         "change #feeds-file": "uploadFile"
 
         "submit form.new-feed": "addFeed"
@@ -71,27 +71,27 @@ module.exports = class AppView extends View
         $(".new-feed").slideUp()
         $("div.help").slideUp()
         $("form.settings").slideUp()
-        $(".menu .buttons .active").removeClass 'active'
+        $(".menu-buttons .active").removeClass 'active'
 
     displayNewForm: ->
         @hideToggled()
         unless $(".new-feed").is(':visible')
-            $(".menu .buttons .btn.new").addClass 'active'
+            $(".menu-new").addClass 'active'
             $(".new-feed").slideDown()
-            $(".url-field").focus()
+            $(".new-feed-url").focus()
         false
 
     toggleHelp: ->
         @hideToggled()
         unless $("div.help").is(':visible')
-            $(".menu .buttons .btn.help").addClass 'active'
+            $(".menu-buttons .btn.help").addClass 'active'
             $("div.help").slideDown()
         false
 
     toggleSettings: ->
         @hideToggled()
         unless $("form.settings").is(':visible')
-            $(".menu .buttons .btn.cog").addClass 'active'
+            $(".menu-buttons .btn.cog").addClass 'active'
             $("form.settings").slideDown()
         false
 
@@ -115,8 +115,8 @@ module.exports = class AppView extends View
                 View.error "Server error occured, feed was not added"
 
     addFeed: (evt) =>
-        url  = $('.url-field').val()
-        tags = $('.tags-field').val().split(',').map (tag) -> $.trim(tag)
+        url  = $('.new-feed-url').val()
+        tags = $('.new-feed-tags').val().split(',').map (tag) -> $.trim(tag)
 
         if url?.length > 0
             @createFeed(evt, url, tags)
