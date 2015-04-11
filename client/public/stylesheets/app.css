@@ -301,6 +301,7 @@ input[type=button] {
   padding: 10px;
   margin: 0 0px 10px 0px;
   width: 100%;
+  cursor: pointer;
 }
 #content ul.links > li:hover {
   background: #000;
