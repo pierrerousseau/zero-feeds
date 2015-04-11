@@ -23,7 +23,7 @@ module.exports = class AppView extends View
         "change #param-show-new-links": "toggleOldLinks"
 
         "click .link-send-to-cozy-bookmarks": "toCozyBookMarks"
-        "click .link-view-description": "linkDetails"
+        "click .link": "linkDetails"
 
     startWaiter: ($elem) ->
         html = "<img " +
@@ -171,8 +171,7 @@ module.exports = class AppView extends View
         false
 
     linkDetails: (evt) =>
-        link = $(evt.target).parents(".link:first")
-        
+        link = $(evt.currentTarget)
         link.toggleClass "link-active"
         link.find(".link-view-description").toggleClass "link-active"
         link.find(".link-description").toggle()

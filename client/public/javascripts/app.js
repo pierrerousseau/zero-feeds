@@ -705,7 +705,7 @@ module.exports = AppView = (function(superClass) {
     "keyup #param-cozy-bookmarks-name": "updateSettings",
     "change #param-show-new-links": "toggleOldLinks",
     "click .link-send-to-cozy-bookmarks": "toCozyBookMarks",
-    "click .link-view-description": "linkDetails"
+    "click .link": "linkDetails"
   };
 
   AppView.prototype.startWaiter = function($elem) {
@@ -925,7 +925,7 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.linkDetails = function(evt) {
     var link;
-    link = $(evt.target).parents(".link:first");
+    link = $(evt.currentTarget);
     link.toggleClass("link-active");
     link.find(".link-view-description").toggleClass("link-active");
     return link.find(".link-description").toggle();
