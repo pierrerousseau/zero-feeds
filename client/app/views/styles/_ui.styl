@@ -53,6 +53,13 @@ btn-color             = lightblue
     button.btn
         transition: 0.2s all linear
 
+    .btn
+        color: btn-color
+        &:hover
+            color: hover-color
+        &.menu-new
+            color: new-feed-color
+
     .options
         .buttons
             .btn
@@ -71,7 +78,7 @@ btn-color             = lightblue
             label
                 padding-left: 3em
 
-     div.help
+     .help
         overflow: visible
         h3
             padding: 1em
@@ -109,13 +116,6 @@ btn-color             = lightblue
         background: main-back
 
 
-    .btn
-        color: btn-color
-        &:hover
-            color: hover-color
-        &.menu-new
-            color: new-feed-color
-
     .tag
         cursor: pointer
 
@@ -136,13 +136,13 @@ btn-color             = lightblue
             &:hover
                 color: highlight-color
 
-        .tag-header
-            padding: 5px
-            white-space: nowrap
-        
+    .tag-header
+        padding: 5px
+        white-space: nowrap
+    
 
-        .tag-actions
-            white-space: nowrap
+    .tag-actions
+        white-space: nowrap
 
     .feed
         display: none
@@ -155,21 +155,12 @@ btn-color             = lightblue
         text-overflow: ellipsis
         color: main-color
 
-        .feed-count
-            color: highlight-color
-            padding-left: .2em
-
         .feed-spinner 
             display: none
 
-        &.loading
-            .feed-spinner
-                display: inline
-            .feed-delete
-                display: none
-
         .feed-delete
             visibility: hidden
+            color: delete-color
 
         &:hover
             color: highlight-color
@@ -177,23 +168,31 @@ btn-color             = lightblue
             .feed-delete
                 visibility: visible
 
+        &.loading
+            .feed-spinner
+                display: inline
+            .feed-delete
+                display: none
+
+        &.showing 
+            background-color: highlight-back
+            color: active-color
+
         &.to-delete
             color: delete-color
             .feed-count
                 color: delete-color
 
-        .feed-delete
-            color: delete-color
+    .feed-count
+        color: highlight-color
+        padding-left: .2em
 
-        .feed-title
-            color: inherit
-            margin: 0 .3em
-            vertical-align: top
-            text-decoration: none
+    .feed-title
+        color: inherit
+        margin: 0 .3em
+        vertical-align: top
+        text-decoration: none
 
-        &.showing 
-            background-color: highlight-back
-            color: active-color
 
     ul.links
         padding: 20px 0
@@ -224,35 +223,6 @@ btn-color             = lightblue
             button
                 transition: 0.2s all linear
 
-            .link-active
-                color: main-color
-
-            .link-buttons
-                display: inline-block
-                padding-right: .5em
-                white-space: nowrap
-                height: 100%
-                color: main-color
-                vertical-align: top
-
-                .btn
-                    color: main-color
-                    border: none
-                    width: auto
-                    a
-                        padding: 0
-
-            .link-description
-                display: none
-                margin: .5em 1em
-                color: highlight-back
-                border-radius: 4px
-                color: main-color
-                background: link-description-back
-                padding: 1em
-                opacity: 0.7
-                max-width: 800px
-
             &.link-new
                 :visited
                     color: active-color
@@ -274,40 +244,62 @@ btn-color             = lightblue
                 :visited
                     &:hover
                         color: highlight-color
-
         &.show-old
-            li.link-old
+            > li.link-old
                 display: list-item
 
-.description
-    font-size: 16px
-    a
+    .link-active
+        color: main-color
+
+    .link-buttons
+        display: inline-block
+        padding-right: .5em
+        white-space: nowrap
+        height: 100%
+        color: main-color
+        vertical-align: top
+
+        .btn
+            color: main-color
+            border: none
+            width: auto
+            a
+                padding: 0
+
+    .link-description
+        display: none
+        margin: .5em 1em
+        color: highlight-back
+        border-radius: 4px
+        color: main-color
+        background: link-description-back
+        padding: 1em
+        opacity: 0.7
+        max-width: 800px
         font-size: 16px
-    p
-        padding: 10px
         font-family: title
-        font-size: 16px
+        *
+            font-size: 16px
+        p
+            padding: 10px
+        li
+            margin-bottom: 0
 
-    li
-        margin-bottom: 0
 
-.feeds
-    padding-top: 20px  
+    .feeds
+        padding-top: 20px  
 
+    .import
+        cursor: pointer
+        position: absolute
+        top: 1.5em
+        right: 1.5em
+        .import-failed
+            padding: 0
+            margin: 0
+        .imported
+            padding: 0
+            margin: 0
 
 #feeds-file
     display: none
-
-div.import
-    position: absolute
-    top: 1.5em
-    right: 1.5em
-    .import-failed
-        padding: 0
-        margin: 0
-    .imported
-        padding: 0
-        margin: 0
-
-div.import
-    cursor: pointer
