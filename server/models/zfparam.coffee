@@ -1,6 +1,6 @@
 americano = require 'americano-cozy'
 
-module.exports = Param = americano.getModel 'Param',
+module.exports = Param = americano.getModel 'ZFParam',
     'paramId': type: String
     'name': type: String
     'value': type: String

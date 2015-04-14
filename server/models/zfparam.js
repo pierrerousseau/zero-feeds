@@ -3,7 +3,7 @@ var Param, americano;
 
 americano = require('americano-cozy');
 
-module.exports = Param = americano.getModel('Param', {
+module.exports = Param = americano.getModel('ZFParam', {
   'paramId': {
     type: String
   },
