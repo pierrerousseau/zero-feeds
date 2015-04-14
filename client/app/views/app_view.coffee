@@ -132,7 +132,7 @@ module.exports = class AppView extends View
         for parameter in @paramsView.collection.models
             paramId = "param-" + parameter.attributes.paramId
             name    = parameter.attributes.name
-            $elem = $("#param-" + paramId)
+            $elem = $("#" + paramId)
             if paramId is "param-show-new-links" and paramId is evt.target.id
                 checked = $elem.prop("checked")
                 parameter.save { "value": checked },

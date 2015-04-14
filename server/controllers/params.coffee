@@ -1,4 +1,4 @@
-Param = require '../models/param'
+Param = require '../models/zfparam'
 
 module.exports.all = (req, res) ->
     Param.all (err, params) ->

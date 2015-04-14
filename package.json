@@ -29,8 +29,8 @@
     "feed": {
       "description": "Allow you to manage your feeds"
     },
-    "param": {
-      "description": "Allow you to change the options of the app"
+    "zfparam": {
+      "description": "Allow you to change the options of the zero feed app"
     }
   }
 }

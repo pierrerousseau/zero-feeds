@@ -2,7 +2,7 @@
 var Param,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-Param = require('../models/param');
+Param = require('../models/zfparam');
 
 module.exports.all = function(req, res) {
   return Param.all(function(err, params) {
@@ -61,7 +61,9 @@ module.exports.all = function(req, res) {
 };
 
 module.exports.update = function(req, res) {
+  console.log(req.params);
   return Param.find(req.params.id, function(err, param) {
+    console.log(param);
     if ((err != null) || (param == null)) {
       return res.send({
         error: true,

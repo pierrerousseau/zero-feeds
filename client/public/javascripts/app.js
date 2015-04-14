@@ -864,7 +864,7 @@ module.exports = AppView = (function(superClass) {
       parameter = ref[i];
       paramId = "param-" + parameter.attributes.paramId;
       name = parameter.attributes.name;
-      $elem = $("#param-" + paramId);
+      $elem = $("#" + paramId);
       if (paramId === "param-show-new-links" && paramId === evt.target.id) {
         checked = $elem.prop("checked");
         parameter.save({

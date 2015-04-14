@@ -9,7 +9,7 @@ module.exports = {
       return emit(doc.tags, doc);
     }
   },
-  param: {
+  zfparam: {
     all: function(doc) {
       return emit(doc.name, doc);
     }
