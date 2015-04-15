@@ -61,9 +61,7 @@ module.exports.all = function(req, res) {
 };
 
 module.exports.update = function(req, res) {
-  console.log(req.params);
   return Param.find(req.params.id, function(err, param) {
-    console.log(param);
     if ((err != null) || (param == null)) {
       return res.send({
         error: true,
