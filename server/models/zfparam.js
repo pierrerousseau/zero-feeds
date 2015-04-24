@@ -19,19 +19,20 @@ module.exports = Param = americano.getModel('ZFParam', {
 
 removeOldParams = function() {
   var OldParam;
-  OldParam = americano.getModel('ZF-Param', {
+  OldParam = americano.getModel('Param', {
     'paramId': {
       type: String
     }
   });
   return OldParam.request("all", function(err, found) {
-    if (found.length === 2) {
-      if (found[0].paramId === "cozy-bookmarks-name") {
-        if (found[1].paramId === "show-new-links") {
-          console.log("dsall");
-          return OldParam.destroyAll(function() {
-            return console.log("done");
-          });
+    if (found) {
+      if (found.length === 2) {
+        if (found[0].paramId === "cozy-bookmarks-name") {
+          if (found[1].paramId === "show-new-links") {
+            return OldParam.destroyAll(function() {
+              return console.log("Old parameters have been destroyed");
+            });
+          }
         }
       }
     }
