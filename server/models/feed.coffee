@@ -24,7 +24,7 @@ Feed.all = (params, callback) ->
 
 getFeedBuffer = (feed, buffer, encoding) ->
     if encoding != "utf-8"
-        converter = new iconv.Iconv(encoding, "utf-8")
+        converter = new iconv.Iconv(encoding, "utf-8//translit//ignore")
         buffer = converter.convert(buffer)
     feed.content = buffer.toString("utf-8")
 
@@ -47,7 +47,7 @@ getAbsoluteLocation = (uri, location) ->
 
 
 getEncoding = (res) ->
-    charset = "utf-8"
+    charset = "iso-8859-1"
     try
         contentType = res["headers"]["content-type"].split(";")
         for elem in contentType
@@ -55,7 +55,7 @@ getEncoding = (res) ->
             if key_value[0] == "charset"
                 charset = key_value[1]
     catch error
-        charset = "utf-8"
+        charset = "iso-8859-1"
 
     charset
 
@@ -75,6 +75,7 @@ getFeed = (feed, uri, callback) ->
         "hostname": parsed.hostname
         "path": parsed.path
         "headers": headers
+        "encoding": "utf-8"
 
     protocol.get(get, (res) ->
         data   = ''

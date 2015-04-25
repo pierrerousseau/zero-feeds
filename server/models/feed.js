@@ -49,7 +49,7 @@ Feed.all = function(params, callback) {
 getFeedBuffer = function(feed, buffer, encoding) {
   var converter;
   if (encoding !== "utf-8") {
-    converter = new iconv.Iconv(encoding, "utf-8");
+    converter = new iconv.Iconv(encoding, "utf-8//translit//ignore");
     buffer = converter.convert(buffer);
   }
   return feed.content = buffer.toString("utf-8");
@@ -77,7 +77,7 @@ getAbsoluteLocation = function(uri, location) {
 
 getEncoding = function(res) {
   var charset, contentType, elem, error, key_value, str, _i, _len;
-  charset = "utf-8";
+  charset = "iso-8859-1";
   try {
     contentType = res["headers"]["content-type"].split(";");
     for (_i = 0, _len = contentType.length; _i < _len; _i++) {
@@ -98,7 +98,7 @@ getEncoding = function(res) {
     }
   } catch (_error) {
     error = _error;
-    charset = "utf-8";
+    charset = "iso-8859-1";
   }
   return charset;
 };
@@ -120,7 +120,8 @@ getFeed = function(feed, uri, callback) {
   get = {
     "hostname": parsed.hostname,
     "path": parsed.path,
-    "headers": headers
+    "headers": headers,
+    "encoding": "utf-8"
   };
   return protocol.get(get, function(res) {
     var chunks, data, length;
