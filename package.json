@@ -13,7 +13,7 @@
   "dependencies": {
     "americano": "0.3.3",
     "americano-cozy": "0.2.2",
-    "iconv": "2.1.6"
+    "iconv-lite": "0.4.8"
   },
   "devDependencies": {
     "should": "= 1.2.0",
