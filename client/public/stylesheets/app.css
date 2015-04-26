@@ -193,8 +193,8 @@ input[type=button] {
   display: table-cell;
   padding: 0 2px;
   border: 0;
-  min-width: 200px;
-  max-width: 300px;
+  min-width: 245px;
+  max-width: 245px;
   vertical-align: top;
   background: #1c1c1c;
 }
