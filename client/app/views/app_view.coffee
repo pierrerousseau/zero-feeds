@@ -61,8 +61,6 @@ module.exports = class AppView extends View
             success: (view, parameters) =>
                 @applyParameters(parameters)
                 @stopWaiter(@paramsView.$el)
-        if $(".feeds").width() / $("body").width() < 10
-            $(".feeds").css("max-width", "17em")
 
     initialize: ->
         @router = CozyApp.Routers.AppRouter = new AppRouter()
@@ -171,10 +169,11 @@ module.exports = class AppView extends View
         false
 
     linkDetails: (evt) =>
-        link = $(evt.currentTarget)
-        link.toggleClass "link-active"
-        link.find(".link-view-description").toggleClass "link-active"
-        link.find(".link-description").toggle()
+        link   = $(evt.currentTarget)
+        if not $(evt.target).is("a")
+            link.toggleClass "link-active"
+            link.find(".link-view-description").toggleClass "link-active"
+            link.find(".link-description").toggle()
 
     addFeedFromFile: (feedObj) ->
         feed = new Feed feedObj

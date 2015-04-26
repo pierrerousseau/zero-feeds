@@ -755,7 +755,7 @@ module.exports = AppView = (function(superClass) {
     });
     this.paramsView = new ParamsView();
     this.startWaiter(this.paramsView.$el);
-    this.paramsView.collection.fetch({
+    return this.paramsView.collection.fetch({
       success: (function(_this) {
         return function(view, parameters) {
           _this.applyParameters(parameters);
@@ -763,9 +763,6 @@ module.exports = AppView = (function(superClass) {
         };
       })(this)
     });
-    if ($(".feeds").width() / $("body").width() < 10) {
-      return $(".feeds").css("max-width", "17em");
-    }
   };
 
   AppView.prototype.initialize = function() {
@@ -926,9 +923,11 @@ module.exports = AppView = (function(superClass) {
   AppView.prototype.linkDetails = function(evt) {
     var link;
     link = $(evt.currentTarget);
-    link.toggleClass("link-active");
-    link.find(".link-view-description").toggleClass("link-active");
-    return link.find(".link-description").toggle();
+    if (!$(evt.target).is("a")) {
+      link.toggleClass("link-active");
+      link.find(".link-view-description").toggleClass("link-active");
+      return link.find(".link-description").toggle();
+    }
   };
 
   AppView.prototype.addFeedFromFile = function(feedObj) {
