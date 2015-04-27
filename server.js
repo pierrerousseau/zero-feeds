@@ -9,5 +9,50 @@ americano.start({
   name: 'Zero-Feeds',
   port: port
 }, function(err, app, server) {
-  return require("./server/models/zfparam").removeOldParams();
+  var Feed;
+  require("./server/models/zfparam").removeOldParams();
+  Feed = americano.getModel('Feed', {
+    'title': {
+      type: String
+    },
+    'url': {
+      type: String
+    },
+    'last': {
+      type: String
+    },
+    'tags': {
+      type: JSON
+    },
+    'description': {
+      type: String
+    },
+    'content': {
+      type: String
+    },
+    'created': {
+      type: Date,
+      "default": Date
+    },
+    'updated': {
+      type: Date,
+      "default": Date
+    }
+  });
+  return Feed.request("all", function(err, feeds) {
+    var feed, tags, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = feeds.length; _i < _len; _i++) {
+      feed = feeds[_i];
+      if (typeof feed.tags === "string") {
+        console.log(feed);
+        tags = feed.tags.split(",");
+        feed.tags = tags;
+        _results.push(feed.save());
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  });
 });
