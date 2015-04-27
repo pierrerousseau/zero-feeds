@@ -6,6 +6,8 @@ americano = require('americano');
 port = process.env.PORT || 31436;
 
 americano.start({
-  name: 'Feeds',
+  name: 'Zero-Feeds',
   port: port
+}, function(err, app, server) {
+  return require("./server/models/zfparam").removeOldParams();
 });

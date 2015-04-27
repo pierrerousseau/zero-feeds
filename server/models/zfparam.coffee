@@ -6,7 +6,7 @@ module.exports = Param = americano.getModel 'ZFParam',
     'name': type: String
     'value': type: String
 
-removeOldParams = () ->
+Param.removeOldParams = () ->
     OldParam = americano.getModel 'Param',
         'paramId': type: String
     OldParam.request "all", (err, found) ->
@@ -18,7 +18,6 @@ removeOldParams = () ->
                             console.log "Old parameters have been destroyed"
 
 Param.all = (params, callback) ->
-    removeOldParams()
     Param.request "all", params, callback
 
 Param.prototype.update = (params, callback) ->
