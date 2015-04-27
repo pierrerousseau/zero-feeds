@@ -45,7 +45,6 @@ americano.start({
     for (_i = 0, _len = feeds.length; _i < _len; _i++) {
       feed = feeds[_i];
       if (typeof feed.tags === "string") {
-        console.log(feed);
         tags = feed.tags.split(",");
         feed.tags = tags;
         _results.push(feed.save());
