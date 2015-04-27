@@ -1,9 +1,6 @@
 {
   "name": "zero-feeds",
   "version": "1.4.3",
-  "engines": [
-    "node = 0.8.x"
-  ],
   "description": "Read your RSS feeds within your Cozy.",
   "repository": {
     "type": "git",
@@ -11,8 +8,8 @@
   },
   "main": "server.coffee",
   "dependencies": {
-    "americano": "0.3.3",
-    "americano-cozy": "0.2.2",
+    "americano": "0.3.11",
+    "americano-cozy": "0.2.11",
     "iconv-lite": "0.4.8"
   },
   "devDependencies": {

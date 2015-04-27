@@ -24,7 +24,7 @@ module.exports = Feed = americano.getModel('Feed', {
     type: String
   },
   'tags': {
-    type: String
+    type: JSON
   },
   'description': {
     type: String

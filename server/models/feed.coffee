@@ -11,7 +11,7 @@ module.exports = Feed = americano.getModel 'Feed',
     'title': type: String
     'url': type: String
     'last': type: String
-    'tags': type: String
+    'tags': type: JSON
     'description': type: String
     'content': type: String
     'created': type: Date, default: Date
