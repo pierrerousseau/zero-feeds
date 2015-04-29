@@ -37,7 +37,6 @@ module.exports = class View extends Backbone.View
             "buttons":
                 "sticker": false
             "width": "40%").get().on "pnotify.confirm", () ->
-                console.log "kikoo", cb
                 cb()
 
     @error: (text) ->

@@ -313,7 +313,6 @@ module.exports = View = (function(superClass) {
         },
         "width": "40%"
       })).get().on("pnotify.confirm", function() {
-        console.log("kikoo", cb);
         return cb();
       });
     });
@@ -900,7 +899,6 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.toCozyBookMarks = function(evt) {
     var ajaxOptions, url;
-    console.log("oooooo");
     url = $(evt.target).parents(".link:first").find("> a").attr("href");
     ajaxOptions = {
       type: "POST",
@@ -1044,7 +1042,8 @@ module.exports = AppView = (function(superClass) {
   };
 
   AppView.prototype.isUnknownFormat = function(file) {
-    return file.type !== "text/html" && file.type !== "text/xml" && file.type !== "text/x-opml+xml";
+    console.log(file.name, /.opml$/.test(file.name));
+    return file.type !== "text/html" && file.type !== "text/xml" && file.type !== "text/x-opml+xml" && !/.opml$/.test(file.name);
   };
 
   AppView.prototype.uploadFile = function(evt) {
