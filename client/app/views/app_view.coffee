@@ -155,7 +155,6 @@ module.exports = class AppView extends View
         false
 
     toCozyBookMarks: (evt) =>
-        console.log("oooooo")
         url = $(evt.target).parents(".link:first").find("> a").attr("href")
         ajaxOptions =
             type: "POST",
@@ -245,8 +244,10 @@ module.exports = class AppView extends View
             @addFeedsFromHTMLFile loaded
 
     isUnknownFormat: (file) ->
+        console.log file.name, /.opml$/.test(file.name)
         return file.type isnt "text/html" and file.type isnt "text/xml" and
-            file.type isnt "text/x-opml+xml"
+            file.type isnt "text/x-opml+xml" and
+            not /.opml$/.test(file.name)
 
     uploadFile: (evt) ->
         file = evt.target.files[0]
