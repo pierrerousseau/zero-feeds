@@ -8,11 +8,11 @@ exports.config =
                 # Files in `vendor` directories are compiled before other files
                 # even if they aren't specified in order.
                 before: [
-                    'vendor/javascripts/modernizr-2.8.2.js'
-                    'vendor/javascripts/jquery-2.1.3.min.js'
-                    'vendor/javascripts/underscore-1.8.2.min.js'
-                    'vendor/javascripts/backbone-1.1.2.min.js'
-                    'vendor/javascripts/bootstrap-3.3.4.min.js'
+                    'vendor/javascripts/modernizr-2.8.3.js'
+                    'vendor/javascripts/jquery-2.1.4.min.js'
+                    'vendor/javascripts/underscore-1.8.3.min.js'
+                    'vendor/javascripts/backbone-1.2.1.min.js'
+                    'vendor/javascripts/bootstrap-3.3.5.min.js'
                     'vendor/javascripts/pnotify-2.0.1.min.js'
                 ]
 
@@ -21,8 +21,8 @@ exports.config =
             order:
                 before: ['vendor/stylesheets/font-awesome-4.3.0.min.css']
                 after: [
-                    'vendor/stylesheets/bootstrap-3.3.4.min.css'
-                    'vendor/stylesheets/bootstrap-theme-3.3.4.min.css'
+                    'vendor/stylesheets/bootstrap-3.3.5.min.css'
+                    'vendor/stylesheets/bootstrap-theme-3.3.5.min.css'
                     'vendor/stylesheets/pnotify-2.0.1.min.css'
                     'vendor/stylesheets/helpers.css'
                 ]
