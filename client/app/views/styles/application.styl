@@ -1,11 +1,66 @@
-// nib is a powerful lib for stylus that provides cross-browser css3 mixins.
 @import 'nib'
 
-@import '_base'
-@import '_ui'
+main-background = #5d5d5d
+main-color = #fff
+panel-background = #232323
+panel-color = #c6c6c6
+menu-color = #83dcff
 
-// Import your styles here
+html
+    height: 100%
 
-@import '_states'
-@import '_layout'
-@import '_responsive'
+body
+    color: main-color
+    background: main-background
+    height: 100%
+
+#content
+    height: 100%
+
+
+#menu
+    color: menu-color
+    margin: 0
+
+    .nav-tabs
+        border: none
+    .menu-button
+        padding: .5em
+        color: menu-color
+        font-size: 1.5em 
+        font-weight: bold
+        text-align: center
+        cursor: pointer
+        &:hover
+            background: panel-background
+            color: main-color
+    li
+        display: table-cell
+        width: auto
+        white-space: nowrap
+        float: none
+        a
+            border: none
+        &.active
+            a
+                background: panel-background
+                color: main-color
+        &#menu-tabs-help
+            width: 100%
+            text-align: right
+            a
+                display: inline-block
+
+#panels
+    height: 100%
+
+#panel-main
+    color: panel-color
+    background: panel-background
+    height: 100%
+
+#tips
+    height: 100%
+    color: panel-color
+    background: panel-background
+

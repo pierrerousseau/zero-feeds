@@ -3,7 +3,7 @@ FeedView       = require './feed_view'
 FeedCollection = require '../collections/feed_collection'
 
 module.exports = class FeedsView extends ViewCollection
-    el: '.feeds'
+    el: '#feeds'
 
     view: FeedView
 

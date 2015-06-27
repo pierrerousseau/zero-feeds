@@ -1137,7 +1137,7 @@ module.exports = FeedView = (function(superClass) {
       tagPlace = $(tmpl({
         "name": tag
       }));
-      $("#content .feeds").append(tagPlace);
+      $("#feeds").append(tagPlace);
     }
     exists = tagPlace.find("." + this.model.cid);
     if ($("." + this.model.cid).length) {
@@ -1149,7 +1149,7 @@ module.exports = FeedView = (function(superClass) {
     if (exists.length) {
       return exists.replaceAll(elem);
     } else {
-      return tagPlace.find(".tag-header").after(elem);
+      return tagPlace.find(".tag-feeds").append(elem);
     }
   };
 
@@ -1360,7 +1360,7 @@ module.exports = FeedsView = (function(superClass) {
     return FeedsView.__super__.constructor.apply(this, arguments);
   }
 
-  FeedsView.prototype.el = '.feeds';
+  FeedsView.prototype.el = '#feeds';
 
   FeedsView.prototype.view = FeedView;
 
@@ -1496,9 +1496,7 @@ var buf = [];
 with (locals || {}) {
 var interp;
  var title = model.title ? model.title : model.url
-buf.push('<div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><span title="remove this feed and place its details on the new feed form" class="feed-delete">&times;</span><span class="feed-count"></span><a');
-buf.push(attrs({ 'title':(title), 'data-tags':("" + (model.tags) + ""), 'href':("" + (model.url) + ""), "class": ('feed-title') }, {"title":true,"data-tags":true,"href":true}));
-buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a>');
+buf.push('<div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-delete"> \n&times;</div><div class="feed-count"></div><div class="feed-title">' + escape((interp = title) == null ? '' : interp) + '</div>');
 }
 return buf.join("");
 };
@@ -1510,7 +1508,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="content"><div class="contents"><div class="menu"><div class="clearfix import-file"><input type="file" name="feeds-file" id="feeds-file"/><span class="import"><p class="imported"></p><p class="imported-failed"></p></span></div><div class="menu-buttons"><button title="add a feed" class="btn glyphicon glyphicon-plus-sign menu-new"></button><button title="settings" class="btn glyphicon glyphicon-cog menu-settings"></button><button title="import opml rss files or html bookmarks files exported from your browser" class="btn glyphicon glyphicon-upload menu-import"></button><button title="help" class="btn glyphicon glyphicon-question-sign menu-help"></button></div><div class="feeds"></div></div><div class="main"><div class="options"><form class="panel panel-default new-feed"><div class="panel-heading"><h3 class="panel-title">Add a feed</h3></div><div class="panel-body"><div class="row"><div class="form-group col-xs-5"><input name="url-field" placeholder="url" class="form-control new-feed-url"/></div><div class="form-group col-xs-5"><input name="tags-field" placeholder="tags, separated by \',\'" class="form-control new-feed-tags"/></div><div class="col-xs-2 buttons"><button title="add the feed" class="btn glyphicon glyphicon-plus-sign new-feed-add"></button></div></div></div></form><form class="panel panel-default settings"><div class="panel-heading"><h3 class="panel-title">Settings</h3></div><div class="panel-body"><div class="row values"></div></div></form><div class="panel panel-default help"><div class="panel-heading"><h3>Help</h3></div><div class="panel-body"><h4>This is a tool to follow your rss/atom feeds without to much procrastination </h4><p> \nThe idea behind zero-feeds is that if you do not read a link when you discover it, most of the time, it means that you are not so much interested in it (it\'s an "opinionated" feeds reader).</p><p>So read it now or forget it. In usual feed readers, the links stay available as long as they are provided by the websites, so you will first read what matters, then what looks interesing, then this stuff that is maybe the thing to read, then what is left, oh it\'s time to go to lunch ! No. I do not like this way of procrastination, so do not expect zero-feeds to help you to do that. </p><h5>Will you miss the news of the year ? </h5><p>No, you will hear about it from others. So what are you afraid to miss ? A good link ? Yes probably, but do not worry, there will be another good link tomorow.</p><h5>Does it scale for my 6000 feeds ? </h5><p>Seriously ? Reduce your amount of link you follow, you have better to do today than reading all of them.</p><h5>How do I start ? </h5><p> \nPlease put your mouse over the icons that you see, a tooltip should help you.</p><h5>I\'m not sure, how to add a feed ? </h5><p> \nJust click on the top left "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the left panel.</p><h5>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h5><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h5>I just see the beginning of the url of my feed, I feel unsatisfied.</h5><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h5>What are these "tags" ?</h5><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h5>I don\'t want to reload all the feeds of a tag.</h5><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h5>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h5><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h5>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h5><p>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. </p><h5>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h5><p> \nYou are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><h5>It still doesn\'t work !</h5><p> \nPlease <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h5>I want to use only free softwares.</h5><p> <a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></div></div></div><ul class="links"></ul></div></div></div>');
+buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">REFRESH</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-home" role="presentation" class="active"> <a href="#panel-home" aria-controls="home" role="tab" data-toggle="tab" class="menu-button">HOME</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button">ADD FEEDS</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">HISTORY</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">SETTINGS</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">HELP</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3">tags</div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-home" role="tabpanel" class="tab-pane fade in active">home</div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade">add feeds</div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
 }
 return buf.join("");
 };
@@ -1581,9 +1579,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div');
-buf.push(attrs({ "class": ("tag " + (name) + "") }, {"class":true}));
-buf.push('><div class="tag-header"><span class="tag-actions"><button title="reload all feeds" class="btn glyphicon glyphicon-refresh tag-refresh"></button></span><button class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</button></div></div>');
+buf.push('<div class="tag"><div class="tag-title"><div class="tag-toggle"></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"></div></div><div class="tag-feeds"></div></div>');
 }
 return buf.join("");
 };
