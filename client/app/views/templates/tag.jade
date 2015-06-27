@@ -1,8 +1,6 @@
-div(class="tag #{name}")
-    div.tag-header
-        span.tag-actions
-            button.btn.glyphicon.glyphicon-refresh(
-                class="tag-refresh",
-                title="reload all feeds"
-            )
-        button.tag-name #{name}
+.tag
+    .tag-title
+        .tag-toggle
+        .tag-name #{name}
+        .tag-refresh
+    .tag-feeds

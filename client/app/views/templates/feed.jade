@@ -2,12 +2,7 @@
 
 .feed-spinner
     img.loader(src="images/loader.gif", alt="...")
-span.feed-delete(
-    title="remove this feed and place its details on the new feed form"
-) &times;
-span.feed-count
-a.feed-title(
-    title=title, 
-    data-tags="#{model.tags}"
-    href="#{model.url}"
-) #{title}
+.feed-delete 
+    &times;
+.feed-count
+.feed-title #{title}

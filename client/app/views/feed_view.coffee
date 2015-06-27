@@ -40,7 +40,7 @@ module.exports = class FeedView extends View
         tagPlace = $ "." + tag
         if tagPlace.length is 0
             tagPlace = $(tmpl({ "name": tag }))
-            $("#content .feeds").append tagPlace
+            $("#feeds").append tagPlace
 
         exists = tagPlace.find "." + @model.cid
         if $("." + @model.cid).length
@@ -52,7 +52,7 @@ module.exports = class FeedView extends View
         if exists.length
             exists.replaceAll elem
         else
-            tagPlace.find(".tag-header").after elem
+            tagPlace.find(".tag-feeds").append elem
 
     setCount: () ->
         count = @model.count()
