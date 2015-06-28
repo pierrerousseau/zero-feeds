@@ -3,12 +3,12 @@ FeedView       = require './feed_view'
 FeedCollection = require '../collections/feed_collection'
 
 module.exports = class FeedsView extends ViewCollection
-    el: '#feeds'
+    el: '#panel-feeds'
 
     view: FeedView
 
     events:
-        "click .tag": "onTagClicked"
+        "click .tag-title": "onTagClicked"
         "click .tag-refresh": "onReloadTagClicked"
 
         "mouseenter .tag-header": "setToFullHover"
@@ -29,13 +29,17 @@ module.exports = class FeedsView extends ViewCollection
         false
 
     onTagClicked: (evt) ->
-        target = $(evt.currentTarget)
+        target = $(evt.currentTarget).parent ".tag:first"
+        if target.hasClass "tag-open"
+            target.removeClass "tag-open"
+            target.addClass "tag-close"
+        else
+            target.removeClass "tag-close"
+            target.addClass "tag-open"
+
         feeds  = target.find ".feed"
-        target.toggleClass "active"
-        target.find(".feed").toggle()
-        target.find(".feed.showing").click()
-        target.find(".feed.show .feed-title").toggle()
         $(feed).find(".feed-count").click() for feed in feeds
+
         false
 
     initialize: ->

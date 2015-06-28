@@ -5,6 +5,7 @@ main-color = #fff
 panel-background = #232323
 panel-color = #c6c6c6
 menu-color = #83dcff
+del-color = #d66
 
 html
     height: 100%
@@ -64,6 +65,54 @@ body
         font-size: 2em
         font-weight: bolder
         margin-bottom: 1.5em
+
+#panel-feeds
+    .tag
+        &.tag-open
+            .glyphicon-triangle-right
+                display: none
+        &.tag-close
+            .glyphicon-triangle-bottom
+            .tag-feeds
+            .tag-refresh
+                display: none
+        .tag-title
+            font-size: 1.5em
+            color: menu-color
+            cursor: pointer
+            > div
+                display: inline
+        .tag-name
+            margin: .25em
+            font-size: 1.5em
+    .feed
+        font-size: 1.5em
+        cursor: pointer
+
+        .label
+            background: menu-color
+            color: panel-background
+            padding: .1em .4em
+
+        > div
+            display: inline
+            margin: .2em
+
+        .feed-delete
+            font-weight: bolder
+            color: del-color
+        &.to-delete
+            color: del-color
+
+        .feed-spinner
+        .feed-delete
+            visibility: hidden
+        &:hover
+            .feed-delete
+                visibility: visible
+        &.loading
+            .feed-spinner
+                visibility: visible
 
 #panel-add-feeds
     padding-top: .5em

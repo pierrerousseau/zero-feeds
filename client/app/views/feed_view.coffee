@@ -56,10 +56,13 @@ module.exports = class FeedView extends View
 
     setCount: () ->
         count = @model.count()
+        place = @$el.find(".feed-count")
         if count
-            @$el.find(".feed-count").html "(" + count + ")"
+            place.html count
+            place.addClass("label")
         else
-            @$el.find(".feed-count").html ""
+            place.html ""
+            place.removeClass("label")
 
     setUpdate: () ->
         if @$el.is ":visible"
@@ -120,10 +123,9 @@ module.exports = class FeedView extends View
         evt.preventDefault()
 
         $allThat      = $("." + @model.cid)
-        existingLinks = $(".links ." + @feedClass() + ", .link" + @model.cid)
+        existingLinks = $(".link")
         if existingLinks.length
             existingLinks.remove()
-            $allThat.removeClass "showing"
             @setCount()
             @stopWaiter()
         else
@@ -134,7 +136,6 @@ module.exports = class FeedView extends View
                 View.error "Can't parse feed, please check feed address."
                 return false
 
-            $allThat.addClass "showing"
             @model.save { "title": title, "content": "" },
                 success: =>
                     @stopWaiter()
