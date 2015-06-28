@@ -40,7 +40,7 @@ module.exports = class FeedView extends View
         tagPlace = $ "." + tag
         if tagPlace.length is 0
             tagPlace = $(tmpl({ "name": tag }))
-            $("#feeds").append tagPlace
+            $("#panel-feeds").append tagPlace
 
         exists = tagPlace.find "." + @model.cid
         if $("." + @model.cid).length

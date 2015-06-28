@@ -25,7 +25,7 @@ body
     .nav-tabs
         border: none
     .menu-button
-        padding: .5em
+        padding: 1em
         color: menu-color
         font-size: 1.5em 
         font-weight: bold
@@ -41,15 +41,16 @@ body
         float: none
         a
             border: none
+            span 
+                margin-right: .25em
         &.active
             a
                 background: panel-background
                 color: main-color
         &#menu-tabs-help
             width: 100%
-            text-align: right
             a
-                display: inline-block
+                text-align: right
 
 #panels
     height: 100%
@@ -58,6 +59,28 @@ body
     color: panel-color
     background: panel-background
     height: 100%
+
+    h1
+        font-size: 2em
+        font-weight: bolder
+        margin-bottom: 1.5em
+
+#panel-add-feeds
+    padding-top: .5em
+    padding-left: 1.5em
+    font-size: 1.25em
+    .form-group
+        margin-bottom: 2em
+    input
+        height: 2em
+        font-size: 1.5em
+        width: 50%
+    .btn-default
+        background: menu-color
+        font-size: 1.5em
+        font-weight: bolder
+        span
+            margin-right: .25em
 
 #tips
     height: 100%
