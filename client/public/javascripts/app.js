@@ -700,7 +700,7 @@ module.exports = AppView = (function(superClass) {
     "click .menu-settings": "toggleSettings",
     "click .menu-import": "import",
     "change #feeds-file": "uploadFile",
-    "submit form.new-feed": "addFeed",
+    "submit .add-one-feed": "addFeed",
     "keyup #param-cozy-bookmarks-name": "updateSettings",
     "change #param-show-new-links": "toggleOldLinks",
     "click .link-send-to-cozy-bookmarks": "toCozyBookMarks",
@@ -837,8 +837,9 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.addFeed = function(evt) {
     var tags, url;
-    url = $('.new-feed-url').val();
-    tags = $('.new-feed-tags').val().split(',').map(function(tag) {
+    console.log("ooooo");
+    url = $("#add-feed-url").val();
+    tags = $("#add-feed-tags").val().split(',').map(function(tag) {
       return $.trim(tag);
     });
     if ((url != null ? url.length : void 0) > 0) {
@@ -1137,7 +1138,7 @@ module.exports = FeedView = (function(superClass) {
       tagPlace = $(tmpl({
         "name": tag
       }));
-      $("#feeds").append(tagPlace);
+      $("#panel-feeds").append(tagPlace);
     }
     exists = tagPlace.find("." + this.model.cid);
     if ($("." + this.model.cid).length) {
@@ -1489,6 +1490,18 @@ module.exports = ParamsView = (function(superClass) {
 
 });
 
+;require.register("views/templates/add-feeds", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form>');
+}
+return buf.join("");
+};
+});
+
 ;require.register("views/templates/feed", function(exports, require, module) {
 module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
@@ -1508,7 +1521,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">REFRESH</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-home" role="presentation" class="active"> <a href="#panel-home" aria-controls="home" role="tab" data-toggle="tab" class="menu-button">HOME</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button">ADD FEEDS</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">HISTORY</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">SETTINGS</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">HELP</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3">tags</div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-home" role="tabpanel" class="tab-pane fade in active">home</div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade">add feeds</div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
+buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">REFRESH</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-home" role="presentation" class="active"> <a href="#panel-home" aria-controls="home" role="tab" data-toggle="tab" class="menu-button">HOME</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>ADD FEEDS</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">HISTORY</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">SETTINGS</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">HELP</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3">tags</div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-home" role="tabpanel" class="tab-pane fade in active">home</div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
 }
 return buf.join("");
 };

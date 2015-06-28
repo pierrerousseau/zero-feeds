@@ -17,7 +17,7 @@ module.exports = class AppView extends View
         "click .menu-import": "import"
         "change #feeds-file": "uploadFile"
 
-        "submit form.new-feed": "addFeed"
+        "submit .add-one-feed": "addFeed"
 
         "keyup #param-cozy-bookmarks-name": "updateSettings"
         "change #param-show-new-links": "toggleOldLinks"
@@ -113,8 +113,9 @@ module.exports = class AppView extends View
                 View.error "Server error occured, feed was not added"
 
     addFeed: (evt) =>
-        url  = $('.new-feed-url').val()
-        tags = $('.new-feed-tags').val().split(',').map (tag) -> $.trim(tag)
+        console.log("ooooo")
+        url  = $("#add-feed-url").val()
+        tags = $("#add-feed-tags").val().split(',').map (tag) -> $.trim(tag)
 
         if url?.length > 0
             @createFeed(evt, url, tags)

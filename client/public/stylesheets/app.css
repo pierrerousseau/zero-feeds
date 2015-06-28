@@ -31,7 +31,7 @@ body {
   border: none;
 }
 #menu .menu-button {
-  padding: 0.5em;
+  padding: 1em;
   color: #83dcff;
   font-size: 1.5em;
   font-weight: bold;
@@ -51,16 +51,18 @@ body {
 #menu li a {
   border: none;
 }
+#menu li a span {
+  margin-right: 0.25em;
+}
 #menu li.active a {
   background: #232323;
   color: #fff;
 }
 #menu li#menu-tabs-help {
   width: 100%;
-  text-align: right;
 }
 #menu li#menu-tabs-help a {
-  display: inline-block;
+  text-align: right;
 }
 #panels {
   height: 100%;
@@ -69,6 +71,32 @@ body {
   color: #c6c6c6;
   background: #232323;
   height: 100%;
+}
+#panel-main h1 {
+  font-size: 2em;
+  font-weight: bolder;
+  margin-bottom: 1.5em;
+}
+#panel-add-feeds {
+  padding-top: 0.5em;
+  padding-left: 1.5em;
+  font-size: 1.25em;
+}
+#panel-add-feeds .form-group {
+  margin-bottom: 2em;
+}
+#panel-add-feeds input {
+  height: 2em;
+  font-size: 1.5em;
+  width: 50%;
+}
+#panel-add-feeds .btn-default {
+  background: #83dcff;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+#panel-add-feeds .btn-default span {
+  margin-right: 0.25em;
 }
 #tips {
   height: 100%;
