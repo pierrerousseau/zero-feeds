@@ -36,12 +36,13 @@
                       role="tab", 
                       data-toggle="tab") HELP
     #panels(class="row")
-        #panel-feeds(class="col-xs-3") tags
+        #panel-feeds(class="col-xs-3")
         #panel-main(class="col-xs-7") 
             #panel-main-tabs(class="tab-content")
-                #panel-home(class="tab-pane fade in active", role="tabpanel") home
+                #panel-home(class="tab-pane fade in active", role="tabpanel")
+                    include ./panel-home.jade
                 #panel-add-feeds(class="tab-pane fade", role="tabpanel") 
-                    include ./add-feeds.jade
+                    include ./panel-add-feeds.jade
                 #panel-history(class="tab-pane fade", role="tabpanel") history
                 #panel-settings(class="tab-pane fade", role="tabpanel") settings
                 #panel-help(class="tab-pane fade", role="tabpanel") help

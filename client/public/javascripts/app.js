@@ -1155,12 +1155,15 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.setCount = function() {
-    var count;
+    var count, place;
     count = this.model.count();
+    place = this.$el.find(".feed-count");
     if (count) {
-      return this.$el.find(".feed-count").html("(" + count + ")");
+      place.html(count);
+      return place.addClass("label");
     } else {
-      return this.$el.find(".feed-count").html("");
+      place.html("");
+      return place.removeClass("label");
     }
   };
 
@@ -1239,10 +1242,9 @@ module.exports = FeedView = (function(superClass) {
     this.startWaiter();
     evt.preventDefault();
     $allThat = $("." + this.model.cid);
-    existingLinks = $(".links ." + this.feedClass() + ", .link" + this.model.cid);
+    existingLinks = $(".link");
     if (existingLinks.length) {
       existingLinks.remove();
-      $allThat.removeClass("showing");
       this.setCount();
       this.stopWaiter();
     } else {
@@ -1254,7 +1256,6 @@ module.exports = FeedView = (function(superClass) {
         View.error("Can't parse feed, please check feed address.");
         return false;
       }
-      $allThat.addClass("showing");
       this.model.save({
         "title": title,
         "content": ""
@@ -1361,12 +1362,12 @@ module.exports = FeedsView = (function(superClass) {
     return FeedsView.__super__.constructor.apply(this, arguments);
   }
 
-  FeedsView.prototype.el = '#feeds';
+  FeedsView.prototype.el = '#panel-feeds';
 
   FeedsView.prototype.view = FeedView;
 
   FeedsView.prototype.events = {
-    "click .tag": "onTagClicked",
+    "click .tag-title": "onTagClicked",
     "click .tag-refresh": "onReloadTagClicked",
     "mouseenter .tag-header": "setToFullHover",
     "mouseleave .tag-header": "setToNotFullHover"
@@ -1394,12 +1395,15 @@ module.exports = FeedsView = (function(superClass) {
 
   FeedsView.prototype.onTagClicked = function(evt) {
     var feed, feeds, i, len, target;
-    target = $(evt.currentTarget);
+    target = $(evt.currentTarget).parent(".tag:first");
+    if (target.hasClass("tag-open")) {
+      target.removeClass("tag-open");
+      target.addClass("tag-close");
+    } else {
+      target.removeClass("tag-close");
+      target.addClass("tag-open");
+    }
     feeds = target.find(".feed");
-    target.toggleClass("active");
-    target.find(".feed").toggle();
-    target.find(".feed.showing").click();
-    target.find(".feed.show .feed-title").toggle();
     for (i = 0, len = feeds.length; i < len; i++) {
       feed = feeds[i];
       $(feed).find(".feed-count").click();
@@ -1490,18 +1494,6 @@ module.exports = ParamsView = (function(superClass) {
 
 });
 
-;require.register("views/templates/add-feeds", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
-var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form>');
-}
-return buf.join("");
-};
-});
-
 ;require.register("views/templates/feed", function(exports, require, module) {
 module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
@@ -1509,7 +1501,7 @@ var buf = [];
 with (locals || {}) {
 var interp;
  var title = model.title ? model.title : model.url
-buf.push('<div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-delete"> \n&times;</div><div class="feed-count"></div><div class="feed-title">' + escape((interp = title) == null ? '' : interp) + '</div>');
+buf.push('<div class="feed-delete"> \n&times;</div><div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-count"></div><div class="feed-title">' + escape((interp = title) == null ? '' : interp) + '</div>');
 }
 return buf.join("");
 };
@@ -1521,7 +1513,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">REFRESH</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-home" role="presentation" class="active"> <a href="#panel-home" aria-controls="home" role="tab" data-toggle="tab" class="menu-button">HOME</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>ADD FEEDS</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">HISTORY</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">SETTINGS</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">HELP</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3">tags</div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-home" role="tabpanel" class="tab-pane fade in active">home</div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
+buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">REFRESH</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-home" role="presentation" class="active"> <a href="#panel-home" aria-controls="home" role="tab" data-toggle="tab" class="menu-button">HOME</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>ADD FEEDS</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">HISTORY</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">SETTINGS</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">HELP</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3"></div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-home" role="tabpanel" class="tab-pane fade in active"><h1>Home</h1><h3>new articles from your favorite feeds</h3><div class="links"></div></div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
 }
 return buf.join("");
 };
@@ -1545,6 +1537,30 @@ buf.push('<button title="send to cozy bookmarks" class="btn link-send-to-cozy-bo
 buf.push('<button title="view description" class="btn link-view-description"><span class="glyphicon glyphicon-plus"></span></button></div><a');
 buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
 buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a><div class="link-description">' + ((interp = description) == null ? '' : interp) + '</div></li>');
+}
+return buf.join("");
+};
+});
+
+;require.register("views/templates/panel-add-feeds", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form>');
+}
+return buf.join("");
+};
+});
+
+;require.register("views/templates/panel-home", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<h1>Home</h1><h3>new articles from your favorite feeds</h3><div class="links"></div>');
 }
 return buf.join("");
 };
@@ -1592,7 +1608,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="tag"><div class="tag-title"><div class="tag-toggle"></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"></div></div><div class="tag-feeds"></div></div>');
+buf.push('<div class="tag tag-close"><div class="tag-title"><div class="tag-toggle"><span class="glyphicon glyphicon-triangle-right"></span><span class="glyphicon glyphicon-triangle-bottom"></span></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"><span class="glyphicon glyphicon-refresh"></span></div></div><div class="tag-feeds"></div></div>');
 }
 return buf.join("");
 };

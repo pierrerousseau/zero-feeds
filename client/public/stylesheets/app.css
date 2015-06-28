@@ -77,6 +77,56 @@ body {
   font-weight: bolder;
   margin-bottom: 1.5em;
 }
+#panel-feeds .tag.tag-open .glyphicon-triangle-right {
+  display: none;
+}
+#panel-feeds .tag.tag-close .glyphicon-triangle-bottom,
+#panel-feeds .tag.tag-close .tag-feeds,
+#panel-feeds .tag.tag-close .tag-refresh {
+  display: none;
+}
+#panel-feeds .tag .tag-title {
+  font-size: 1.5em;
+  color: #83dcff;
+  cursor: pointer;
+}
+#panel-feeds .tag .tag-title > div {
+  display: inline;
+}
+#panel-feeds .tag .tag-name {
+  margin: 0.25em;
+  font-size: 1.5em;
+}
+#panel-feeds .feed {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+#panel-feeds .feed .label {
+  background: #83dcff;
+  color: #232323;
+  padding: 0.1em 0.4em;
+}
+#panel-feeds .feed > div {
+  display: inline;
+  margin: 0.2em;
+}
+#panel-feeds .feed .feed-delete {
+  font-weight: bolder;
+  color: #d66;
+}
+#panel-feeds .feed.to-delete {
+  color: #d66;
+}
+#panel-feeds .feed .feed-spinner,
+#panel-feeds .feed .feed-delete {
+  visibility: hidden;
+}
+#panel-feeds .feed:hover .feed-delete {
+  visibility: visible;
+}
+#panel-feeds .feed.loading .feed-spinner {
+  visibility: visible;
+}
 #panel-add-feeds {
   padding-top: 0.5em;
   padding-left: 1.5em;
