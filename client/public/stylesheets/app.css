@@ -185,7 +185,17 @@ body {
 #panel-links .panel-heading h3 {
   font-size: 1em;
 }
-#panel-links .panel-body,
+#panel-links .panel-body {
+  display: none;
+  background: inherit;
+  color: inherit;
+}
+#panel-links .panel-body a {
+  color: #a6d130;
+}
+#panel-links .panel-body * {
+  color: inherit;
+}
 #panel-links .panel-footer {
   display: none;
   background: inherit;
@@ -202,6 +212,10 @@ body {
   background: #89878b;
   color: #fff;
 }
+#panel-links .link.link-old {
+  background: #61626c;
+  color: #a4a2a8;
+}
 #panel-links .link.link-active {
   background: #2c2f39;
   color: #838181;
@@ -211,12 +225,6 @@ body {
 }
 #panel-links .link.link-active .panel-body {
   display: block;
-}
-#panel-links .link.link-active .panel-body a {
-  color: #a6d130;
-}
-#panel-links .link.link-active .panel-body * {
-  color: inherit;
 }
 #panel-links .link.link-active .panel-footer {
   border: none;
