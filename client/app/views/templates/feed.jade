@@ -5,4 +5,5 @@
 .feed-spinner
     img.loader(src="images/loader.gif", alt="...")
 .feed-count
-.feed-title #{title}
+.feed-title 
+    a(href="#{model.url}") #{title}
