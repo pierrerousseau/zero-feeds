@@ -28,10 +28,10 @@ module.exports = class FeedView extends View
         @$el.removeClass("feed-loading")
 
     setToDelete: () ->
-        @$el.addClass("to-delete")
+        @$el.addClass("feed-to-delete")
 
     setToNotDelete: () ->
-        @$el.removeClass("to-delete")
+        @$el.removeClass("feed-to-delete")
 
     addToTag: (tag) ->
         tmpl = tagTemplate
@@ -56,7 +56,7 @@ module.exports = class FeedView extends View
 
     setCount: () ->
         count = @model.count()
-        place = @$el.find(".feed-count")
+        place = $("." + @model.cid).find(".feed-count")
         if count
             place.html count
             place.addClass("label")
@@ -64,13 +64,30 @@ module.exports = class FeedView extends View
             place.html ""
             place.removeClass("label")
 
-    setUpdate: () ->
+    setUpdate: (displayLinks) ->
+        $allThat = $("." + @model.cid)
+        try
+            title = @model.titleText()
+        catch error
+            @stopWaiter()
+            View.error "Can't parse feed, please check feed address."
+            return false
+
         if @$el.is ":visible"
             @startWaiter()
-            @model.save { "content": "" },
+            @model.save { "title": title, "content": "" },
                 success: =>
                     @stopWaiter()
+                    if displayLinks is true
+                        @renderXml()
+                        @$el.addClass("feed-open")
                     @setCount()
+                    title = @model.titleText()
+                    if title
+                        last  = @model.last
+                        @model.save { "title": title, "last": last, "content": "" }
+                        $allThat.find("a").html title
+                        View.log "" + title + " reloaded"
                     setTimeout _.bind(@setUpdate, @),
                          ((1 + Math.floor(Math.random()*14)) * 60000)
                 error: =>
@@ -133,55 +150,37 @@ module.exports = class FeedView extends View
         $target = $(evt.currentTarget)
         @setCount()
 
-        $allThat      = $("." + @model.cid)
         @cleanLinks()
         if $target.hasClass("feed-open")
             @cleanOpenedFeed()
             @stopWaiter()
         else
             @cleanOpenedFeed()
-            try
-                title = @model.titleText()
-            catch error
-                @stopWaiter()
-                View.error "Can't parse feed, please check feed address."
-                return false
+            @setUpdate(true)
+            $("#menu-tabs-links a").tab("show")
 
-            @model.save { "title": title, "content": "" },
-                success: =>
-                    @stopWaiter()
-                    @renderXml()
-                    $target.addClass("feed-open")
-                    title = @model.titleText()
-                    if title
-                        last  = @model.last
-                        @model.save { "title": title, "last": last, "content": "" }
-                        $allThat.find("a").html title
-                        View.log "" + title + " reloaded"
-                error: =>
-                    @stopWaiter()
-                    View.error "Server error occured, feed was not updated."
         false
 
     refillAddForm: ->
-        title = @$el.find(".feed-title")
+        title = @$el.find(".feed-title a")
         url   = title.attr("href")
         tags  = title.attr("data-tags") or ""
 
-        $("form.new-feed .new-feed-url").val(url)
-        $("form.new-feed .new-feed-tags").val(tags)
+        $("#add-feed-url").val(url)
+        $("#add-feed-tags").val(tags)
 
-        unless $('.new-feed').is(':visible')
-            $('.menu-new').trigger 'click'
+        $("#menu-tabs-add-feeds a").tab("show")
 
     fullRemove: ->
-        myTag = @$el.parents(".tag")
-        if myTag.find(".feed").length is 1
-            myTag.remove()
+        myTags = $("." + @model.cid).parents(".tag")
+        for myTag in myTags
+            myTag = $(myTag)
+            if myTag.find(".feed").length is 1
+                myTag.remove()
 
         @destroy()
 
-        existingLinks = $(".links ." + @feedClass() + ", .link" + @model.cid)
+        existingLinks = $("." + @model.cid)
         if existingLinks.length
             existingLinks.remove()
 

@@ -133,16 +133,11 @@ body
             display: inline
             margin: .2em
 
-        .feed-delete
-            font-weight: bolder
-            color: del-color
-        &.feed-to-delete
-            color: del-color
-
         .feed-spinner
         .feed-delete
             visibility: hidden
         &:hover
+            color: title-highlight
             .feed-delete
                 visibility: visible
         &.feed-loading
@@ -154,6 +149,12 @@ body
         a
             color: inherit
             text-decoration: none
+        .feed-delete
+            font-weight: bolder
+            color: del-color
+        &.feed-to-delete
+            color: del-color
+
 
 #panel-links
     .links-title

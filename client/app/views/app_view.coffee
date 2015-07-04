@@ -94,10 +94,7 @@ module.exports = class AppView extends View
         false
 
     cleanAddFeedForm: ->
-        $("form.new-feed").find("input").val("")
-
-    cleanAddFeedForm: ->
-        $("form.new-feed").find("input").val("")
+        $(".add-one-feed").find("input").val("")
 
     createFeed: (evt, url, tags) ->
         feed = new Feed
@@ -106,14 +103,19 @@ module.exports = class AppView extends View
         @feedsView.collection.create feed,
             success: (elem) =>
                 elems = $("." + elem.cid)
-                elems.parents(".tag").find(".feed").show()
+                tags = elems.parents(".tag-close")
+                for tag in tags
+                    tag = $(tag)
+                    $(tag).find(".tag-title").click()
+                tags = elems.parents(".tag-open")
+                for tag in tags
+                    tag = $(tag)
+                    $(tag).find("." + elem.cid + " .feed-count").click()
                 @cleanAddFeedForm()
-                elems.not(".clone").click()
             error: =>
                 View.error "Server error occured, feed was not added"
 
     addFeed: (evt) =>
-        console.log("ooooo")
         url  = $("#add-feed-url").val()
         tags = $("#add-feed-tags").val().split(',').map (tag) -> $.trim(tag)
 

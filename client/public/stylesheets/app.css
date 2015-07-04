@@ -138,16 +138,12 @@ body {
   display: inline;
   margin: 0.2em;
 }
-#panel-feeds .feed .feed-delete {
-  font-weight: bolder;
-  color: #d66;
-}
-#panel-feeds .feed.feed-to-delete {
-  color: #d66;
-}
 #panel-feeds .feed .feed-spinner,
 #panel-feeds .feed .feed-delete {
   visibility: hidden;
+}
+#panel-feeds .feed:hover {
+  color: #fff;
 }
 #panel-feeds .feed:hover .feed-delete {
   visibility: visible;
@@ -162,6 +158,13 @@ body {
 #panel-feeds .feed a {
   color: inherit;
   text-decoration: none;
+}
+#panel-feeds .feed .feed-delete {
+  font-weight: bolder;
+  color: #d66;
+}
+#panel-feeds .feed.feed-to-delete {
+  color: #d66;
 }
 #panel-links .links-title h1 {
   display: inline-block;
