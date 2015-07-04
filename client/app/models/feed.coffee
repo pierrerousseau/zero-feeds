@@ -25,6 +25,12 @@ module.exports = class Feed extends Backbone.Model
             @toXml().find("entry").get()
         else
             @toXml().find("item").get()
+    
+    cleanGoogle: (url) ->
+        if url.startsWith("http://news.google.com") or url.startsWith("https://news.google.com")
+            url = url.split("url=")[1]
+
+        url
 
     count: () ->
         last  = @attributes.last
@@ -36,7 +42,7 @@ module.exports = class Feed extends Backbone.Model
                     url = $(value).find("link").attr("href")
                 else
                     url = $(value).find("link").text()
-                if last and url == last
+                if last and @cleanGoogle(url) == @cleanGoogle(last)
                     return false
                 nbNew++
         nbNew

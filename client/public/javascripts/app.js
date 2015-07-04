@@ -492,129 +492,6 @@ module.exports = ViewCollection;
 
 });
 
-;require.register("models/feed", function(exports, require, module) {
-var Feed,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-module.exports = Feed = (function(superClass) {
-  extend(Feed, superClass);
-
-  function Feed() {
-    return Feed.__super__.constructor.apply(this, arguments);
-  }
-
-  Feed.prototype.urlRoot = 'feeds';
-
-  Feed.prototype.titleText = function() {
-    var title;
-    if (this.attributes.title) {
-      title = this.attributes.title;
-    } else {
-      if (this.isAtom()) {
-        title = this.toXml().find("feed > title:first").text();
-      } else {
-        title = this.toXml().find("channel > title:first").text();
-      }
-    }
-    return $.trim(title);
-  };
-
-  Feed.prototype.toXml = function() {
-    if (this.changed || !this._xml) {
-      this._$xml = $($.parseXML(this.attributes.content));
-    }
-    return this._$xml;
-  };
-
-  Feed.prototype.isAtom = function() {
-    return this.toXml().find("feed").length > 0;
-  };
-
-  Feed.prototype.$items = function() {
-    if (this.isAtom()) {
-      return this.toXml().find("entry").get();
-    } else {
-      return this.toXml().find("item").get();
-    }
-  };
-
-  Feed.prototype.count = function() {
-    var items, last, nbNew;
-    last = this.attributes.last;
-    items = this.$items();
-    nbNew = 0;
-    $.each(items, (function(_this) {
-      return function(index, value) {
-        var url;
-        if (_this.isAtom()) {
-          url = $(value).find("link").attr("href");
-        } else {
-          url = $(value).find("link").text();
-        }
-        if (last && url === last) {
-          return false;
-        }
-        return nbNew++;
-      };
-    })(this));
-    return nbNew;
-  };
-
-  Feed.prototype.links = function(options) {
-    var _links, from, items, last, state;
-    _links = [];
-    from = options.feedClass;
-    state = "new";
-    last = this.attributes.last;
-    items = this.$items();
-    $.each(items, (function(_this) {
-      return function(index, value) {
-        var description, link, title, url;
-        title = $(value).find("title").text();
-        if (_this.isAtom()) {
-          url = $(value).find("link").attr("href");
-          description = $(value).find("content").text();
-          if (description === "") {
-            description = $(value).find("summary").text();
-          }
-        } else {
-          url = $(value).find("link").text();
-          description = $(value).find("content\\:encoded").text();
-          if (description === "") {
-            description = $(value).find("description").text();
-          }
-        }
-        if (last && url === last) {
-          state = "old";
-        }
-        link = {
-          "title": title,
-          "encodedTitle": encodeURIComponent(title),
-          "url": url,
-          "from": from,
-          "state": state,
-          "description": description
-        };
-        if (index === 0) {
-          _this.last = link.url;
-        }
-        return _links.push(link);
-      };
-    })(this));
-    return _links;
-  };
-
-  Feed.prototype.isNew = function() {
-    return this.id == null;
-  };
-
-  return Feed;
-
-})(Backbone.Model);
-
-});
-
 ;require.register("models/param", function(exports, require, module) {
 var Param,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -1130,8 +1007,8 @@ module.exports = FeedView = (function(superClass) {
   FeedView.prototype.addToTag = function(tag) {
     var elem, exists, tagPlace, tmpl;
     tmpl = tagTemplate;
-    tag = tag || "untagged";
-    tagPlace = $("." + tag);
+    tag = $.trim(tag) || "untagged";
+    tagPlace = $(".tag-" + tag);
     if (tagPlace.length === 0) {
       tagPlace = $(tmpl({
         "name": tag
@@ -1240,6 +1117,7 @@ module.exports = FeedView = (function(superClass) {
     this.startWaiter();
     evt.preventDefault();
     $target = $(evt.currentTarget);
+    this.setCount();
     $allThat = $("." + this.model.cid);
     if ($target.hasClass("feed-open")) {
       $target.removeClass("feed-open");
@@ -1639,7 +1517,9 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="tag tag-close"><div class="tag-title"><div class="tag-toggle"><span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-down"></span></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"><span class="glyphicon glyphicon-refresh"></span></div></div><div class="tag-feeds"></div></div>');
+buf.push('<div');
+buf.push(attrs({ "class": ('tag') + ' ' + ("tag-close tag-" + (name) + "") }, {"class":true}));
+buf.push('><div class="tag-title"><div class="tag-toggle"><span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-down"></span></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"><span class="glyphicon glyphicon-refresh"></span></div></div><div class="tag-feeds"></div></div>');
 }
 return buf.join("");
 };

@@ -35,9 +35,9 @@ module.exports = class FeedView extends View
 
     addToTag: (tag) ->
         tmpl = tagTemplate
-        tag  = tag or "untagged"
+        tag  = $.trim(tag) or "untagged"
 
-        tagPlace = $ "." + tag
+        tagPlace = $ ".tag-" + tag
         if tagPlace.length is 0
             tagPlace = $(tmpl({ "name": tag }))
             $("#panel-feeds").append tagPlace
@@ -123,6 +123,7 @@ module.exports = class FeedView extends View
         evt.preventDefault()
 
         $target = $(evt.currentTarget)
+        @setCount()
 
         $allThat      = $("." + @model.cid)
         if $target.hasClass("feed-open")
