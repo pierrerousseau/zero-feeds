@@ -71,7 +71,7 @@ module.exports = class Feed extends Backbone.Model
                 link =
                     "title": title
                     "encodedTitle": encodeURIComponent title
-                    "url": url
+                    "url": @cleanGoogle(url)
                     "from": from
                     "state": state
                     "description": description

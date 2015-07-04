@@ -118,6 +118,14 @@ module.exports = class FeedView extends View
                 link.toCozyBookMarks = withCozyBookmarks
                 $(".links").prepend($(tmpl(link)))
 
+    cleanLinks: () ->
+        existingLinks = $(".link")
+        existingLinks.remove()
+
+    cleanOpenedFeed: () ->
+        current = $(".feed-open")
+        current.removeClass("feed-open")
+
     onUpdateClicked: (evt) ->
         @startWaiter()
         evt.preventDefault()
@@ -126,12 +134,12 @@ module.exports = class FeedView extends View
         @setCount()
 
         $allThat      = $("." + @model.cid)
+        @cleanLinks()
         if $target.hasClass("feed-open")
-            $target.removeClass("feed-open")
-            existingLinks = $(".link")
-            existingLinks.remove()
+            @cleanOpenedFeed()
             @stopWaiter()
         else
+            @cleanOpenedFeed()
             try
                 title = @model.titleText()
             catch error
