@@ -1,11 +1,18 @@
 @import 'nib'
 
-main-background = #5d5d5d
+main-background = #41454d
 main-color = #fff
-panel-background = #232323
+panel-background = #41454d
 panel-color = #c6c6c6
-menu-color = #83dcff
+menu-color = #d4cfc7
+menu-background = #616167
 del-color = #d66
+title-color = #c3beb8
+title-highlight = #fff
+count-color = #58493e
+count-background = #95b935
+button-background = #d4cfc7
+button-color = #616164
 
 html
     height: 100%
@@ -21,6 +28,7 @@ body
 
 #menu
     color: menu-color
+    background: menu-background
     margin: 0
 
     .nav-tabs
@@ -69,16 +77,17 @@ body
 #panel-feeds
     .tag
         &.tag-open
-            .glyphicon-triangle-right
+            color: title-highlight
+            .glyphicon-chevron-right
                 display: none
         &.tag-close
-            .glyphicon-triangle-bottom
+            color: title-color
+            .glyphicon-chevron-down
             .tag-feeds
             .tag-refresh
                 display: none
         .tag-title
             font-size: 1.5em
-            color: menu-color
             cursor: pointer
             > div
                 display: inline
@@ -88,11 +97,12 @@ body
     .feed
         font-size: 1.5em
         cursor: pointer
+        color: title-color
 
         .label
-            background: menu-color
-            color: panel-background
-            padding: .1em .4em
+            background: count-background
+            color: count-color
+            padding: .05em .4em
 
         > div
             display: inline
@@ -101,7 +111,7 @@ body
         .feed-delete
             font-weight: bolder
             color: del-color
-        &.to-delete
+        &.feed-to-delete
             color: del-color
 
         .feed-spinner
@@ -110,9 +120,11 @@ body
         &:hover
             .feed-delete
                 visibility: visible
-        &.loading
+        &.feed-loading
             .feed-spinner
                 visibility: visible
+        &.feed-open
+            color: title-highlight
 
 #panel-add-feeds
     padding-top: .5em
@@ -125,11 +137,16 @@ body
         font-size: 1.5em
         width: 50%
     .btn-default
-        background: menu-color
+        background: button-background
+        color: button-color
         font-size: 1.5em
         font-weight: bolder
+        text-shadow: none
         span
             margin-right: .25em
+        &:hover
+            background: button-color
+            color: button-background
 
 #tips
     height: 100%

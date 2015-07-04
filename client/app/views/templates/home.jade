@@ -1,14 +1,14 @@
 #content
     #menu(class="row")
-        #menu-refresh-all(class="col-xs-3 menu-button") REFRESH
+        #menu-refresh-all(class="col-xs-3 menu-button") Refresh all feeds
         #menu-tabs(class="col-xs-9")
             ul#menu-tabs-nav(class="nav nav-tabs", role="tablist")
-                li#menu-tabs-home(class="active", role="presentation") 
+                li#menu-tabs-links(class="active", role="presentation") 
                     a(class="menu-button",
-                      href="#panel-home", 
-                      aria-controls="home", 
+                      href="#panel-links", 
+                      aria-controls="links", 
                       role="tab", 
-                      data-toggle="tab") HOME
+                      data-toggle="tab") Links
                 li#menu-tabs-add-feeds(role="presentation") 
                     a(class="menu-button",
                       href="#panel-add-feeds", 
@@ -16,31 +16,31 @@
                       role="tab", 
                       data-toggle="tab") 
                         span(class="glyphicon glyphicon-plus")
-                        | ADD FEEDS
+                        | Add Feeds
                 li#menu-tabs-history(role="presentation") 
                     a(class="menu-button",
                       href="#panel-history", 
                       aria-controls="history", 
                       role="tab", 
-                      data-toggle="tab") HISTORY
+                      data-toggle="tab") History
                 li#menu-tabs-history(role="presentation") 
                     a(class="menu-button",
                       href="#panel-settings", 
                       aria-controls="settings", 
                       role="tab", 
-                      data-toggle="tab") SETTINGS
+                      data-toggle="tab") Settings
                 li#menu-tabs-help(role="presentation") 
                     a(class="menu-button",
                       href="#panel-help", 
                       aria-controls="help", 
                       role="tab", 
-                      data-toggle="tab") HELP
+                      data-toggle="tab") Help
     #panels(class="row")
         #panel-feeds(class="col-xs-3")
         #panel-main(class="col-xs-7") 
             #panel-main-tabs(class="tab-content")
-                #panel-home(class="tab-pane fade in active", role="tabpanel")
-                    include ./panel-home.jade
+                #panel-links(class="tab-pane fade in active", role="tabpanel")
+                    include ./panel-links.jade
                 #panel-add-feeds(class="tab-pane fade", role="tabpanel") 
                     include ./panel-add-feeds.jade
                 #panel-history(class="tab-pane fade", role="tabpanel") history

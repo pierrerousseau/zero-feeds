@@ -1114,11 +1114,11 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.startWaiter = function() {
-    return this.$el.addClass("loading");
+    return this.$el.addClass("feed-loading");
   };
 
   FeedView.prototype.stopWaiter = function() {
-    return this.$el.removeClass("loading");
+    return this.$el.removeClass("feed-loading");
   };
 
   FeedView.prototype.setToDelete = function() {
@@ -1238,14 +1238,15 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.onUpdateClicked = function(evt) {
-    var $allThat, error, existingLinks, title;
+    var $allThat, $target, error, existingLinks, title;
     this.startWaiter();
     evt.preventDefault();
+    $target = $(evt.currentTarget);
     $allThat = $("." + this.model.cid);
-    existingLinks = $(".link");
-    if (existingLinks.length) {
+    if ($target.hasClass("feed-open")) {
+      $target.removeClass("feed-open");
+      existingLinks = $(".link");
       existingLinks.remove();
-      this.setCount();
       this.stopWaiter();
     } else {
       try {
@@ -1265,6 +1266,7 @@ module.exports = FeedView = (function(superClass) {
             var last;
             _this.stopWaiter();
             _this.renderXml();
+            $target.addClass("feed-open");
             title = _this.model.titleText();
             if (title) {
               last = _this.model.last;
@@ -1513,7 +1515,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">REFRESH</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-home" role="presentation" class="active"> <a href="#panel-home" aria-controls="home" role="tab" data-toggle="tab" class="menu-button">HOME</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>ADD FEEDS</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">HISTORY</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">SETTINGS</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">HELP</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3"></div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-home" role="tabpanel" class="tab-pane fade in active"><h1>Home</h1><h3>new articles from your favorite feeds</h3><div class="links"></div></div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
+buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3 menu-button">Refresh all feeds</div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-links" role="presentation" class="active"> <a href="#panel-links" aria-controls="links" role="tab" data-toggle="tab" class="menu-button">Links</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>Add Feeds</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button">History</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button">Settings</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button">Help</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3"></div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-links" role="tabpanel" class="tab-pane fade in active"><h1>Links</h1><h3>new articles from your favorite feeds</h3><div class="links"></div></div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade">history</div><div id="panel-settings" role="tabpanel" class="tab-pane fade">settings</div><div id="panel-help" role="tabpanel" class="tab-pane fade">help</div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
 }
 return buf.join("");
 };
@@ -1554,13 +1556,13 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-home", function(exports, require, module) {
+;require.register("views/templates/panel-links", function(exports, require, module) {
 module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<h1>Home</h1><h3>new articles from your favorite feeds</h3><div class="links"></div>');
+buf.push('<h1>Links</h1><h3>new articles from your favorite feeds</h3><div class="links"></div>');
 }
 return buf.join("");
 };
@@ -1608,7 +1610,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="tag tag-close"><div class="tag-title"><div class="tag-toggle"><span class="glyphicon glyphicon-triangle-right"></span><span class="glyphicon glyphicon-triangle-bottom"></span></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"><span class="glyphicon glyphicon-refresh"></span></div></div><div class="tag-feeds"></div></div>');
+buf.push('<div class="tag tag-close"><div class="tag-title"><div class="tag-toggle"><span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-down"></span></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"><span class="glyphicon glyphicon-refresh"></span></div></div><div class="tag-feeds"></div></div>');
 }
 return buf.join("");
 };
