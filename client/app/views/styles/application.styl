@@ -13,6 +13,13 @@ count-color = #58493e
 count-background = #95b935
 button-background = #d4cfc7
 button-color = #616164
+link-background = #6d6d71
+link-color = #d4cfc7
+link-hover-background = #89878b
+link-hover-color = #fff
+link-active-background = #2c2f39
+link-active-color = #838181
+link-active-title-color = #a6d130
 
 html
     height: 100%
@@ -72,10 +79,23 @@ body
     h1
         font-size: 2em
         font-weight: bolder
-        margin-bottom: 1.5em
+        margin-bottom: .5em
+
+    .btn-default
+        background: button-background
+        color: button-color
+        font-size: 1.5em
+        font-weight: bolder
+        text-shadow: none
+        span
+            margin-right: .25em
+        &:hover
+            background: button-color
+            color: button-background
 
 #panel-feeds
     .tag
+        padding-left: .5em
         &.tag-open
             color: title-highlight
             .glyphicon-chevron-right
@@ -87,13 +107,15 @@ body
             .tag-refresh
                 display: none
         .tag-title
-            font-size: 1.5em
+            font-size: 1.25em
             cursor: pointer
             > div
                 display: inline
         .tag-name
             margin: .25em
             font-size: 1.5em
+        .tag-refresh
+            padding-left: 1em
     .feed
         font-size: 1.5em
         cursor: pointer
@@ -125,6 +147,62 @@ body
                 visibility: visible
         &.feed-open
             color: title-highlight
+            font-weight: bolder
+
+#panel-links
+    .links-title
+        h1
+            display: inline-block
+            padding: 1em
+        h3
+            font-style: italic
+            display: inline-block
+    .links
+        list-style: none
+
+    .panel
+        border: none
+        padding: .5em
+        margin: 0
+        font-size: 2em
+        background: inherit
+        color: inherit
+    .panel-heading
+        border: none
+        background: inherit
+        color: inherit
+        h3
+            font-size: 1em
+    .panel-body
+    .panel-footer
+        display: none
+        background: inherit
+        color: inherit
+    .link
+        padding: 0
+        margin: 3px
+        cursor: pointer
+        background: link-background
+        color: link-color
+        &:hover
+            background: link-hover-background
+            color: link-hover-color
+        &.link-active
+            background: link-active-background
+            color: link-active-color
+            .panel-heading
+                color: link-active-title-color
+            .panel-body
+                display: block
+                a
+                    color: link-active-title-color
+                *
+                    color: inherit
+            .panel-footer
+                border: none
+                display: block
+                .btn-default
+                    font-size: 1em
 
 #panel-add-feeds
     padding-top: .5em
@@ -136,17 +214,6 @@ body
         height: 2em
         font-size: 1.5em
         width: 50%
-    .btn-default
-        background: button-background
-        color: button-color
-        font-size: 1.5em
-        font-weight: bolder
-        text-shadow: none
-        span
-            margin-right: .25em
-        &:hover
-            background: button-color
-            color: button-background
 
 #tips
     height: 100%

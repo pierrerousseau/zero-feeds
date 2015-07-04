@@ -1,23 +1,14 @@
 li(class="link #{from} link-#{state}")
-    .link-buttons
-        a.btn(
-            title="send to tweeter",
-            class="link-send-to-tweeter",
-            href="https://twitter.com/intent/tweet?text=#{encodedTitle}&url=#{url}", 
-            target="_blank"
-        )
-            span.fa.fa-twitter
-        if toCozyBookMarks
-            button.btn(
-                title="send to cozy bookmarks",
-                class="link-send-to-cozy-bookmarks"
-            )
-                span.glyphicon.glyphicon-bookmark
-        button.btn(
-            title="view description", 
-            class="link-view-description"
-        )
-            span.glyphicon.glyphicon-plus
-    a(href="#{url}", target="_blank") #{title}
-    .link-description
-        | !{description}
+    div(class="panel panel-default")
+        div(class="panel-heading")
+            h3.link-title(class="panel-title")
+                a(href="#{url}", target="_blank") #{title}
+        div(class="panel-body")
+            .link-infos
+            .link-description
+                | !{description}
+        div(class="panel-footer")
+            .link-buttons
+                a(class="btn btn-default", href="#{url}", target="_blank") 
+                    span(class="glyphicon glyphicon-link")
+                    | Open and read now
