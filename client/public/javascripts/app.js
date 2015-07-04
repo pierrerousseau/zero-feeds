@@ -811,11 +811,7 @@ module.exports = AppView = (function(superClass) {
   };
 
   AppView.prototype.cleanAddFeedForm = function() {
-    return $("form.new-feed").find("input").val("");
-  };
-
-  AppView.prototype.cleanAddFeedForm = function() {
-    return $("form.new-feed").find("input").val("");
+    return $(".add-one-feed").find("input").val("");
   };
 
   AppView.prototype.createFeed = function(evt, url, tags) {
@@ -827,11 +823,21 @@ module.exports = AppView = (function(superClass) {
     return this.feedsView.collection.create(feed, {
       success: (function(_this) {
         return function(elem) {
-          var elems;
+          var elems, i, j, len, len1, tag;
           elems = $("." + elem.cid);
-          elems.parents(".tag").find(".feed").show();
-          _this.cleanAddFeedForm();
-          return elems.not(".clone").click();
+          tags = elems.parents(".tag-close");
+          for (i = 0, len = tags.length; i < len; i++) {
+            tag = tags[i];
+            tag = $(tag);
+            $(tag).find(".tag-title").click();
+          }
+          tags = elems.parents(".tag-open");
+          for (j = 0, len1 = tags.length; j < len1; j++) {
+            tag = tags[j];
+            tag = $(tag);
+            $(tag).find("." + elem.cid + " .feed-count").click();
+          }
+          return _this.cleanAddFeedForm();
         };
       })(this),
       error: (function(_this) {
@@ -844,7 +850,6 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.addFeed = function(evt) {
     var tags, url;
-    console.log("ooooo");
     url = $("#add-feed-url").val();
     tags = $("#add-feed-tags").val().split(',').map(function(tag) {
       return $.trim(tag);
@@ -1127,11 +1132,11 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.setToDelete = function() {
-    return this.$el.addClass("to-delete");
+    return this.$el.addClass("feed-to-delete");
   };
 
   FeedView.prototype.setToNotDelete = function() {
-    return this.$el.removeClass("to-delete");
+    return this.$el.removeClass("feed-to-delete");
   };
 
   FeedView.prototype.addToTag = function(tag) {
@@ -1162,7 +1167,7 @@ module.exports = FeedView = (function(superClass) {
   FeedView.prototype.setCount = function() {
     var count, place;
     count = this.model.count();
-    place = this.$el.find(".feed-count");
+    place = $("." + this.model.cid).find(".feed-count");
     if (count) {
       place.html(count);
       return place.addClass("label");
@@ -1172,16 +1177,43 @@ module.exports = FeedView = (function(superClass) {
     }
   };
 
-  FeedView.prototype.setUpdate = function() {
+  FeedView.prototype.setUpdate = function(displayLinks) {
+    var $allThat, error, title;
+    $allThat = $("." + this.model.cid);
+    try {
+      title = this.model.titleText();
+    } catch (_error) {
+      error = _error;
+      this.stopWaiter();
+      View.error("Can't parse feed, please check feed address.");
+      return false;
+    }
     if (this.$el.is(":visible")) {
       this.startWaiter();
       this.model.save({
+        "title": title,
         "content": ""
       }, {
         success: (function(_this) {
           return function() {
+            var last;
             _this.stopWaiter();
+            if (displayLinks === true) {
+              _this.renderXml();
+              _this.$el.addClass("feed-open");
+            }
             _this.setCount();
+            title = _this.model.titleText();
+            if (title) {
+              last = _this.model.last;
+              _this.model.save({
+                "title": title,
+                "last": last,
+                "content": ""
+              });
+              $allThat.find("a").html(title);
+              View.log("" + title + " reloaded");
+            }
             return setTimeout(_.bind(_this.setUpdate, _this), (1 + Math.floor(Math.random() * 14)) * 60000);
           };
         })(this),
@@ -1255,80 +1287,45 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.onUpdateClicked = function(evt) {
-    var $allThat, $target, error, title;
+    var $target;
     this.startWaiter();
     evt.preventDefault();
     $target = $(evt.currentTarget);
     this.setCount();
-    $allThat = $("." + this.model.cid);
     this.cleanLinks();
     if ($target.hasClass("feed-open")) {
       this.cleanOpenedFeed();
       this.stopWaiter();
     } else {
       this.cleanOpenedFeed();
-      try {
-        title = this.model.titleText();
-      } catch (_error) {
-        error = _error;
-        this.stopWaiter();
-        View.error("Can't parse feed, please check feed address.");
-        return false;
-      }
-      this.model.save({
-        "title": title,
-        "content": ""
-      }, {
-        success: (function(_this) {
-          return function() {
-            var last;
-            _this.stopWaiter();
-            _this.renderXml();
-            $target.addClass("feed-open");
-            title = _this.model.titleText();
-            if (title) {
-              last = _this.model.last;
-              _this.model.save({
-                "title": title,
-                "last": last,
-                "content": ""
-              });
-              $allThat.find("a").html(title);
-              return View.log("" + title + " reloaded");
-            }
-          };
-        })(this),
-        error: (function(_this) {
-          return function() {
-            _this.stopWaiter();
-            return View.error("Server error occured, feed was not updated.");
-          };
-        })(this)
-      });
+      this.setUpdate(true);
+      $("#menu-tabs-links a").tab("show");
     }
     return false;
   };
 
   FeedView.prototype.refillAddForm = function() {
     var tags, title, url;
-    title = this.$el.find(".feed-title");
+    title = this.$el.find(".feed-title a");
     url = title.attr("href");
     tags = title.attr("data-tags") || "";
-    $("form.new-feed .new-feed-url").val(url);
-    $("form.new-feed .new-feed-tags").val(tags);
-    if (!$('.new-feed').is(':visible')) {
-      return $('.menu-new').trigger('click');
-    }
+    $("#add-feed-url").val(url);
+    $("#add-feed-tags").val(tags);
+    return $("#menu-tabs-add-feeds a").tab("show");
   };
 
   FeedView.prototype.fullRemove = function() {
-    var existingLinks, myTag;
-    myTag = this.$el.parents(".tag");
-    if (myTag.find(".feed").length === 1) {
-      myTag.remove();
+    var existingLinks, i, len, myTag, myTags;
+    myTags = $("." + this.model.cid).parents(".tag");
+    for (i = 0, len = myTags.length; i < len; i++) {
+      myTag = myTags[i];
+      myTag = $(myTag);
+      if (myTag.find(".feed").length === 1) {
+        myTag.remove();
+      }
     }
     this.destroy();
-    existingLinks = $(".links ." + this.feedClass() + ", .link" + this.model.cid);
+    existingLinks = $("." + this.model.cid);
     if (existingLinks.length) {
       existingLinks.remove();
     }
@@ -1528,7 +1525,7 @@ with (locals || {}) {
 var interp;
  var title = model.title ? model.title : model.url
 buf.push('<div class="feed-delete"> \n&times;</div><div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-count"></div><div class="feed-title"> <a');
-buf.push(attrs({ 'href':("" + (model.url) + "") }, {"href":true}));
+buf.push(attrs({ 'href':("" + (model.url) + ""), 'data-tags':("" + (model.tags) + "") }, {"href":true,"data-tags":true}));
 buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></div>');
 }
 return buf.join("");
