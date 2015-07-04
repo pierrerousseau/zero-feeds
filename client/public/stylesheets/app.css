@@ -246,6 +246,19 @@ body {
   font-size: 1.5em;
   width: 50%;
 }
+#panel-settings {
+  padding-top: 0.5em;
+  padding-left: 1.5em;
+  font-size: 1.25em;
+}
+#panel-settings .form-group {
+  margin-bottom: 2em;
+}
+#panel-settings input[type=text] {
+  height: 2em;
+  font-size: 1.5em;
+  width: 50%;
+}
 #tips {
   height: 100%;
   color: #c6c6c6;

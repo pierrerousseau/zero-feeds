@@ -1,6 +1,6 @@
 #content
     #menu(class="row")
-        #menu-refresh-all(class="col-xs-3 menu-button") Refresh all feeds
+        #menu-refresh-all(class="col-xs-3")
         #menu-tabs(class="col-xs-9")
             ul#menu-tabs-nav(class="nav nav-tabs", role="tablist")
                 li#menu-tabs-links(class="active", role="presentation") 
@@ -32,7 +32,9 @@
                       href="#panel-settings", 
                       aria-controls="settings", 
                       role="tab", 
-                      data-toggle="tab") Settings
+                      data-toggle="tab") 
+                        span(class="glyphicon glyphicon-cog")
+                        | Settings
                 li#menu-tabs-help(role="presentation") 
                     a(class="menu-button",
                       href="#panel-help", 
@@ -49,6 +51,7 @@
                     include ./panel-add-feeds.jade
                 #panel-history(class="tab-pane fade", role="tabpanel")
                     include ./panel-history.jade
-                #panel-settings(class="tab-pane fade", role="tabpanel") settings
+                #panel-settings(class="tab-pane fade", role="tabpanel")
+                    include ./panel-settings.jade
                 #panel-help(class="tab-pane fade", role="tabpanel") help
         #panel-tips(class="col-xs-2") tips
