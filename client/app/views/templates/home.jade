@@ -40,7 +40,9 @@
                       href="#panel-help", 
                       aria-controls="help", 
                       role="tab", 
-                      data-toggle="tab") Help
+                      data-toggle="tab") 
+                        span(class="glyphicon glyphicon-question-sign")
+                        | Help
     #panels(class="row")
         #panel-feeds(class="col-xs-3")
         #panel-main(class="col-xs-7") 
@@ -53,5 +55,6 @@
                     include ./panel-history.jade
                 #panel-settings(class="tab-pane fade", role="tabpanel")
                     include ./panel-settings.jade
-                #panel-help(class="tab-pane fade", role="tabpanel") help
+                #panel-help(class="tab-pane fade", role="tabpanel")
+                    include ./panel-help.jade
         #panel-tips(class="col-xs-2") tips
