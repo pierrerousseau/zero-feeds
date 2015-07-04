@@ -24,7 +24,9 @@
                       href="#panel-history", 
                       aria-controls="history", 
                       role="tab", 
-                      data-toggle="tab") History
+                      data-toggle="tab") 
+                        span(class="glyphicon glyphicon-time")
+                        | History
                 li#menu-tabs-history(role="presentation") 
                     a(class="menu-button",
                       href="#panel-settings", 
@@ -45,7 +47,8 @@
                     include ./panel-links.jade
                 #panel-add-feeds(class="tab-pane fade", role="tabpanel") 
                     include ./panel-add-feeds.jade
-                #panel-history(class="tab-pane fade", role="tabpanel") history
+                #panel-history(class="tab-pane fade", role="tabpanel")
+                    include ./panel-history.jade
                 #panel-settings(class="tab-pane fade", role="tabpanel") settings
                 #panel-help(class="tab-pane fade", role="tabpanel") help
         #panel-tips(class="col-xs-2") tips
