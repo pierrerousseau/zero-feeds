@@ -17,14 +17,15 @@ html {
 }
 body {
   color: #fff;
-  background: #5d5d5d;
+  background: #41454d;
   height: 100%;
 }
 #content {
   height: 100%;
 }
 #menu {
-  color: #83dcff;
+  color: #d4cfc7;
+  background: #616167;
   margin: 0;
 }
 #menu .nav-tabs {
@@ -32,14 +33,14 @@ body {
 }
 #menu .menu-button {
   padding: 1em;
-  color: #83dcff;
+  color: #d4cfc7;
   font-size: 1.5em;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
 }
 #menu .menu-button:hover {
-  background: #232323;
+  background: #41454d;
   color: #fff;
 }
 #menu li {
@@ -55,7 +56,7 @@ body {
   margin-right: 0.25em;
 }
 #menu li.active a {
-  background: #232323;
+  background: #41454d;
   color: #fff;
 }
 #menu li#menu-tabs-help {
@@ -69,7 +70,7 @@ body {
 }
 #panel-main {
   color: #c6c6c6;
-  background: #232323;
+  background: #41454d;
   height: 100%;
 }
 #panel-main h1 {
@@ -77,17 +78,22 @@ body {
   font-weight: bolder;
   margin-bottom: 1.5em;
 }
-#panel-feeds .tag.tag-open .glyphicon-triangle-right {
+#panel-feeds .tag.tag-open {
+  color: #fff;
+}
+#panel-feeds .tag.tag-open .glyphicon-chevron-right {
   display: none;
 }
-#panel-feeds .tag.tag-close .glyphicon-triangle-bottom,
+#panel-feeds .tag.tag-close {
+  color: #c3beb8;
+}
+#panel-feeds .tag.tag-close .glyphicon-chevron-down,
 #panel-feeds .tag.tag-close .tag-feeds,
 #panel-feeds .tag.tag-close .tag-refresh {
   display: none;
 }
 #panel-feeds .tag .tag-title {
   font-size: 1.5em;
-  color: #83dcff;
   cursor: pointer;
 }
 #panel-feeds .tag .tag-title > div {
@@ -100,11 +106,12 @@ body {
 #panel-feeds .feed {
   font-size: 1.5em;
   cursor: pointer;
+  color: #c3beb8;
 }
 #panel-feeds .feed .label {
-  background: #83dcff;
-  color: #232323;
-  padding: 0.1em 0.4em;
+  background: #95b935;
+  color: #58493e;
+  padding: 0.05em 0.4em;
 }
 #panel-feeds .feed > div {
   display: inline;
@@ -114,7 +121,7 @@ body {
   font-weight: bolder;
   color: #d66;
 }
-#panel-feeds .feed.to-delete {
+#panel-feeds .feed.feed-to-delete {
   color: #d66;
 }
 #panel-feeds .feed .feed-spinner,
@@ -124,8 +131,11 @@ body {
 #panel-feeds .feed:hover .feed-delete {
   visibility: visible;
 }
-#panel-feeds .feed.loading .feed-spinner {
+#panel-feeds .feed.feed-loading .feed-spinner {
   visibility: visible;
+}
+#panel-feeds .feed.feed-open {
+  color: #fff;
 }
 #panel-add-feeds {
   padding-top: 0.5em;
@@ -141,17 +151,23 @@ body {
   width: 50%;
 }
 #panel-add-feeds .btn-default {
-  background: #83dcff;
+  background: #d4cfc7;
+  color: #616164;
   font-size: 1.5em;
   font-weight: bolder;
+  text-shadow: none;
 }
 #panel-add-feeds .btn-default span {
   margin-right: 0.25em;
 }
+#panel-add-feeds .btn-default:hover {
+  background: #616164;
+  color: #d4cfc7;
+}
 #tips {
   height: 100%;
   color: #c6c6c6;
-  background: #232323;
+  background: #41454d;
 }
 
 .ui-pnotify{top:25px;right:25px;position:absolute;height:auto;z-index:9999}html>body>.ui-pnotify{position:fixed}.ui-pnotify .ui-pnotify-shadow{-webkit-box-shadow:0 2px 10px rgba(50,50,50,.5);-moz-box-shadow:0 2px 10px rgba(50,50,50,.5);box-shadow:0 2px 10px rgba(50,50,50,.5)}.ui-pnotify-container{background-position:0 0;padding:.8em;height:100%;margin:0}.ui-pnotify-sharp{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0}.ui-pnotify-title{display:block;margin-bottom:.4em;margin-top:0}.ui-pnotify-text{display:block}.ui-pnotify-icon,.ui-pnotify-icon span{display:block;float:left;margin-right:.2em}.ui-pnotify.stack-bottomleft,.ui-pnotify.stack-topleft{left:25px;right:auto}.ui-pnotify.stack-bottomleft,.ui-pnotify.stack-bottomright{bottom:25px;top:auto}.ui-pnotify-closer,.ui-pnotify-sticker{float:right;margin-left:.2em}.ui-pnotify-history-container{position:absolute;top:0;right:18px;width:70px;border-top:none;padding:0;-webkit-border-top-left-radius:0;-moz-border-top-left-radius:0;border-top-left-radius:0;-webkit-border-top-right-radius:0;-moz-border-top-right-radius:0;border-top-right-radius:0;z-index:10000}.ui-pnotify-history-container.ui-pnotify-history-fixed{position:fixed}.ui-pnotify-history-container .ui-pnotify-history-header{padding:2px;text-align:center}.ui-pnotify-history-container button{cursor:pointer;display:block;width:100%}.ui-pnotify-history-container .ui-pnotify-history-pulldown{display:block;margin:0 auto}

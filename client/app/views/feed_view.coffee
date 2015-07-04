@@ -22,10 +22,10 @@ module.exports = class FeedView extends View
         "mouseleave .feed-delete": "setToNotDelete"
 
     startWaiter: () ->
-        @$el.addClass("loading")
+        @$el.addClass("feed-loading")
 
     stopWaiter: () ->
-        @$el.removeClass("loading")
+        @$el.removeClass("feed-loading")
 
     setToDelete: () ->
         @$el.addClass("to-delete")
@@ -122,11 +122,13 @@ module.exports = class FeedView extends View
         @startWaiter()
         evt.preventDefault()
 
+        $target = $(evt.currentTarget)
+
         $allThat      = $("." + @model.cid)
-        existingLinks = $(".link")
-        if existingLinks.length
+        if $target.hasClass("feed-open")
+            $target.removeClass("feed-open")
+            existingLinks = $(".link")
             existingLinks.remove()
-            @setCount()
             @stopWaiter()
         else
             try
@@ -140,6 +142,7 @@ module.exports = class FeedView extends View
                 success: =>
                     @stopWaiter()
                     @renderXml()
+                    $target.addClass("feed-open")
                     title = @model.titleText()
                     if title
                         last  = @model.last
