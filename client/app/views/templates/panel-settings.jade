@@ -1,0 +1,25 @@
+h1 Settings
+form.settings(role="form")
+    div(class="form-group")
+        label(for="add-feed-url") Bookmarks application name
+        input#settings-bookrmarks-name(
+            type="text",
+            name="bookmarks-name", 
+            class="form-control", 
+            placeholder="quickmarks")
+    div(class="form-group")
+        label Visibility
+        div(class="radio")
+            label
+                input#settings-show-only-new-links(
+                    type="radio", 
+                    name="show-only-new-links" 
+                    value="1")
+                | Show only new links
+        div(class="radio")
+            label
+                input#settings-show-also-old-links(
+                    type="radio", 
+                    name="show-only-new-links" 
+                    value="0")
+                | Show new links and old links
