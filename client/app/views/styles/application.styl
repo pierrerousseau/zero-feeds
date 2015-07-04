@@ -20,6 +20,8 @@ link-hover-color = #fff
 link-active-background = #2c2f39
 link-active-color = #838181
 link-active-title-color = #a6d130
+link-old-color = #a4a2a8
+link-old-background = #61626c
 
 html
     height: 100%
@@ -174,6 +176,13 @@ body
         h3
             font-size: 1em
     .panel-body
+        display: none
+        background: inherit
+        color: inherit
+        a
+            color: link-active-title-color
+        *
+            color: inherit
     .panel-footer
         display: none
         background: inherit
@@ -187,6 +196,9 @@ body
         &:hover
             background: link-hover-background
             color: link-hover-color
+        &.link-old
+            background: link-old-background
+            color: link-old-color
         &.link-active
             background: link-active-background
             color: link-active-color
@@ -194,10 +206,6 @@ body
                 color: link-active-title-color
             .panel-body
                 display: block
-                a
-                    color: link-active-title-color
-                *
-                    color: inherit
             .panel-footer
                 border: none
                 display: block
