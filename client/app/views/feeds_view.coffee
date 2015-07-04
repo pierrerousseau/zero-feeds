@@ -22,23 +22,26 @@ module.exports = class FeedsView extends ViewCollection
         target = $(evt.currentTarget).parents ".tag:first"
         target.removeClass("hover")
 
+    reloadCounts: ($target) ->
+        feeds  = $target.find ".feed"
+        $(feed).find(".feed-count").click() for feed in feeds
+
     onReloadTagClicked: (evt) ->
-        target = $(evt.currentTarget).parents ".tag:first"
-        feeds  = target.find ".feed"
-        feeds.trigger "click"
+        $target = $(evt.currentTarget).parents ".tag:first"
+        @reloadCounts($target)
+
         false
 
     onTagClicked: (evt) ->
-        target = $(evt.currentTarget).parent ".tag:first"
-        if target.hasClass "tag-open"
-            target.removeClass "tag-open"
-            target.addClass "tag-close"
+        $target = $(evt.currentTarget).parent ".tag:first"
+        if $target.hasClass "tag-open"
+            $target.removeClass "tag-open"
+            $target.addClass "tag-close"
         else
-            target.removeClass "tag-close"
-            target.addClass "tag-open"
+            $target.removeClass "tag-close"
+            $target.addClass "tag-open"
 
-        feeds  = target.find ".feed"
-        $(feed).find(".feed-count").click() for feed in feeds
+        @reloadCounts($target)
 
         false
 

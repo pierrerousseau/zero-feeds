@@ -598,7 +598,7 @@ module.exports = Feed = (function(superClass) {
         link = {
           "title": title,
           "encodedTitle": encodeURIComponent(title),
-          "url": url,
+          "url": _this.cleanGoogle(url),
           "from": from,
           "state": state,
           "description": description
@@ -1242,19 +1242,31 @@ module.exports = FeedView = (function(superClass) {
     });
   };
 
+  FeedView.prototype.cleanLinks = function() {
+    var existingLinks;
+    existingLinks = $(".link");
+    return existingLinks.remove();
+  };
+
+  FeedView.prototype.cleanOpenedFeed = function() {
+    var current;
+    current = $(".feed-open");
+    return current.removeClass("feed-open");
+  };
+
   FeedView.prototype.onUpdateClicked = function(evt) {
-    var $allThat, $target, error, existingLinks, title;
+    var $allThat, $target, error, title;
     this.startWaiter();
     evt.preventDefault();
     $target = $(evt.currentTarget);
     this.setCount();
     $allThat = $("." + this.model.cid);
+    this.cleanLinks();
     if ($target.hasClass("feed-open")) {
-      $target.removeClass("feed-open");
-      existingLinks = $(".link");
-      existingLinks.remove();
+      this.cleanOpenedFeed();
       this.stopWaiter();
     } else {
+      this.cleanOpenedFeed();
       try {
         title = this.model.titleText();
       } catch (_error) {
@@ -1393,29 +1405,35 @@ module.exports = FeedsView = (function(superClass) {
     return target.removeClass("hover");
   };
 
+  FeedsView.prototype.reloadCounts = function($target) {
+    var feed, feeds, i, len, results;
+    feeds = $target.find(".feed");
+    results = [];
+    for (i = 0, len = feeds.length; i < len; i++) {
+      feed = feeds[i];
+      results.push($(feed).find(".feed-count").click());
+    }
+    return results;
+  };
+
   FeedsView.prototype.onReloadTagClicked = function(evt) {
-    var feeds, target;
-    target = $(evt.currentTarget).parents(".tag:first");
-    feeds = target.find(".feed");
-    feeds.trigger("click");
+    var $target;
+    $target = $(evt.currentTarget).parents(".tag:first");
+    this.reloadCounts($target);
     return false;
   };
 
   FeedsView.prototype.onTagClicked = function(evt) {
-    var feed, feeds, i, len, target;
-    target = $(evt.currentTarget).parent(".tag:first");
-    if (target.hasClass("tag-open")) {
-      target.removeClass("tag-open");
-      target.addClass("tag-close");
+    var $target;
+    $target = $(evt.currentTarget).parent(".tag:first");
+    if ($target.hasClass("tag-open")) {
+      $target.removeClass("tag-open");
+      $target.addClass("tag-close");
     } else {
-      target.removeClass("tag-close");
-      target.addClass("tag-open");
+      $target.removeClass("tag-close");
+      $target.addClass("tag-open");
     }
-    feeds = target.find(".feed");
-    for (i = 0, len = feeds.length; i < len; i++) {
-      feed = feeds[i];
-      $(feed).find(".feed-count").click();
-    }
+    this.reloadCounts($target);
     return false;
   };
 
