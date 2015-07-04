@@ -172,8 +172,6 @@ module.exports = class AppView extends View
         link   = $(evt.currentTarget)
         if not $(evt.target).is("a")
             link.toggleClass "link-active"
-            link.find(".link-view-description").toggleClass "link-active"
-            link.find(".link-description").toggle()
 
     addFeedFromFile: (feedObj) ->
         feed = new Feed feedObj

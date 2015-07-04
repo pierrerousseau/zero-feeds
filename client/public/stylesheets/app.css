@@ -76,7 +76,24 @@ body {
 #panel-main h1 {
   font-size: 2em;
   font-weight: bolder;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.5em;
+}
+#panel-main .btn-default {
+  background: #d4cfc7;
+  color: #616164;
+  font-size: 1.5em;
+  font-weight: bolder;
+  text-shadow: none;
+}
+#panel-main .btn-default span {
+  margin-right: 0.25em;
+}
+#panel-main .btn-default:hover {
+  background: #616164;
+  color: #d4cfc7;
+}
+#panel-feeds .tag {
+  padding-left: 0.5em;
 }
 #panel-feeds .tag.tag-open {
   color: #fff;
@@ -93,7 +110,7 @@ body {
   display: none;
 }
 #panel-feeds .tag .tag-title {
-  font-size: 1.5em;
+  font-size: 1.25em;
   cursor: pointer;
 }
 #panel-feeds .tag .tag-title > div {
@@ -102,6 +119,9 @@ body {
 #panel-feeds .tag .tag-name {
   margin: 0.25em;
   font-size: 1.5em;
+}
+#panel-feeds .tag .tag-refresh {
+  padding-left: 1em;
 }
 #panel-feeds .feed {
   font-size: 1.5em;
@@ -136,6 +156,74 @@ body {
 }
 #panel-feeds .feed.feed-open {
   color: #fff;
+  font-weight: bolder;
+}
+#panel-links .links-title h1 {
+  display: inline-block;
+  padding: 1em;
+}
+#panel-links .links-title h3 {
+  font-style: italic;
+  display: inline-block;
+}
+#panel-links .links {
+  list-style: none;
+}
+#panel-links .panel {
+  border: none;
+  padding: 0.5em;
+  margin: 0;
+  font-size: 2em;
+  background: inherit;
+  color: inherit;
+}
+#panel-links .panel-heading {
+  border: none;
+  background: inherit;
+  color: inherit;
+}
+#panel-links .panel-heading h3 {
+  font-size: 1em;
+}
+#panel-links .panel-body,
+#panel-links .panel-footer {
+  display: none;
+  background: inherit;
+  color: inherit;
+}
+#panel-links .link {
+  padding: 0;
+  margin: 3px;
+  cursor: pointer;
+  background: #6d6d71;
+  color: #d4cfc7;
+}
+#panel-links .link:hover {
+  background: #89878b;
+  color: #fff;
+}
+#panel-links .link.link-active {
+  background: #2c2f39;
+  color: #838181;
+}
+#panel-links .link.link-active .panel-heading {
+  color: #a6d130;
+}
+#panel-links .link.link-active .panel-body {
+  display: block;
+}
+#panel-links .link.link-active .panel-body a {
+  color: #a6d130;
+}
+#panel-links .link.link-active .panel-body * {
+  color: inherit;
+}
+#panel-links .link.link-active .panel-footer {
+  border: none;
+  display: block;
+}
+#panel-links .link.link-active .panel-footer .btn-default {
+  font-size: 1em;
 }
 #panel-add-feeds {
   padding-top: 0.5em;
@@ -149,20 +237,6 @@ body {
   height: 2em;
   font-size: 1.5em;
   width: 50%;
-}
-#panel-add-feeds .btn-default {
-  background: #d4cfc7;
-  color: #616164;
-  font-size: 1.5em;
-  font-weight: bolder;
-  text-shadow: none;
-}
-#panel-add-feeds .btn-default span {
-  margin-right: 0.25em;
-}
-#panel-add-feeds .btn-default:hover {
-  background: #616164;
-  color: #d4cfc7;
 }
 #tips {
   height: 100%;
