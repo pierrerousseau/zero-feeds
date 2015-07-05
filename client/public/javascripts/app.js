@@ -1311,9 +1311,13 @@ buf.push('<li');
 buf.push(attrs({ "class": ("link " + (from) + " link-" + (state) + "") }, {"class":true}));
 buf.push('><div class="panel panel-default"><div class="panel-heading"><h3 class="link-title panel-title"><a');
 buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
-buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></h3></div><div class="panel-body"><div class="link-infos"></div><div class="link-description">' + ((interp = description) == null ? '' : interp) + '</div></div><div class="panel-footer"><div class="link-buttons"><a');
+buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></h3><a');
+buf.push(attrs({ 'title':("send to Twitter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank") }, {"title":true,"href":true,"target":true}));
+buf.push('> <span class="fa fa-twitter"></span></a></div><div class="panel-body"><div class="link-infos"></div><div class="link-description">' + ((interp = description) == null ? '' : interp) + '</div></div><div class="panel-footer"><div class="link-buttons"><a');
 buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank"), "class": ("btn btn-default") }, {"class":true,"href":true,"target":true}));
-buf.push('> <span class="glyphicon glyphicon-link"></span>Open and read now</a></div></div></div></li>');
+buf.push('> <span class="glyphicon glyphicon-link"></span>Open and read now</a><a');
+buf.push(attrs({ 'title':("send to Twitter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), "class": ("btn btn-invert") }, {"class":true,"title":true,"href":true,"target":true}));
+buf.push('> <span class="fa fa-twitter"></span>Share</a></div></div></div></li>');
 }
 return buf.join("");
 };

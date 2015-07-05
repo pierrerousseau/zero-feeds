@@ -3,6 +3,10 @@ li(class="link #{from} link-#{state}")
         div(class="panel-heading")
             h3.link-title(class="panel-title")
                 a(href="#{url}", target="_blank") #{title}
+            a(title="send to Twitter",
+              href="https://twitter.com/intent/tweet?text=#{encodedTitle}&url=#{url}", 
+              target="_blank") 
+              span(class="fa fa-twitter")
         div(class="panel-body")
             .link-infos
             .link-description
@@ -12,3 +16,9 @@ li(class="link #{from} link-#{state}")
                 a(class="btn btn-default", href="#{url}", target="_blank") 
                     span(class="glyphicon glyphicon-link")
                     | Open and read now
+                a(class="btn btn-invert", 
+                  title="send to Twitter",
+                  href="https://twitter.com/intent/tweet?text=#{encodedTitle}&url=#{url}", 
+                  target="_blank") 
+                  span(class="fa fa-twitter")
+                  | Share
