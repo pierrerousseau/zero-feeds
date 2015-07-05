@@ -131,6 +131,18 @@ body {
 #tips {
   color: #c6c6c6;
 }
+#tip-of-the-day {
+  background: #6d6d72;
+  color: #cec9c2;
+}
+#tip-questions {
+  background: #5a5a61;
+  color: #d4cfc7;
+}
+#tip-issues {
+  background: #5a5a61;
+  color: #d4cfc7;
+}
 body.use-light-colors {
   color: #58493e;
   background: #ecebe9;
@@ -248,6 +260,18 @@ body.use-light-colors #panel-help a {
 }
 body.use-light-colors #tips {
   color: #676766;
+}
+body.use-light-colors #tip-of-the-day {
+  background: #f6f5f3;
+  color: #888786;
+}
+body.use-light-colors #tip-questions {
+  background: #e6e4e3;
+  color: #323232;
+}
+body.use-light-colors #tip-issues {
+  background: #e6e4e3;
+  color: #323232;
 }
 html {
   height: 100%;
@@ -477,6 +501,26 @@ body.show-old-links #panel-links .link.link-old {
 }
 #tips {
   height: 100%;
+}
+#tip-of-the-day,
+#tip-questions,
+#tip-issues {
+  padding: 1em;
+  margin: 1em;
+  font-size: 1.2em;
+}
+#tip-of-the-day .tip-title,
+#tip-questions .tip-title,
+#tip-issues .tip-title {
+  font-weight: bolder;
+  font-size: 1.2em;
+  margin-bottom: 0.9em;
+}
+#tip-of-the-day a,
+#tip-questions a,
+#tip-issues a {
+  color: inherit;
+  text-decoration: underline;
 }
 #content .fa-twitter,
 #content [href^="https://twitter.com/intent/tweet?"] {
