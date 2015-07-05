@@ -23,6 +23,10 @@ link-active-color = #838181
 link-active-title-color = #a6d130
 link-old-color = #a4a2a8
 link-old-background = #61626c
+tip-background = #6d6d72
+tip-color = #cec9c2
+tip-question-background = #5a5a61
+tip-question-color = #d4cfc7
 
 light-main-background = #ecebe9
 light-main-color = #58493e
@@ -47,6 +51,10 @@ light-link-active-color = #676766
 light-link-active-title-color = #f26522
 light-link-old-color = #918983
 light-link-old-background = #e6e4e3
+light-tip-background = #f6f5f3
+light-tip-color = #888786
+light-tip-question-background = #e6e4e3
+light-tip-question-color = #323232
 
 
 body
@@ -150,6 +158,17 @@ body
 #tips
     color: panel-color
 
+#tip-of-the-day
+    background: tip-background
+    color: tip-color
+
+#tip-questions
+    background: tip-question-background
+    color: tip-question-color
+
+#tip-issues
+    background: tip-question-background
+    color: tip-question-color
 
  
 body.use-light-colors
@@ -252,6 +271,18 @@ body.use-light-colors
 
     #tips
         color: light-panel-color
+
+    #tip-of-the-day
+        background: light-tip-background
+        color: light-tip-color
+
+    #tip-questions
+        background: light-tip-question-background
+        color: light-tip-question-color
+
+    #tip-issues
+        background: light-tip-question-background
+        color: light-tip-question-color
 
  
 html
@@ -451,6 +482,23 @@ body
 
 #tips
     height: 100%
+
+#tip-of-the-day
+#tip-questions
+#tip-issues
+    padding: 1em
+    margin: 1em
+    font-size: 1.2em
+
+    .tip-title
+        font-weight: bolder
+        font-size: 1.2em
+        margin-bottom: .9em
+
+    a
+        color: inherit
+        text-decoration: underline
+
 
 
 #content 
