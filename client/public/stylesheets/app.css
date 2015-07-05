@@ -372,10 +372,25 @@ body.show-old-links #panel-links .link.link-old {
   font-size: 1.5em;
   cursor: pointer;
 }
+#panel-feeds .feed .feed-infos {
+  display: inline-block;
+  width: 20%;
+  white-space: nowrap;
+  vertical-align: text-bottom;
+}
+#panel-feeds .feed .feed-title {
+  vertical-align: text-bottom;
+  display: inline-block;
+  width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
 #panel-feeds .feed .label {
   padding: 0.05em 0.4em;
 }
-#panel-feeds .feed > div {
+#panel-feeds .feed .feed-infos > div {
   display: inline;
   margin: 0.2em;
 }
