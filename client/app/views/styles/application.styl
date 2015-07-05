@@ -23,12 +23,237 @@ link-active-title-color = #a6d130
 link-old-color = #a4a2a8
 link-old-background = #61626c
 
-html
-    height: 100%
+light-main-background = #ecebe9
+light-main-color = #58493e
+light-panel-background = #ecebe9
+light-panel-color = #676766
+light-menu-color = #58493e
+light-menu-background = #d9d6d2
+light-del-color = #d66
+light-title-color = #58493e
+light-title-highlight = #72675e
+light-count-color = #fff
+light-count-background = #f26522
+light-button-background = #58493e
+light-button-color = #fff
+light-link-background = #f1f1ee
+light-link-color = #7b7b7b
+light-link-hover-background = #d9d6d2
+light-link-hover-color = #534f4c
+light-link-active-background = #f6f5f3
+light-link-active-color = #676766
+light-link-active-title-color = #f26522
+light-link-old-color = #918983
+light-link-old-background = #e6e4e3
+
 
 body
     color: main-color
     background: main-background
+
+#menu
+    color: menu-color
+    background: menu-background
+
+    .menu-button
+        color: menu-color
+        &:hover
+            background: panel-background
+            color: main-color
+    li
+        &.active
+            a
+                background: panel-background
+                color: main-color
+
+#panel-main
+    color: panel-color
+    background: panel-background
+
+    .btn-invert
+        background: button-color
+        color: button-background
+        &:hover
+            background: button-background
+            color: button-color
+    .btn-default
+        background: button-background
+        color: button-color
+        &:hover
+            background: button-color
+            color: button-background
+
+#panel-feeds
+    .tag
+        &.tag-open
+            color: title-highlight
+        &.tag-close
+            color: title-color
+    .feed
+        color: title-color
+        .label
+            background: count-background
+            color: count-color
+        &:hover
+            color: title-highlight
+        &.feed-open
+            color: title-highlight
+        a
+            color: inherit
+        .feed-delete
+            font-weight: bolder
+            color: del-color
+        &.feed-to-delete
+            color: del-color
+
+#panel-links
+    .panel
+        background: inherit
+        color: inherit
+    .panel-heading
+        background: inherit
+        color: inherit
+    .panel-body
+        color: inherit
+        background: inherit
+        a
+            color: link-active-title-color
+        *
+            color: inherit
+    .panel-footer
+        color: inherit
+        background: inherit
+    .link
+        background: link-background
+        color: link-color
+        .panel-heading
+            > a
+                color: inherit
+        &:hover
+            background: link-hover-background
+            color: link-hover-color
+        &.link-old
+            background: link-old-background
+            color: link-old-color
+        &.link-active
+            background: link-active-background
+            color: link-active-color
+            .panel-heading
+                color: link-active-title-color
+#panel-help
+    a
+        color: link-color
+
+#tips
+    color: panel-color
+
+
+ 
+body.use-light-colors
+    color: light-main-color
+    background: light-main-background
+
+    #menu
+        color: light-menu-color
+        background: light-menu-background
+
+        .menu-button
+            color: light-menu-color
+            &:hover
+                background: light-panel-background
+                color: light-main-color
+        li
+            &.active
+                a
+                    background: light-panel-background
+                    color: light-main-color
+
+    #panel-main
+        color: light-panel-color
+        background: light-panel-background
+
+        .btn-invert
+            background: light-button-color
+            color: light-button-background
+            &:hover
+                background: light-button-background
+                color: light-button-color
+        .btn-default
+            background: light-button-background
+            color: light-button-color
+            &:hover
+                background: light-button-color
+                color: light-button-background
+
+    #panel-feeds
+        .tag
+            &.tag-open
+                color: light-title-highlight
+            &.tag-close
+                color: light-title-color
+        .feed
+            color: light-title-color
+            .label
+                background: light-count-background
+                color: light-count-color
+            &:hover
+                color: light-title-highlight
+            &.feed-open
+                color: light-title-highlight
+            a
+                color: inherit
+            .feed-delete
+                color: light-del-color
+            &.feed-to-delete
+                color: light-del-color
+
+    #panel-links
+        .panel
+            background: inherit
+            color: inherit
+        .panel-heading
+            background: inherit
+            color: inherit
+        .panel-body
+            color: inherit
+            background: inherit
+            a
+                color: light-link-active-title-color
+            *
+                color: inherit
+        .panel-footer
+            color: inherit
+            background: inherit
+        .link
+            background: light-link-background
+            color: light-link-color
+            .panel-heading
+                > a
+                    color: inherit
+            &:hover
+                background: light-link-hover-background
+                color: light-link-hover-color
+            &.link-old
+                background: light-link-old-background
+                color: light-link-old-color
+            &.link-active
+                background: light-link-active-background
+                color: light-link-active-color
+                .panel-heading
+                    color: light-link-active-title-color
+                    
+    #panel-help
+        a
+            color: light-link-color
+
+    #tips
+        color: light-panel-color
+
+ 
+html
+    height: 100%
+
+body
     height: 100%
 
     &.show-old-links 
@@ -40,22 +265,16 @@ body
 
 
 #menu
-    color: menu-color
-    background: menu-background
     margin: 0
 
     .nav-tabs
         border: none
     .menu-button
         padding: 1em
-        color: menu-color
         font-size: 1.5em 
         font-weight: bold
         text-align: center
         cursor: pointer
-        &:hover
-            background: panel-background
-            color: main-color
     li
         display: table-cell
         width: auto
@@ -65,10 +284,6 @@ body
             border: none
             span 
                 margin-right: .25em
-        &.active
-            a
-                background: panel-background
-                color: main-color
         &#menu-tabs-help
             width: 100%
             text-align: right
@@ -79,8 +294,6 @@ body
     height: 100%
 
 #panel-main
-    color: panel-color
-    background: panel-background
     height: 100%
 
     h1
@@ -88,38 +301,20 @@ body
         font-weight: bolder
         margin-bottom: .5em
 
-    .btn-invert
-        background: button-color
-        color: button-background
+    .btn
         font-weight: bolder
         font-size: 1.5em
         text-shadow: none
         span
             margin-right: .25em
-        &:hover
-            background: button-background
-            color: button-color
-    .btn-default
-        background: button-background
-        color: button-color
-        font-size: 1.5em
-        font-weight: bolder
-        text-shadow: none
-        span
-            margin-right: .25em
-        &:hover
-            background: button-color
-            color: button-background
 
 #panel-feeds
     .tag
         padding-left: .5em
         &.tag-open
-            color: title-highlight
             .glyphicon-chevron-right
                 display: none
         &.tag-close
-            color: title-color
             .glyphicon-chevron-down
             .tag-feeds
             .tag-refresh
@@ -137,11 +332,8 @@ body
     .feed
         font-size: 1.5em
         cursor: pointer
-        color: title-color
 
         .label
-            background: count-background
-            color: count-color
             padding: .05em .4em
 
         > div
@@ -152,23 +344,17 @@ body
         .feed-delete
             visibility: hidden
         &:hover
-            color: title-highlight
             .feed-delete
                 visibility: visible
         &.feed-loading
             .feed-spinner
                 visibility: visible
         &.feed-open
-            color: title-highlight
             font-weight: bolder
         a
-            color: inherit
             text-decoration: none
         .feed-delete
             font-weight: bolder
-            color: del-color
-        &.feed-to-delete
-            color: del-color
 
 
 #panel-links
@@ -187,32 +373,18 @@ body
         padding: .5em
         margin: 0
         font-size: 2em
-        background: inherit
-        color: inherit
     .panel-heading
         border: none
-        background: inherit
-        color: inherit
         h3
             font-size: 1em
     .panel-body
         display: none
-        background: inherit
-        color: inherit
-        a
-            color: link-active-title-color
-        *
-            color: inherit
     .panel-footer
         display: none
-        background: inherit
-        color: inherit
     .link
         padding: 0
         margin: 3px
         cursor: pointer
-        background: link-background
-        color: link-color
         .panel-heading
             h3
                 width: 95%
@@ -221,25 +393,15 @@ body
                 vertical-align: top
                 width: 5%
                 display: none !important
-                color: inherit
                 text-decoration: none
                 &:hover
                     opacity: .8
             &:hover
                 a
                     display: inline-block !important
-        &:hover
-            background: link-hover-background
-            color: link-hover-color
         &.link-old
             display: none
-            background: link-old-background
-            color: link-old-color
         &.link-active
-            background: link-active-background
-            color: link-active-color
-            .panel-heading
-                color: link-active-title-color
             .panel-body
                 display: block
             .panel-footer
@@ -277,13 +439,10 @@ body
     p
         font-weight: bolder
     a
-        color: link-color
         text-decoration: underline
 
 #tips
     height: 100%
-    color: panel-color
-    background: panel-background
 
 
 #content 
