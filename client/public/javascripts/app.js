@@ -689,7 +689,6 @@ module.exports = AppView = (function(superClass) {
 
   function AppView() {
     this.linkDetails = bind(this.linkDetails, this);
-    this.toCozyBookMarks = bind(this.toCozyBookMarks, this);
     this.updateSettings = bind(this.updateSettings, this);
     this.addFeed = bind(this.addFeed, this);
     return AppView.__super__.constructor.apply(this, arguments);
@@ -702,16 +701,8 @@ module.exports = AppView = (function(superClass) {
   };
 
   AppView.prototype.events = {
-    "click .menu-new": "displayNewForm",
-    "click .menu-help": "toggleHelp",
-    "click .menu-settings": "toggleSettings",
-    "click .menu-import": "import",
-    "change #feeds-file": "uploadFile",
-    "submit .add-one-feed": "addFeed",
-    "keyup #param-cozy-bookmarks-name": "updateSettings",
-    "change #param-show-new-links": "toggleOldLinks",
-    "click .link-send-to-cozy-bookmarks": "toCozyBookMarks",
-    "click .link": "linkDetails"
+    "click .link": "linkDetails",
+    "submit .add-one-feed": "addFeed"
   };
 
   AppView.prototype.startWaiter = function($elem) {
@@ -722,31 +713,6 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.stopWaiter = function($elem) {
     return $elem.find(".main.loader").remove();
-  };
-
-  AppView.prototype.toggleOldLinks = function(evt) {
-    $("ul.links").toggleClass("show-old");
-    this.updateSettings(evt);
-    return false;
-  };
-
-  AppView.prototype.applyParameters = function(parameters) {
-    var i, len, parameter, results;
-    results = [];
-    for (i = 0, len = parameters.length; i < len; i++) {
-      parameter = parameters[i];
-      if (parameter.paramId === "show-new-links") {
-        if (parameter.value === "false") {
-          this.toggleOldLinks();
-          break;
-        } else {
-          results.push(void 0);
-        }
-      } else {
-        results.push(void 0);
-      }
-    }
-    return results;
   };
 
   AppView.prototype.afterRender = function() {
@@ -764,7 +730,7 @@ module.exports = AppView = (function(superClass) {
     return this.paramsView.collection.fetch({
       success: (function(_this) {
         return function(view, parameters) {
-          _this.applyParameters(parameters);
+          _this.updateSettings();
           return _this.stopWaiter(_this.paramsView.$el);
         };
       })(this)
@@ -773,41 +739,6 @@ module.exports = AppView = (function(superClass) {
 
   AppView.prototype.initialize = function() {
     return this.router = CozyApp.Routers.AppRouter = new AppRouter();
-  };
-
-  AppView.prototype.hideToggled = function() {
-    $(".new-feed").slideUp();
-    $("div.help").slideUp();
-    $("form.settings").slideUp();
-    return $(".menu-buttons .active").removeClass('active');
-  };
-
-  AppView.prototype.displayNewForm = function() {
-    this.hideToggled();
-    if (!$(".new-feed").is(':visible')) {
-      $(".menu-new").addClass('active');
-      $(".new-feed").slideDown();
-      $(".new-feed-url").focus();
-    }
-    return false;
-  };
-
-  AppView.prototype.toggleHelp = function() {
-    this.hideToggled();
-    if (!$("div.help").is(':visible')) {
-      $(".menu-buttons .btn.help").addClass('active');
-      $("div.help").slideDown();
-    }
-    return false;
-  };
-
-  AppView.prototype.toggleSettings = function() {
-    this.hideToggled();
-    if (!$("form.settings").is(':visible')) {
-      $(".menu-buttons .btn.cog").addClass('active');
-      $("form.settings").slideDown();
-    }
-    return false;
   };
 
   AppView.prototype.cleanAddFeedForm = function() {
@@ -863,72 +794,21 @@ module.exports = AppView = (function(superClass) {
     return false;
   };
 
-  AppView.prototype.updateSettings = function(evt) {
-    var $elem, app, checked, i, len, name, paramId, parameter, ref;
-    if (!evt) {
-      return false;
-    }
+  AppView.prototype.updateSettings = function() {
+    var i, id, len, parameter, ref, results, value;
     ref = this.paramsView.collection.models;
+    results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       parameter = ref[i];
-      paramId = "param-" + parameter.attributes.paramId;
-      name = parameter.attributes.name;
-      $elem = $("#" + paramId);
-      if (paramId === "param-show-new-links" && paramId === evt.target.id) {
-        checked = $elem.prop("checked");
-        parameter.save({
-          "value": checked
-        }, {
-          success: function() {
-            return View.log(name + " saved");
-          },
-          error: function() {
-            return View.error(name + " not saved");
-          }
-        });
-        break;
-      } else if (paramId === evt.target.id) {
-        app = $elem.val();
-        if (this.settingsSaveTimer != null) {
-          clearTimeout(this.settingsSaveTimer);
-        }
-        this.settingsSaveTimer = setTimeout((function() {
-          return parameter.save({
-            "value": app
-          }, {
-            success: function() {
-              return View.log(name + " saved");
-            },
-            error: function() {
-              return View.error(name + " not saved");
-            }
-          });
-        }), 1000);
-        break;
+      value = parameter.get("value");
+      id = parameter.get("paramId");
+      if (value === "true") {
+        results.push($("body").addClass(id));
+      } else {
+        results.push($("body").removeClass(id));
       }
     }
-    return false;
-  };
-
-  AppView.prototype.toCozyBookMarks = function(evt) {
-    var ajaxOptions, url;
-    url = $(evt.target).parents(".link:first").find("> a").attr("href");
-    ajaxOptions = {
-      type: "POST",
-      url: "../../apps/" + $("#param-cozy-bookmarks-name").val() + "/bookmarks",
-      data: {
-        url: url,
-        tags: ["cozy-feeds"]
-      },
-      success: function() {
-        return View.log("link added to cozy-bookmarks");
-      },
-      error: function() {
-        return View.error("link wasn't added to cozy-bookmarks");
-      }
-    };
-    $.ajax(ajaxOptions);
-    return false;
+    return results;
   };
 
   AppView.prototype.linkDetails = function(evt) {
@@ -937,146 +817,6 @@ module.exports = AppView = (function(superClass) {
     if (!$(evt.target).is("a")) {
       return link.toggleClass("link-active");
     }
-  };
-
-  AppView.prototype.addFeedFromFile = function(feedObj) {
-    var feed;
-    feed = new Feed(feedObj);
-    return this.feedsView.collection.create(feed, {
-      success: (function(_this) {
-        return function(elem) {
-          var imported;
-          imported = $(".imported");
-          if (imported.text()) {
-            imported.text(parseInt(imported.text()) + 1);
-          } else {
-            imported.text(1);
-          }
-          return $("." + elem.cid).parents(".tag").find(".feed").show();
-        };
-      })(this),
-      error: (function(_this) {
-        return function() {
-          var notImported;
-          notImported = $(".import-failed");
-          if (notImported.text()) {
-            return notImported.text(parseInt(notImported.text()) + 1);
-          } else {
-            return notImported.text(1);
-          }
-        };
-      })(this)
-    });
-  };
-
-  AppView.prototype.addFeedFromHTMLFile = function(link) {
-    var $link, description, feedObj, next, title, url;
-    $link = $(link);
-    if ($link.attr("feedurl")) {
-      url = $link.attr("feedurl");
-      title = $link.text();
-      description = "";
-      next = $link.parents(":first").next();
-      if (next.is("dd")) {
-        description = next.text();
-      }
-      feedObj = {
-        url: url,
-        tags: [""],
-        description: description
-      };
-      return this.addFeedFromFile(feedObj);
-    }
-  };
-
-  AppView.prototype.addFeedsFromHTMLFile = function(loaded) {
-    var i, len, link, links, results;
-    links = loaded.find("dt a");
-    results = [];
-    for (i = 0, len = links.length; i < len; i++) {
-      link = links[i];
-      results.push(this.addFeedFromHTMLFile(link));
-    }
-    return results;
-  };
-
-  AppView.prototype.addFeedFromOPMLFile = function(link, tag) {
-    var $link, description, feedObj, title, url;
-    $link = $(link);
-    if ($link.attr("xmlUrl")) {
-      url = $link.attr("xmlUrl");
-      title = $link.attr("title");
-      description = $link.attr("text");
-      feedObj = {
-        url: url,
-        tags: [tag],
-        description: description
-      };
-      return this.addFeedFromFile(feedObj);
-    }
-  };
-
-  AppView.prototype.addFeedsFromOPMLFile = function(loaded) {
-    var $link, i, len, link, links, results, tag, taggedLink, taggedLinks;
-    links = loaded.find("> outline");
-    results = [];
-    for (i = 0, len = links.length; i < len; i++) {
-      link = links[i];
-      $link = $(link);
-      if ($link.attr("xmlUrl")) {
-        results.push(this.addFeedFromOPMLFile(link, ""));
-      } else {
-        tag = $link.attr("title");
-        taggedLinks = $link.find("outline");
-        results.push((function() {
-          var j, len1, results1;
-          results1 = [];
-          for (j = 0, len1 = taggedLinks.length; j < len1; j++) {
-            taggedLink = taggedLinks[j];
-            results1.push(this.addFeedFromOPMLFile(taggedLink, tag));
-          }
-          return results1;
-        }).call(this));
-      }
-    }
-    return results;
-  };
-
-  AppView.prototype.addFeedsFromFile = function(file) {
-    var loaded;
-    loaded = $(file);
-    if (loaded.is("opml")) {
-      return this.addFeedsFromOPMLFile(loaded);
-    } else {
-      return this.addFeedsFromHTMLFile(loaded);
-    }
-  };
-
-  AppView.prototype.isUnknownFormat = function(file) {
-    console.log(file.name, /.opml$/.test(file.name));
-    return file.type !== "text/html" && file.type !== "text/xml" && file.type !== "text/x-opml+xml" && !/.opml$/.test(file.name);
-  };
-
-  AppView.prototype.uploadFile = function(evt) {
-    var file, reader;
-    file = evt.target.files[0];
-    if (this.isUnknownFormat(file)) {
-      View.error("This file cannot be imported");
-      return;
-    }
-    reader = new FileReader();
-    reader.onload = (function(_this) {
-      return function(evt) {
-        return _this.addFeedsFromFile(evt.target.result);
-      };
-    })(this);
-    return reader.readAsText(file);
-  };
-
-  AppView.prototype["import"] = function(evt) {
-    return View.confirm("Import opml rss file or " + "html bookmarks file containing feeds exported by " + "firefox or chrome", function() {
-      return $("#feeds-file").click();
-    });
   };
 
   return AppView;
@@ -1449,14 +1189,14 @@ var ParamView, View,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
-View = require('../lib/view');
+View = require("../lib/view");
 
 module.exports = ParamView = (function(superClass) {
   extend(ParamView, superClass);
 
-  ParamView.prototype.className = 'param';
+  ParamView.prototype.className = "checkbox";
 
-  ParamView.prototype.tagName = 'div';
+  ParamView.prototype.tagName = "div";
 
   function ParamView(model) {
     this.model = model;
@@ -1465,8 +1205,25 @@ module.exports = ParamView = (function(superClass) {
 
   ParamView.prototype.template = function() {
     var template;
-    template = require('./templates/param');
+    template = require("./templates/param");
     return template(this.getRenderData());
+  };
+
+  ParamView.prototype.events = {
+    "change input": "update"
+  };
+
+  ParamView.prototype.update = function(evt) {
+    var checked;
+    checked = this.$el.find("input").prop("checked") || false;
+    this.model.save({
+      "value": checked
+    });
+    if (checked) {
+      return $("body").addClass(this.model.get("paramId"));
+    } else {
+      return $("body").removeClass(this.model.get("paramId"));
+    }
   };
 
   return ParamView;
@@ -1495,7 +1252,7 @@ module.exports = ParamsView = (function(superClass) {
     return ParamsView.__super__.constructor.apply(this, arguments);
   }
 
-  ParamsView.prototype.el = '.settings .values';
+  ParamsView.prototype.el = '#settings';
 
   ParamsView.prototype.view = ParamView;
 
@@ -1538,7 +1295,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3"></div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-links" role="presentation" class="active"> <a href="#panel-links" aria-controls="links" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-home"></span> Links</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>Add Feeds</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-time"></span>History</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-cog"></span>Settings</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-question-sign"></span>Help</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3"></div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-links" role="tabpanel" class="tab-pane fade in active"><div class="links-title"><h1>Links</h1><h3>new articles from your favorite feeds</h3></div><div class="links"></div></div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade"><h1>Comming soon ...</h1></div><div id="panel-settings" role="tabpanel" class="tab-pane fade"><h1>Settings</h1><form role="form" class="settings"><div class="form-group"><label for="add-feed-url">Bookmarks application name</label><input id="settings-bookrmarks-name" type="text" name="bookmarks-name" placeholder="quickmarks" class="form-control"/></div><div class="form-group"><label>Visibility</label><div class="radio"><label><input id="settings-show-only-new-links" type="radio" name="show-only-new-links" value="1"/>Show only new links</label></div><div class="radio"><label><input id="settings-show-also-old-links" type="radio" name="show-only-new-links" value="0"/>Show new links and old links</label></div></div></form></div><div id="panel-help" role="tabpanel" class="tab-pane fade"><h1>Help<h2>This is a tool to follow your rss/atom feeds without to much procrastination </h2><p> \nThe idea behind zero-feeds is that if you do not read a link when you discover it, most of the time, it means that you are not so much interested in it (it\'s an "opinionated" feeds reader).</p><p>So read it now or forget it. In usual feed readers, the links stay available as long as they are provided by the websites, so you will first read what matters, then what looks interesing, then this stuff that is maybe the thing to read, then what is left, oh it\'s time to go to lunch ! No. I do not like this way of procrastination, so do not expect zero-feeds to help you to do that. </p><h3>Will you miss the news of the year ? </h3><p>No, you will hear about it from others. So what are you afraid to miss ? A good link ? Yes probably, but do not worry, there will be another good link tomorow.</p><h3>Does it scale for my 6000 feeds ? </h3><p>Seriously ? Reduce your amount of link you follow, you have better to do today than reading all of them.</p><h3>How do I start ? </h3><p> \nPlease put your mouse over the icons that you see, a tooltip should help you.</p><h3>I\'m not sure, how to add a feed ? </h3><p> \nJust click on the top left "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the left panel.</p><h3>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h3><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h3>I just see the beginning of the url of my feed, I feel unsatisfied.</h3><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h3>What are these "tags" ?</h3><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h3>I don\'t want to reload all the feeds of a tag.</h3><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h3>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h3><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h3>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h3><p>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. </p><h3>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h3><p> \nYou are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><h3>It still doesn\'t work !</h3><p> \nPlease <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h3>I want to use only free softwares.</h3><p> <a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></h1></div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
+buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="col-xs-3"></div><div id="menu-tabs" class="col-xs-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-links" role="presentation" class="active"> <a href="#panel-links" aria-controls="links" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-home"></span> Links</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>Add Feeds</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-time"></span>History</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-cog"></span>Settings</a></li><li id="menu-tabs-help" role="presentation"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-question-sign"></span>Help</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-3"></div><div id="panel-main" class="col-xs-7"> <div id="panel-main-tabs" class="tab-content"><div id="panel-links" role="tabpanel" class="tab-pane fade in active"><div class="links-title"><h1>Links</h1><h3>new articles from your favorite feeds</h3></div><div class="links"></div></div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade"> <h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div id="panel-history" role="tabpanel" class="tab-pane fade"><h1>Comming soon ...</h1></div><div id="panel-settings" role="tabpanel" class="tab-pane fade"><h1>Settings</h1><form id="settings" role="form"></form></div><div id="panel-help" role="tabpanel" class="tab-pane fade"><h1>Help<h2>This is a tool to follow your rss/atom feeds without to much procrastination </h2><p> \nThe idea behind zero-feeds is that if you do not read a link when you discover it, most of the time, it means that you are not so much interested in it (it\'s an "opinionated" feeds reader).</p><p>So read it now or forget it. In usual feed readers, the links stay available as long as they are provided by the websites, so you will first read what matters, then what looks interesing, then this stuff that is maybe the thing to read, then what is left, oh it\'s time to go to lunch ! No. I do not like this way of procrastination, so do not expect zero-feeds to help you to do that. </p><h3>Will you miss the news of the year ? </h3><p>No, you will hear about it from others. So what are you afraid to miss ? A good link ? Yes probably, but do not worry, there will be another good link tomorow.</p><h3>Does it scale for my 6000 feeds ? </h3><p>Seriously ? Reduce your amount of link you follow, you have better to do today than reading all of them.</p><h3>How do I start ? </h3><p> \nPlease put your mouse over the icons that you see, a tooltip should help you.</p><h3>I\'m not sure, how to add a feed ? </h3><p> \nJust click on the top left "add a feed" button, fill the url and tags fields and click on the "add" button right next to the tags field (or hit the enter key in one of the field).\nThe tags and the feed url should appear in the left panel.</p><h3>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h3><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "add a tag" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h3>I just see the beginning of the url of my feed, I feel unsatisfied.</h3><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h3>What are these "tags" ?</h3><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h3>I don\'t want to reload all the feeds of a tag.</h3><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h3>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h3><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h3>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h3><p>No, click on the "settings" button on the top right and uncheck the "Display only new links" checkbox, they should appear. </p><h3>In this "settings" panel, there is a field called "Cozy bookmarks application name", what is it ?</h3><p> \nYou are curious, isn\'t it ? I like you. So, install <a href="https://github.com/Piour/cozy-bookmarks" target="_blank">the cozy bookmarks app</a> and put there the name you gave to it (usually "bookmarks"). Then you should see a "send to cozy bookmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the cozy-bookmarks app.</p><h3>It still doesn\'t work !</h3><p> \nPlease <a href="https://github.com/Piour/cozy-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h3>I want to use only free softwares.</h3><p> <a>Me too</a>. \n I\'m not sure what licence I can use using cozycloud but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. </p></h1></div></div></div><div id="panel-tips" class="col-xs-2">tips</div></div></div>');
 }
 return buf.join("");
 };
@@ -1616,7 +1373,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<h1>Settings</h1><form role="form" class="settings"><div class="form-group"><label for="add-feed-url">Bookmarks application name</label><input id="settings-bookrmarks-name" type="text" name="bookmarks-name" placeholder="quickmarks" class="form-control"/></div><div class="form-group"><label>Visibility</label><div class="radio"><label><input id="settings-show-only-new-links" type="radio" name="show-only-new-links" value="1"/>Show only new links</label></div><div class="radio"><label><input id="settings-show-also-old-links" type="radio" name="show-only-new-links" value="0"/>Show new links and old links</label></div></div></form>');
+buf.push('<h1>Settings</h1><form id="settings" role="form"></form>');
 }
 return buf.join("");
 };
@@ -1628,31 +1385,20 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
- if (model.paramId == "show-new-links")
-{
-buf.push('<div class="checkbox"><label');
-buf.push(attrs({ 'for':("param-" + (model.paramId) + "") }, {"for":true}));
-buf.push('>');
+buf.push('<label> ');
  if (model.value == "true")
 {
 buf.push('<input');
-buf.push(attrs({ 'id':("param-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + ""), "class": ('form-control') }, {"id":true,"name":true,"type":true,"checked":true,"value":true}));
+buf.push(attrs({ 'id':("settings-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + "") }, {"id":true,"name":true,"type":true,"checked":true,"value":true}));
 buf.push('/>');
 }
  else
 {
 buf.push('<input');
-buf.push(attrs({ 'id':("param-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'value':("" + (model.value) + ""), "class": ('form-control') }, {"id":true,"name":true,"type":true,"value":true}));
+buf.push(attrs({ 'id':("settings-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'value':("" + (model.value) + "") }, {"id":true,"name":true,"type":true,"value":true}));
 buf.push('/>');
 }
-buf.push('' + escape((interp = model.name) == null ? '' : interp) + '</label></div>');
-}
- else
-{
-buf.push('<div class="form-group"><input');
-buf.push(attrs({ 'id':("param-" + (model.paramId) + ""), 'placeholder':("" + (model.name) + ""), 'name':("" + (model.paramId) + ""), 'value':("" + (model.value) + ""), "class": ('form-control') }, {"id":true,"placeholder":true,"name":true,"value":true}));
-buf.push('/></div>');
-}
+buf.push('' + escape((interp = model.description) == null ? '' : interp) + '</label>');
 }
 return buf.join("");
 };

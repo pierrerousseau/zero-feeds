@@ -3,7 +3,7 @@ ParamView       = require './param_view'
 ParamCollection = require '../collections/param_collection'
 
 module.exports = class ParamsView extends ViewCollection
-    el: '.settings .values'
+    el: '#settings'
 
     view: ParamView
 

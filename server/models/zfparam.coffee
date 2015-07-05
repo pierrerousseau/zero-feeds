@@ -3,7 +3,7 @@ http      = require 'http'
 
 module.exports = Param = americano.getModel 'ZFParam',
     'paramId': type: String
-    'name': type: String
+    'description': type: String
     'value': type: String
 
 Param.removeOldParams = () ->

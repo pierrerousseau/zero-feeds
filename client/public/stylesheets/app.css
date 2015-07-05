@@ -259,13 +259,9 @@ body {
   padding-left: 1.5em;
   font-size: 1.25em;
 }
-#panel-settings .form-group {
-  margin-bottom: 2em;
-}
-#panel-settings input[type=text] {
-  height: 2em;
-  font-size: 1.5em;
-  width: 50%;
+#panel-settings .checkbox {
+  margin-top: 1em;
+  font-size: 1.25em;
 }
 #panel-help {
   font-size: 1.25em;
