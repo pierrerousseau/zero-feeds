@@ -1,4 +1,56 @@
-Param = require '../models/zfparam'
+Param = require "../models/zfparam"
+
+useQuickmarks =
+    "paramId": "use-quickmarks"
+    "description": "Use the quickmarks app to save links"
+    "value": false
+
+showOldLinks =
+    "paramId": "show-old-links"
+    "description": "Show new and old links"
+    "value": false
+
+useLightColors =
+    "paramId": "use-light-colors"
+    "description": "Use light colors for the interface"
+    "value": false
+
+availableParams = [
+    useQuickmarks,
+    showOldLinks,
+    useLightColors
+]
+
+cleanParams = (params) ->
+    newParams = []
+
+    for param in params
+        found = false
+        for availableParam in availableParams
+            if param.paramId == availableParam.paramId
+                found = true
+                break
+        if not found
+            param.destroy()
+        else
+            newParams.push param
+
+    newParams
+
+addMissingParams = (params) ->
+    for availableParam in availableParams
+        found = false
+        for param in params
+            if param.paramId == availableParam.paramId
+                found = true
+                break
+        if not found
+            newParam = new Param availableParam
+            Param.create newParam
+            params.push newParam
+
+    params
+
 
 module.exports.all = (req, res) ->
     Param.all (err, params) ->
@@ -7,34 +59,10 @@ module.exports.all = (req, res) ->
             errorMsg = "Server error occured while retrieving data."
             res.send error: true, msg: errorMsg
         else
-            paramsNames = ["cozy-bookmarks-name", "show-new-links"]
-            for param in params
-                if !(param.paramId in paramsNames)
-                    param.destroy()
-            if params.length < paramsNames.length
-                newParams = []
-                for paramName in paramsNames
-                    found = false
-                    for param in params
-                        if param.name == paramsNames
-                            found = true
-                            newParams.push(param)
-                    if !found
-                        if paramName is "cozy-bookmarks-name"
-                            newParam = new Param
-                                paramId: "cozy-bookmarks-name"
-                                name: "Cozy bookmarks application name"
-                                value: ""
-                        else
-                            newParam = new Param
-                                paramId: "show-new-links"
-                                name: "Display only new links"
-                                value: true
-                        Param.create newParam
-                        newParams.push(newParam)
-                res.send newParams
-            else
-                res.send params
+            params = cleanParams(params)
+            params = addMissingParams(params)
+            
+            res.send params
 
 module.exports.update = (req, res) ->
     Param.find req.params.id, (err, param) ->

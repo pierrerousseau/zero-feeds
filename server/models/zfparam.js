@@ -9,7 +9,7 @@ module.exports = Param = americano.getModel('ZFParam', {
   'paramId': {
     type: String
   },
-  'name': {
+  'description': {
     type: String
   },
   'value': {
