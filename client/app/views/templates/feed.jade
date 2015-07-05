@@ -1,9 +1,12 @@
 - var title = model.title ? model.title : model.url
 
-.feed-delete 
-    &times;
-.feed-spinner
-    img.loader(src="images/loader.gif", alt="...")
-.feed-count
+.feed-infos
+    .feed-delete 
+        &times;
+    .feed-spinner
+        img.loader(src="images/loader.gif", alt="...")
+    .feed-count
 .feed-title 
-    a(href="#{model.url}", data-tags="#{model.tags}") #{title}
+    a(href="#{model.url}", 
+      title="#{title}",
+      data-tags="#{model.tags}") #{title}

@@ -1281,8 +1281,8 @@ var buf = [];
 with (locals || {}) {
 var interp;
  var title = model.title ? model.title : model.url
-buf.push('<div class="feed-delete"> \n&times;</div><div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-count"></div><div class="feed-title"> <a');
-buf.push(attrs({ 'href':("" + (model.url) + ""), 'data-tags':("" + (model.tags) + "") }, {"href":true,"data-tags":true}));
+buf.push('<div class="feed-infos"><div class="feed-delete"> \n&times;</div><div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-count"></div></div><div class="feed-title"> <a');
+buf.push(attrs({ 'href':("" + (model.url) + ""), 'title':("" + (title) + ""), 'data-tags':("" + (model.tags) + "") }, {"href":true,"title":true,"data-tags":true}));
 buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></div>');
 }
 return buf.join("");

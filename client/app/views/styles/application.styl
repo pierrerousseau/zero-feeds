@@ -374,12 +374,25 @@ body
         font-size: 1.5em
         cursor: pointer
 
+        .feed-infos
+            display: inline-block
+            width: 20%
+            white-space: nowrap
+            vertical-align: text-bottom
+        .feed-title
+            vertical-align: text-bottom
+            display: inline-block
+            width: 75%
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
         .label
             padding: .05em .4em
 
-        > div
-            display: inline
-            margin: .2em
+        .feed-infos
+            > div
+                display: inline
+                margin: .2em
 
         .feed-spinner
         .feed-delete
