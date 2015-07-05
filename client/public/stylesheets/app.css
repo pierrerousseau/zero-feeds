@@ -324,6 +324,10 @@ body.show-old-links #panel-links .link.link-old {
 }
 #content .fa-twitter,
 #content [href^="https://twitter.com/intent/tweet?"] {
+  display: none !important;
+}
+.use-twitter #content .fa-twitter,
+.use-twitter #content [href^="https://twitter.com/intent/tweet?"] {
   display: initial !important;
 }
 
