@@ -5,6 +5,11 @@ useQuickmarks =
     "description": "Use the quickmarks app to save links"
     "value": false
 
+useTwitter =
+    "paramId": "use-twitter"
+    "description": "Use twitter to share links"
+    "value": false
+
 showOldLinks =
     "paramId": "show-old-links"
     "description": "Show new and old links"
@@ -17,6 +22,7 @@ useLightColors =
 
 availableParams = [
     useQuickmarks,
+    useTwitter,
     showOldLinks,
     useLightColors
 ]

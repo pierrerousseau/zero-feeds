@@ -84,6 +84,17 @@ body
         font-weight: bolder
         margin-bottom: .5em
 
+    .btn-invert
+        background: button-color
+        color: button-background
+        font-weight: bolder
+        font-size: 1.5em
+        text-shadow: none
+        span
+            margin-right: .25em
+        &:hover
+            background: button-background
+            color: button-color
     .btn-default
         background: button-background
         color: button-color
@@ -198,6 +209,21 @@ body
         cursor: pointer
         background: link-background
         color: link-color
+        .panel-heading
+            h3
+                width: 95%
+                display: inline-block
+            > a
+                vertical-align: top
+                width: 5%
+                display: none !important
+                color: inherit
+                text-decoration: none
+                &:hover
+                    opacity: .8
+            &:hover
+                a
+                    display: inline-block !important
         &:hover
             background: link-hover-background
             color: link-hover-color
@@ -214,8 +240,9 @@ body
             .panel-footer
                 border: none
                 display: block
-                .btn-default
+                .btn
                     font-size: 1em
+                    margin-right: 1em
 
 #panel-add-feeds
     padding-top: .5em
@@ -253,3 +280,8 @@ body
     color: panel-color
     background: panel-background
 
+
+#content 
+    .fa-twitter
+    [href^="https://twitter.com/intent/tweet?"]
+        display: initial !important
