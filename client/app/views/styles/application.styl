@@ -5,6 +5,7 @@ main-color = #fff
 panel-background = #41454d
 panel-color = #c6c6c6
 menu-color = #d4cfc7
+menu-border-color = #95b935
 menu-background = #616167
 del-color = #d66
 title-color = #c3beb8
@@ -28,6 +29,7 @@ light-main-color = #58493e
 light-panel-background = #ecebe9
 light-panel-color = #676766
 light-menu-color = #58493e
+light-menu-border-color = #f26522
 light-menu-background = #d9d6d2
 light-del-color = #d66
 light-title-color = #58493e
@@ -63,6 +65,7 @@ body
     li
         &.active
             a
+                border-top-color: menu-border-color
                 background: panel-background
                 color: main-color
 
@@ -165,6 +168,7 @@ body.use-light-colors
         li
             &.active
                 a
+                    border-top-color: light-menu-border-color
                     background: light-panel-background
                     color: light-main-color
 
@@ -265,7 +269,7 @@ body
 
 
 #menu
-    margin: 0
+    margin: 0 0 2em 0
 
     .nav-tabs
         border: none
@@ -289,6 +293,11 @@ body
             text-align: right
             a
                 display: inline
+        &.active
+            a
+                border-top-width: 5px 
+                border-top-style: solid
+                border-radius: 0
 
 #panels
     height: 100%
@@ -299,6 +308,7 @@ body
     h1
         font-size: 2em
         font-weight: bolder
+        margin-top: 0
         margin-bottom: .5em
 
     .btn
@@ -361,7 +371,7 @@ body
     .links-title
         h1
             display: inline-block
-            padding: 1em
+            padding-right: 1em
         h3
             font-style: italic
             display: inline-block
@@ -412,7 +422,6 @@ body
                     margin-right: 1em
 
 #panel-add-feeds
-    padding-top: .5em
     padding-left: 1.5em
     font-size: 1.25em
     .form-group
@@ -423,7 +432,6 @@ body
         width: 50%
 
 #panel-settings
-    padding-top: .5em
     padding-left: 1.5em
     font-size: 1.25em
     .checkbox

@@ -28,6 +28,7 @@ body {
   color: #fff;
 }
 #menu li.active a {
+  border-top-color: #95b935;
   background: #41454d;
   color: #fff;
 }
@@ -146,6 +147,7 @@ body.use-light-colors #menu .menu-button:hover {
   color: #58493e;
 }
 body.use-light-colors #menu li.active a {
+  border-top-color: #f26522;
   background: #ecebe9;
   color: #58493e;
 }
@@ -260,7 +262,7 @@ body.show-old-links #panel-links .link.link-old {
   height: 100%;
 }
 #menu {
-  margin: 0;
+  margin: 0 0 2em 0;
 }
 #menu .nav-tabs {
   border: none;
@@ -291,6 +293,12 @@ body.show-old-links #panel-links .link.link-old {
 #menu li#menu-tabs-help a {
   display: inline;
 }
+#menu li.active a {
+  border-top-width: 5px;
+  border-top-style: solid;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
 #panels {
   height: 100%;
 }
@@ -300,6 +308,7 @@ body.show-old-links #panel-links .link.link-old {
 #panel-main h1 {
   font-size: 2em;
   font-weight: bolder;
+  margin-top: 0;
   margin-bottom: 0.5em;
 }
 #panel-main .btn {
@@ -367,7 +376,7 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-links .links-title h1 {
   display: inline-block;
-  padding: 1em;
+  padding-right: 1em;
 }
 #panel-links .links-title h3 {
   font-style: italic;
@@ -432,7 +441,6 @@ body.show-old-links #panel-links .link.link-old {
   margin-right: 1em;
 }
 #panel-add-feeds {
-  padding-top: 0.5em;
   padding-left: 1.5em;
   font-size: 1.25em;
 }
@@ -445,7 +453,6 @@ body.show-old-links #panel-links .link.link-old {
   width: 50%;
 }
 #panel-settings {
-  padding-top: 0.5em;
   padding-left: 1.5em;
   font-size: 1.25em;
 }
