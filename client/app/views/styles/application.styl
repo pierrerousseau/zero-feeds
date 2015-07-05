@@ -31,6 +31,10 @@ body
     background: main-background
     height: 100%
 
+    &.show-old-links 
+        #panel-links .link.link-old
+            display: list-item
+
 #content
     height: 100%
 
@@ -228,6 +232,7 @@ body
             background: link-hover-background
             color: link-hover-color
         &.link-old
+            display: none
             background: link-old-background
             color: link-old-color
         &.link-active

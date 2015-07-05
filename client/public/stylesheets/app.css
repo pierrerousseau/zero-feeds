@@ -20,6 +20,9 @@ body {
   background: #41454d;
   height: 100%;
 }
+body.show-old-links #panel-links .link.link-old {
+  display: list-item;
+}
 #content {
   height: 100%;
 }
@@ -254,6 +257,7 @@ body {
   color: #fff;
 }
 #panel-links .link.link-old {
+  display: none;
   background: #61626c;
   color: #a4a2a8;
 }
