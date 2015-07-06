@@ -374,14 +374,14 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-feeds .feed .feed-infos {
   display: inline-block;
-  width: 20%;
+  min-width: 85px;
   white-space: nowrap;
   vertical-align: text-bottom;
 }
 #panel-feeds .feed .feed-title {
   vertical-align: text-bottom;
   display: inline-block;
-  width: 75%;
+  width: 65%;
   white-space: nowrap;
   overflow: hidden;
   -o-text-overflow: ellipsis;
