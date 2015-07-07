@@ -54,8 +54,9 @@ module.exports = class FeedView extends View
         else
             tagPlace.find(".tag-feeds").append elem
 
-    setCount: () ->
-        count = @model.count()
+    setCount: (count) ->
+        if not count?
+            count = @model.count()
         place = $("." + @model.cid).find(".feed-count")
         if count
             place.html count
@@ -81,13 +82,16 @@ module.exports = class FeedView extends View
                     if displayLinks is true
                         @renderXml()
                         @$el.addClass("feed-open")
-                    @setCount()
-                    title = @model.titleText()
-                    if title
-                        last  = @model.last
-                        @model.save { "title": title, "last": last, "content": "" }
-                        $allThat.find("a").html title
-                        View.log "" + title + " reloaded"
+                        @setCount(0)
+                    else
+                        @setCount()
+                    if not title
+                        title = @model.titleText()
+                        if title
+                            last  = @model.last
+                            @model.save { "title": title, "last": last, "content": "" }
+                            $allThat.find("a").html title
+                            View.log "" + title + " reloaded"
                     setTimeout _.bind(@setUpdate, @),
                          ((1 + Math.floor(Math.random()*14)) * 60000)
                 error: =>
@@ -148,7 +152,6 @@ module.exports = class FeedView extends View
         evt.preventDefault()
 
         $target = $(evt.currentTarget)
-        @setCount()
 
         @cleanLinks()
         if $target.hasClass("feed-open")

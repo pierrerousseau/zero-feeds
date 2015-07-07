@@ -904,9 +904,11 @@ module.exports = FeedView = (function(superClass) {
     }
   };
 
-  FeedView.prototype.setCount = function() {
-    var count, place;
-    count = this.model.count();
+  FeedView.prototype.setCount = function(count) {
+    var place;
+    if (count == null) {
+      count = this.model.count();
+    }
     place = $("." + this.model.cid).find(".feed-count");
     if (count) {
       place.html(count);
@@ -941,18 +943,22 @@ module.exports = FeedView = (function(superClass) {
             if (displayLinks === true) {
               _this.renderXml();
               _this.$el.addClass("feed-open");
+              _this.setCount(0);
+            } else {
+              _this.setCount();
             }
-            _this.setCount();
-            title = _this.model.titleText();
-            if (title) {
-              last = _this.model.last;
-              _this.model.save({
-                "title": title,
-                "last": last,
-                "content": ""
-              });
-              $allThat.find("a").html(title);
-              View.log("" + title + " reloaded");
+            if (!title) {
+              title = _this.model.titleText();
+              if (title) {
+                last = _this.model.last;
+                _this.model.save({
+                  "title": title,
+                  "last": last,
+                  "content": ""
+                });
+                $allThat.find("a").html(title);
+                View.log("" + title + " reloaded");
+              }
             }
             return setTimeout(_.bind(_this.setUpdate, _this), (1 + Math.floor(Math.random() * 14)) * 60000);
           };
@@ -1031,7 +1037,6 @@ module.exports = FeedView = (function(superClass) {
     this.startWaiter();
     evt.preventDefault();
     $target = $(evt.currentTarget);
-    this.setCount();
     this.cleanLinks();
     if ($target.hasClass("feed-open")) {
       this.cleanOpenedFeed();
