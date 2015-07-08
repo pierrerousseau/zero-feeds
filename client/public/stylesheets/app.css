@@ -537,6 +537,9 @@ body.show-old-links #panel-links .link.link-old {
   color: inherit;
   text-decoration: underline;
 }
+#panel-import-export form {
+  padding-bottom: 2em;
+}
 #content .fa-twitter,
 #content [href^="https://twitter.com/intent/tweet?"] {
   display: none !important;
