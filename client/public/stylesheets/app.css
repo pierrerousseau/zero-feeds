@@ -315,7 +315,7 @@ body.show-old-links #panel-links .link.link-old {
   text-align: right;
 }
 #menu li#menu-tabs-help a {
-  display: inline;
+  display: inline-block;
 }
 #menu li.active a {
   border-top-width: 5px;
