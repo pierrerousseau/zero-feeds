@@ -11,14 +11,6 @@
                       data-toggle="tab") 
                         span(class="glyphicon glyphicon-home")
                         | Links
-                li#menu-tabs-add-feeds(role="presentation") 
-                    a(class="menu-button",
-                      href="#panel-add-feeds", 
-                      aria-controls="add-feeds", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-plus")
-                        | Add Feeds
                 li#menu-tabs-history(role="presentation") 
                     a(class="menu-button",
                       href="#panel-history", 
@@ -27,7 +19,23 @@
                       data-toggle="tab") 
                         span(class="glyphicon glyphicon-time")
                         | History
-                li#menu-tabs-history(role="presentation") 
+                li#menu-tabs-add-feeds(role="presentation") 
+                    a(class="menu-button",
+                      href="#panel-add-feeds", 
+                      aria-controls="add-feeds", 
+                      role="tab", 
+                      data-toggle="tab") 
+                        span(class="glyphicon glyphicon-plus")
+                        | Add Feeds
+                li#menu-tabs-import-export(role="presentation") 
+                    a(class="menu-button",
+                      href="#panel-import-export", 
+                      aria-controls="import-export", 
+                      role="tab", 
+                      data-toggle="tab") 
+                        span(class="glyphicon glyphicon-transfer")
+                        | Import/Export
+                li#menu-tabs-settings(role="presentation") 
                     a(class="menu-button",
                       href="#panel-settings", 
                       aria-controls="settings", 
@@ -49,10 +57,12 @@
             #panel-main-tabs(class="tab-content")
                 #panel-links(class="tab-pane fade in active", role="tabpanel")
                     include ./panel-links.jade
-                #panel-add-feeds(class="tab-pane fade", role="tabpanel") 
-                    include ./panel-add-feeds.jade
                 #panel-history(class="tab-pane fade", role="tabpanel")
                     include ./panel-history.jade
+                #panel-add-feeds(class="tab-pane fade", role="tabpanel") 
+                    include ./panel-add-feeds.jade
+                #panel-import-export(class="tab-pane fade", role="tabpanel") 
+                    include ./panel-import-export.jade
                 #panel-settings(class="tab-pane fade", role="tabpanel")
                     include ./panel-settings.jade
                 #panel-help(class="tab-pane fade", role="tabpanel")
