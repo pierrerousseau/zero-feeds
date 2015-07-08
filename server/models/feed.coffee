@@ -28,7 +28,7 @@ base_decode = (buffer, encoding, opt) ->
         utf8 += opt
     converter = new iconv.Iconv(encoding, utf8)
     try
-        buffer    = converter.convert(buffer)
+        buffer  = converter.convert(buffer)
         content = buffer.toString()
     catch error
         content = ""
@@ -91,6 +91,7 @@ getFeed = (feed, uri, callback) ->
         "hostname": parsed.hostname
         "path": parsed.path
         "headers": headers
+        "rejectUnauthorized": false
 
     protocol.get(get, (res) ->
         data   = ''

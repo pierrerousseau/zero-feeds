@@ -141,7 +141,8 @@ getFeed = function(feed, uri, callback) {
   get = {
     "hostname": parsed.hostname,
     "path": parsed.path,
-    "headers": headers
+    "headers": headers,
+    "rejectUnauthorized": false
   };
   return protocol.get(get, function(res) {
     var chunks, data, length;
