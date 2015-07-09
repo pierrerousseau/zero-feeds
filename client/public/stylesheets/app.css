@@ -308,7 +308,9 @@ body.show-old-links #panel-links .link.link-old {
   border: none;
 }
 #menu li a span {
-  margin-right: 0.25em;
+  margin-right: 0.4em;
+  font-size: 1.2em;
+  vertical-align: sub;
 }
 #menu li#menu-tabs-help {
   width: 100%;
