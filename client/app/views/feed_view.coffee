@@ -76,7 +76,8 @@ module.exports = class FeedView extends View
 
         if @$el.is ":visible"
             @startWaiter()
-            @model.save { "title": title, "content": "" },
+            last  = @model.last
+            @model.save { "title": title, "last": last, "content": "" },
                 success: =>
                     @stopWaiter()
                     if displayLinks is true
@@ -88,8 +89,7 @@ module.exports = class FeedView extends View
                     if not title
                         title = @model.titleText()
                         if title
-                            last  = @model.last
-                            @model.save { "title": title, "last": last, "content": "" }
+                            @model.save { "title": title }
                             $allThat.find("a").html title
                             View.log "" + title + " reloaded"
                     setTimeout _.bind(@setUpdate, @),

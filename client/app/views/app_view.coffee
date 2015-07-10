@@ -57,10 +57,6 @@ module.exports = class AppView extends View
                 for tag in tags
                     tag = $(tag)
                     $(tag).find(".tag-title").click()
-                tags = elems.parents(".tag-open")
-                for tag in tags
-                    tag = $(tag)
-                    $(tag).find("." + elem.cid + " .feed-count").click()
                 @cleanAddFeedForm()
             error: =>
                 View.error "Server error occured, feed was not added"
