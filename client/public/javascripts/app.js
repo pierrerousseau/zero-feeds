@@ -756,19 +756,13 @@ module.exports = AppView = (function(superClass) {
     return this.feedsView.collection.create(feed, {
       success: (function(_this) {
         return function(elem) {
-          var elems, i, j, len, len1, tag;
+          var elems, i, len, tag;
           elems = $("." + elem.cid);
           tags = elems.parents(".tag-close");
           for (i = 0, len = tags.length; i < len; i++) {
             tag = tags[i];
             tag = $(tag);
             $(tag).find(".tag-title").click();
-          }
-          tags = elems.parents(".tag-open");
-          for (j = 0, len1 = tags.length; j < len1; j++) {
-            tag = tags[j];
-            tag = $(tag);
-            $(tag).find("." + elem.cid + " .feed-count").click();
           }
           return _this.cleanAddFeedForm();
         };
@@ -1061,7 +1055,7 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.setUpdate = function(displayLinks) {
-    var $allThat, error, title;
+    var $allThat, error, last, title;
     $allThat = $("." + this.model.cid);
     try {
       title = this.model.titleText();
@@ -1073,13 +1067,14 @@ module.exports = FeedView = (function(superClass) {
     }
     if (this.$el.is(":visible")) {
       this.startWaiter();
+      last = this.model.last;
       this.model.save({
         "title": title,
+        "last": last,
         "content": ""
       }, {
         success: (function(_this) {
           return function() {
-            var last;
             _this.stopWaiter();
             if (displayLinks === true) {
               _this.renderXml();
@@ -1091,11 +1086,8 @@ module.exports = FeedView = (function(superClass) {
             if (!title) {
               title = _this.model.titleText();
               if (title) {
-                last = _this.model.last;
                 _this.model.save({
-                  "title": title,
-                  "last": last,
-                  "content": ""
+                  "title": title
                 });
                 $allThat.find("a").html(title);
                 View.log("" + title + " reloaded");
