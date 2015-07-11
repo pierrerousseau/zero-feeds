@@ -53,6 +53,11 @@ module.exports = class AppView extends View
         @feedsView.collection.create feed,
             success: (elem) =>
                 elems = $("." + elem.cid)
+                console.log(elems)
+                tags = elems.parents(".tag-open")
+                for tag in tags
+                    tag = $(tag)
+                    $(tag).find(".tag-refresh").click()
                 tags = elems.parents(".tag-close")
                 for tag in tags
                     tag = $(tag)
@@ -86,7 +91,6 @@ module.exports = class AppView extends View
         link   = $(evt.currentTarget)
         if not $(evt.target).is("a")
             link.toggleClass "link-active"
-
 
     addFeedFromFile: (feedObj) ->
         feed = new Feed feedObj

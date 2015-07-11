@@ -76,20 +76,23 @@ module.exports = class FeedView extends View
 
         if @$el.is ":visible"
             @startWaiter()
-            last  = @model.last
-            @model.save { "title": title, "last": last, "content": "" },
+            @model.save { "title": title, "content": "" },
                 success: =>
                     @stopWaiter()
                     if displayLinks is true
                         @renderXml()
                         @$el.addClass("feed-open")
                         @setCount(0)
+                        last  = @model.last
+                        title = @model.titleText()
+                        console.log "last", last
+                        @model.save { "title": title, "last": last, "content": "" }
                     else
                         @setCount()
                     if not title
                         title = @model.titleText()
                         if title
-                            @model.save { "title": title }
+                            @model.save { "title": title, "content": "" }
                             $allThat.find("a").html title
                             View.log "" + title + " reloaded"
                     setTimeout _.bind(@setUpdate, @),

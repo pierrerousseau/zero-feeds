@@ -756,11 +756,18 @@ module.exports = AppView = (function(superClass) {
     return this.feedsView.collection.create(feed, {
       success: (function(_this) {
         return function(elem) {
-          var elems, i, len, tag;
+          var elems, i, j, len, len1, tag;
           elems = $("." + elem.cid);
-          tags = elems.parents(".tag-close");
+          console.log(elems);
+          tags = elems.parents(".tag-open");
           for (i = 0, len = tags.length; i < len; i++) {
             tag = tags[i];
+            tag = $(tag);
+            $(tag).find(".tag-refresh").click();
+          }
+          tags = elems.parents(".tag-close");
+          for (j = 0, len1 = tags.length; j < len1; j++) {
+            tag = tags[j];
             tag = $(tag);
             $(tag).find(".tag-title").click();
           }
@@ -1055,7 +1062,7 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.setUpdate = function(displayLinks) {
-    var $allThat, error, last, title;
+    var $allThat, error, title;
     $allThat = $("." + this.model.cid);
     try {
       title = this.model.titleText();
@@ -1067,19 +1074,26 @@ module.exports = FeedView = (function(superClass) {
     }
     if (this.$el.is(":visible")) {
       this.startWaiter();
-      last = this.model.last;
       this.model.save({
         "title": title,
-        "last": last,
         "content": ""
       }, {
         success: (function(_this) {
           return function() {
+            var last;
             _this.stopWaiter();
             if (displayLinks === true) {
               _this.renderXml();
               _this.$el.addClass("feed-open");
               _this.setCount(0);
+              last = _this.model.last;
+              title = _this.model.titleText();
+              console.log("last", last);
+              _this.model.save({
+                "title": title,
+                "last": last,
+                "content": ""
+              });
             } else {
               _this.setCount();
             }
@@ -1087,7 +1101,8 @@ module.exports = FeedView = (function(superClass) {
               title = _this.model.titleText();
               if (title) {
                 _this.model.save({
-                  "title": title
+                  "title": title,
+                  "content": ""
                 });
                 $allThat.find("a").html(title);
                 View.log("" + title + " reloaded");
@@ -1298,12 +1313,19 @@ module.exports = FeedsView = (function(superClass) {
     return false;
   };
 
+  FeedsView.prototype.cleanLinks = function() {
+    var existingLinks;
+    existingLinks = $(".link");
+    return existingLinks.remove();
+  };
+
   FeedsView.prototype.onTagClicked = function(evt) {
     var $target;
     $target = $(evt.currentTarget).parent(".tag:first");
     if ($target.hasClass("tag-open")) {
       $target.removeClass("tag-open");
       $target.addClass("tag-close");
+      this.cleanLinks();
     } else {
       $target.removeClass("tag-close");
       $target.addClass("tag-open");
