@@ -110,6 +110,9 @@ body {
 #panel-links .link .panel-heading > a {
   color: inherit;
 }
+#panel-links .link .link-title a:visited {
+  color: #95b935;
+}
 #panel-links .link:hover {
   background: #89878b;
   color: #fff;
@@ -239,6 +242,9 @@ body.use-light-colors #panel-links .link {
 }
 body.use-light-colors #panel-links .link .panel-heading > a {
   color: inherit;
+}
+body.use-light-colors #panel-links .link .link-title a:visited {
+  color: #f26522;
 }
 body.use-light-colors #panel-links .link:hover {
   background: #d9d6d2;
