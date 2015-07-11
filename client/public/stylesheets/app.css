@@ -142,7 +142,7 @@ body {
 #tips {
   color: #c6c6c6;
 }
-#tip-of-the-day {
+#tip-of-the-day p {
   background: #6d6d72;
   color: #cec9c2;
 }
@@ -540,22 +540,34 @@ body.show-old-links #panel-links .link.link-old {
 #tip-of-the-day,
 #tip-questions,
 #tip-issues {
-  padding: 1em;
-  margin: 1em;
+  margin: 0 1em 2em 1em;
   font-size: 1.2em;
+}
+#tip-of-the-day p,
+#tip-questions p,
+#tip-issues p {
+  padding: 1em;
 }
 #tip-of-the-day .tip-title,
 #tip-questions .tip-title,
 #tip-issues .tip-title {
   font-weight: bolder;
   font-size: 1.2em;
-  margin-bottom: 0.9em;
+  padding: 1em 1em 0 1em;
+}
+#tip-of-the-day .tip-title .poulpe,
+#tip-questions .tip-title .poulpe,
+#tip-issues .tip-title .poulpe {
+  height: 3em;
 }
 #tip-of-the-day a,
 #tip-questions a,
 #tip-issues a {
   color: inherit;
   text-decoration: underline;
+}
+#tip-of-the-day .tip-title {
+  padding: 0.5em 0;
 }
 #panel-import-export form {
   padding-bottom: 2em;
