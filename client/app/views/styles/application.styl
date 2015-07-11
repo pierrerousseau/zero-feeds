@@ -175,8 +175,9 @@ body
     color: panel-color
 
 #tip-of-the-day
-    background: tip-background
-    color: tip-color
+    p
+        background: tip-background
+        color: tip-color
 
 #tip-questions
     background: tip-question-background
@@ -522,18 +523,26 @@ body
 #tip-of-the-day
 #tip-questions
 #tip-issues
-    padding: 1em
-    margin: 1em
+    margin: 0 1em 2em 1em
     font-size: 1.2em
 
+    p
+        padding: 1em
+
     .tip-title
+        .poulpe
+            height: 3em
         font-weight: bolder
         font-size: 1.2em
-        margin-bottom: .9em
+        padding: 1em 1em 0 1em
 
     a
         color: inherit
         text-decoration: underline
+
+#tip-of-the-day
+    .tip-title
+        padding: .5em 0
 
 #panel-import-export
     form
