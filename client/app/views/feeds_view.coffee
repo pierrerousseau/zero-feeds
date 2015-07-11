@@ -32,11 +32,16 @@ module.exports = class FeedsView extends ViewCollection
 
         false
 
+    cleanLinks: () ->
+        existingLinks = $(".link")
+        existingLinks.remove()
+
     onTagClicked: (evt) ->
         $target = $(evt.currentTarget).parent ".tag:first"
         if $target.hasClass "tag-open"
             $target.removeClass "tag-open"
             $target.addClass "tag-close"
+            @cleanLinks()
         else
             $target.removeClass "tag-close"
             $target.addClass "tag-open"
