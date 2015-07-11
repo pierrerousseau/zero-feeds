@@ -28,6 +28,8 @@ tip-color = #cec9c2
 tip-question-background = #5a5a61
 tip-question-color = #d4cfc7
 link-visited-color = #95b935
+input-background = #6d6d72 
+input-color = #cec9c2 
 
 light-main-background = #ecebe9
 light-main-color = #58493e
@@ -62,6 +64,7 @@ light-link-visited-color = #f26522
 body
     color: main-color
     background: main-background
+    font-family: "Open Sans", sans-serif
 
 #menu
     color: menu-color
@@ -156,6 +159,14 @@ body
             color: link-active-color
             .panel-heading
                 color: link-active-title-color
+
+#panel-add-feeds
+    input
+        background: input-background
+        border: input-background
+        color: input-color
+        box-shadow: none
+
 #panel-help
     a
         color: link-color

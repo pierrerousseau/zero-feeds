@@ -15,6 +15,7 @@
 body {
   color: #fff;
   background: #41454d;
+  font-family: "Open Sans", sans-serif;
 }
 #menu {
   color: #d4cfc7;
@@ -127,6 +128,13 @@ body {
 }
 #panel-links .link.link-active .panel-heading {
   color: #a6d130;
+}
+#panel-add-feeds input {
+  background: #6d6d72;
+  border: 1px solid #6d6d72;
+  color: #cec9c2;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 #panel-help a {
   color: #d4cfc7;
