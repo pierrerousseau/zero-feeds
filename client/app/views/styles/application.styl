@@ -378,7 +378,6 @@ body
 
         .feed-infos
             display: inline-block
-            min-width: 85px
             white-space: nowrap
             vertical-align: text-bottom
         .feed-title
@@ -396,7 +395,8 @@ body
                 display: inline
                 margin: .2em
 
-        .feed-spinner
+            .feed-spinner
+                display: none
         .feed-delete
             visibility: hidden
         &:hover
@@ -404,7 +404,9 @@ body
                 visibility: visible
         &.feed-loading
             .feed-spinner
-                visibility: visible
+                display: inline
+            .feed-count
+                display: none
         &.feed-open
             font-weight: bolder
         a

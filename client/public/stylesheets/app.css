@@ -376,7 +376,6 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-feeds .feed .feed-infos {
   display: inline-block;
-  min-width: 85px;
   white-space: nowrap;
   vertical-align: text-bottom;
 }
@@ -396,7 +395,9 @@ body.show-old-links #panel-links .link.link-old {
   display: inline;
   margin: 0.2em;
 }
-#panel-feeds .feed .feed-spinner,
+#panel-feeds .feed .feed-infos .feed-spinner {
+  display: none;
+}
 #panel-feeds .feed .feed-delete {
   visibility: hidden;
 }
@@ -404,7 +405,10 @@ body.show-old-links #panel-links .link.link-old {
   visibility: visible;
 }
 #panel-feeds .feed.feed-loading .feed-spinner {
-  visibility: visible;
+  display: inline;
+}
+#panel-feeds .feed.feed-loading .feed-count {
+  display: none;
 }
 #panel-feeds .feed.feed-open {
   font-weight: bolder;
