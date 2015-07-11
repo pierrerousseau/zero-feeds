@@ -27,6 +27,7 @@ tip-background = #6d6d72
 tip-color = #cec9c2
 tip-question-background = #5a5a61
 tip-question-color = #d4cfc7
+link-visited-color = #95b935
 
 light-main-background = #ecebe9
 light-main-color = #58493e
@@ -55,6 +56,7 @@ light-tip-background = #f6f5f3
 light-tip-color = #888786
 light-tip-question-background = #e6e4e3
 light-tip-question-color = #323232
+light-link-visited-color = #f26522
 
 
 body
@@ -140,6 +142,9 @@ body
         .panel-heading
             > a
                 color: inherit
+        .link-title
+            a:visited
+                color: link-visited-color
         &:hover
             background: link-hover-background
             color: link-hover-color
@@ -253,6 +258,9 @@ body.use-light-colors
             .panel-heading
                 > a
                     color: inherit
+            .link-title
+                a:visited
+                    color: light-link-visited-color
             &:hover
                 background: light-link-hover-background
                 color: light-link-hover-color
