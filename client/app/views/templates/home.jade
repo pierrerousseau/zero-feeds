@@ -3,7 +3,9 @@
         #menu-refresh-all(class="col-xs-3")
         #menu-tabs(class="col-xs-9")
             ul#menu-tabs-nav(class="nav nav-tabs", role="tablist")
-                li#menu-tabs-links(class="active", role="presentation") 
+                li#menu-tabs-welcome(role="presentation") 
+                    a(href="#panel-welcome")
+                li#menu-tabs-links(role="presentation") 
                     a(class="menu-button",
                       href="#panel-links", 
                       aria-controls="links", 
@@ -55,7 +57,9 @@
         #panel-feeds(class="col-xs-3")
         #panel-main(class="col-xs-7") 
             #panel-main-tabs(class="tab-content")
-                #panel-links(class="tab-pane fade in active", role="tabpanel")
+                #panel-welcome(class="tab-pane fade", role="tabpanel")
+                    include ./panel-welcome.jade
+                #panel-links(class="tab-pane fade", role="tabpanel")
                     include ./panel-links.jade
                 #panel-history(class="tab-pane fade", role="tabpanel")
                     include ./panel-history.jade

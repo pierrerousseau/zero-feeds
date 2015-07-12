@@ -12,6 +12,8 @@ module.exports = class AppView extends View
 
     events:
         "click .link": "linkDetails"
+        "click .welcome-add-feed": "showAddAFeed"
+        "click .welcome-add-feeds": "showImportExport"
         "submit .add-one-feed": "addFeed"
         "change #import-file": "uploadFile"
         "submit .import": "import"
@@ -26,12 +28,26 @@ module.exports = class AppView extends View
     stopWaiter: ($elem) ->
         $elem.find(".main.loader").remove()
 
+    showWelcome: () ->
+        $("#menu-tabs-welcome a").tab("show")
+
+    showAddAFeed: () ->
+        console.log("ok")
+        $("#menu-tabs-add-feeds a").tab("show")
+
+    showImportExport: () ->
+        console.log("ok 2")
+        $("#menu-tabs-import-export a").tab("show")
+
+
     afterRender: ->
         @feedsView = new FeedsView()
         @startWaiter(@feedsView.$el)
         @feedsView.collection.fetch
-            success: =>
+            success: (view, feeds) =>
                 @stopWaiter(@feedsView.$el)
+                if not feeds?.length
+                    @showWelcome()
 
         @paramsView = new ParamsView()
         @startWaiter(@paramsView.$el)

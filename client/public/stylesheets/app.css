@@ -82,6 +82,10 @@ body {
 #panel-feeds .feed.feed-to-delete {
   color: #d66;
 }
+#panel-welcome .welcome-message {
+  background: #5a5a61;
+  color: #d4cfc7;
+}
 #panel-links .panel {
   background: inherit;
   color: inherit;
@@ -287,8 +291,15 @@ body.use-light-colors #tip-issues {
   background: #e6e4e3;
   color: #323232;
 }
+body.use-light-colors #panel-welcome .welcome-message {
+  background: #e6e4e3;
+  color: #323232;
+}
 html {
   height: 100%;
+}
+.row {
+  margin: 0;
 }
 body {
   height: 100%;
@@ -317,6 +328,9 @@ body.show-old-links #panel-links .link.link-old {
   width: auto;
   white-space: nowrap;
   float: none;
+}
+#menu li#menu-tabs-welcome {
+  display: none;
 }
 #menu li a {
   border: none;
@@ -431,6 +445,33 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-feeds .feed .feed-delete {
   font-weight: bolder;
+}
+#panel-welcome .welcome-title {
+  text-align: center;
+  font-size: 4em;
+}
+#panel-welcome .welcome-title p {
+  display: inline;
+  font-size: 0.8em;
+}
+#panel-welcome .welcome-message {
+  font-size: 2em;
+  padding: 1em 1.5em;
+  margin: 0 2em;
+}
+#panel-welcome .welcome-message .welcome-start {
+  font-size: 1.5em;
+}
+#panel-welcome .poulpe {
+  height: 2em;
+  margin: 0 1em 0 0;
+}
+#panel-welcome .btn {
+  font-size: 0.8em;
+  margin: 2em 1em;
+}
+#panel-welcome .welcome-actions {
+  text-align: center;
 }
 #panel-links .links-title h1 {
   display: inline-block;
