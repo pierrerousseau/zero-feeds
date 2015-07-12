@@ -30,6 +30,8 @@ tip-question-color = #d4cfc7
 link-visited-color = #95b935
 input-background = #6d6d72 
 input-color = #cec9c2 
+welcome-background = #5a5a61
+welcome-color = #d4cfc7
 
 light-main-background = #ecebe9
 light-main-color = #58493e
@@ -59,6 +61,8 @@ light-tip-color = #888786
 light-tip-question-background = #e6e4e3
 light-tip-question-color = #323232
 light-link-visited-color = #f26522
+light-welcome-background = #e6e4e3
+light-welcome-color = #323232
 
 
 body
@@ -121,6 +125,11 @@ body
             color: del-color
         &.feed-to-delete
             color: del-color
+
+#panel-welcome
+    .welcome-message
+        background: welcome-background
+        color: welcome-color
 
 #panel-links
     .panel
@@ -305,9 +314,17 @@ body.use-light-colors
         background: light-tip-question-background
         color: light-tip-question-color
 
+    #panel-welcome
+        .welcome-message
+            background: light-welcome-background
+            color: light-welcome-color
+
  
 html
     height: 100%
+
+.row
+    margin: 0
 
 body
     height: 100%
@@ -318,7 +335,6 @@ body
 
 #content
     height: 100%
-
 
 #menu
     margin: 0 0 2em 0
@@ -332,6 +348,9 @@ body
         text-align: center
         cursor: pointer
     li
+        &#menu-tabs-welcome
+            display: none
+
         display: table-cell
         width: auto
         white-space: nowrap
@@ -433,6 +452,28 @@ body
             text-decoration: none
         .feed-delete
             font-weight: bolder
+
+#panel-welcome
+    .welcome-title
+        text-align: center
+        font-size: 4em
+        p
+            display: inline
+            font-size: .8em
+    .welcome-message
+        font-size: 2em
+        padding: 1em 1.5em
+        margin: 0 2em
+        .welcome-start
+            font-size: 1.5em
+    .poulpe
+        height: 2em
+        margin: 0 1em 0 0
+    .btn
+        font-size: .8em
+        margin: 2em 1em
+    .welcome-actions
+        text-align: center
 
 
 #panel-links
