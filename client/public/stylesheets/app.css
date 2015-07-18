@@ -293,6 +293,13 @@ body.use-light-colors #panel-links .link.link-active {
 body.use-light-colors #panel-links .link.link-active .panel-heading {
   color: #f26522;
 }
+body.use-light-colors #panel-add-feeds input {
+  background: #f6f5f3;
+  border: 1px solid #f6f5f3;
+  color: #888786;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 body.use-light-colors #panel-help a {
   color: #7b7b7b;
 }
