@@ -31,6 +31,9 @@ module.exports = class AppView extends View
     showWelcome: () ->
         $("#menu-tabs-welcome a").tab("show")
 
+    showLinks: () ->
+        $("#menu-tabs-links a").tab("show")
+
     showAddAFeed: () ->
         console.log("ok")
         $("#menu-tabs-add-feeds a").tab("show")
@@ -48,6 +51,8 @@ module.exports = class AppView extends View
                 @stopWaiter(@feedsView.$el)
                 if not feeds?.length
                     @showWelcome()
+                else
+                    @showLinks()
 
         @paramsView = new ParamsView()
         @startWaiter(@paramsView.$el)

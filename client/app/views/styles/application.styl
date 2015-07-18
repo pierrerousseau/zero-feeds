@@ -194,16 +194,16 @@ body
 #tips
     color: panel-color
 
-#tip-of-the-day
+.tip-of-the-day
     p
         background: tip-background
         color: tip-color
 
-#tip-questions
+.tip-questions
     background: tip-question-background
     color: tip-question-color
 
-#tip-issues
+.tip-issues
     background: tip-question-background
     color: tip-question-color
 
@@ -324,16 +324,16 @@ body.use-light-colors
     #tips
         color: light-panel-color
 
-    #tip-of-the-day
+    .tip-of-the-day
         p
             background: light-tip-background
             color: light-tip-color
 
-    #tip-questions
+    .tip-questions
         background: light-tip-question-background
         color: light-tip-question-color
 
-    #tip-issues
+    .tip-issues
         background: light-tip-question-background
         color: light-tip-question-color
 
@@ -499,6 +499,10 @@ body
 
 
 #panel-links
+    .full
+        width: 100%
+    .hidden
+        width: 0%
     .links-title
         h1
             display: inline-block
@@ -574,7 +578,9 @@ body
     h5
         font-weight: bolder
     h3
-        font-style: italic
+        padding-top: 1em
+        padding-bottom: .5em
+        font-size: 1.5em
     p
         font-weight: bolder
     a
@@ -583,9 +589,9 @@ body
 #tips
     height: 100%
 
-#tip-of-the-day
-#tip-questions
-#tip-issues
+.tip-of-the-day
+.tip-questions
+.tip-issues
     margin: 0 1em 2em 1em
     font-size: 1.2em
 
@@ -595,6 +601,7 @@ body
     .tip-title
         .poulpe
             height: 3em
+            margin-right: .5em
         font-weight: bolder
         font-size: 1.2em
         padding: 1em 1em 0 1em
@@ -603,7 +610,7 @@ body
         color: inherit
         text-decoration: underline
 
-#tip-of-the-day
+.tip-of-the-day
     .tip-title
         padding: .5em 0
 
