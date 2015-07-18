@@ -1344,12 +1344,15 @@ module.exports = FeedsView = (function(superClass) {
     if ($target.hasClass("tag-open")) {
       $target.removeClass("tag-open");
       $target.addClass("tag-close");
-      this.cleanLinks();
+      if ($target.find(".feed-open").length) {
+        this.cleanLinks();
+        $target.find(".feed-open").removeClass("feed-open");
+      }
     } else {
       $target.removeClass("tag-close");
       $target.addClass("tag-open");
+      this.reloadCounts($target);
     }
-    this.reloadCounts($target);
     return false;
   };
 
