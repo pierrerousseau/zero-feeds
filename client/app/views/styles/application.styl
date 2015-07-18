@@ -79,12 +79,17 @@ body
         &:hover
             background: panel-background
             color: main-color
+            border-top-color: panel-background
     li
+        a
+            border-top-color: menu-background
         &.active
             a
                 border-top-color: menu-border-color
                 background: panel-background
                 color: main-color
+                &:hover
+                    border-top-color: menu-border-color
 
 #panel-main
     color: panel-color
@@ -104,6 +109,7 @@ body
             color: button-background
 
 #panel-feeds
+    padding-bottom: 2em
     .tag
         &.tag-open
             color: title-highlight
@@ -179,6 +185,9 @@ body
 #panel-help
     a
         color: link-color
+
+.panel-tips
+    font-size: 14px
 
 #tips
     color: panel-color
@@ -348,29 +357,27 @@ body
         text-align: center
         cursor: pointer
     li
+        width: auto
+        margin-right: -1px
+        margin-left: -1px
+        padding-right: 0
+        padding-left: 0
         &#menu-tabs-welcome
             display: none
 
-        display: table-cell
-        width: auto
         white-space: nowrap
-        float: none
         a
-            border: none
+            border-width: 0
+            border-radius: 0
+            border-top-width: 5px 
             span 
                 margin-right: .4em
                 font-size: 1.2em
                 vertical-align: sub
         &#menu-tabs-help
-            width: 100%
             text-align: right
             a
                 display: inline-block
-        &.active
-            a
-                border-top-width: 5px 
-                border-top-style: solid
-                border-radius: 0
 
 #panels
     height: 100%
@@ -388,6 +395,7 @@ body
         font-weight: bolder
         font-size: 1.5em
         text-shadow: none
+        white-space: normal
         span
             margin-right: .25em
 
@@ -538,7 +546,7 @@ body
     input
         height: 2em
         font-size: 1.5em
-        width: 50%
+        width: 80%
 
 #panel-settings
     padding-left: 1.5em

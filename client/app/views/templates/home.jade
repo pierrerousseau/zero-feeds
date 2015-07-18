@@ -1,9 +1,9 @@
 #content
     #menu(class="row")
-        #menu-refresh-all(class="col-xs-3")
-        #menu-tabs(class="col-xs-9")
+        #menu-refresh-all(class="hidden-xs col-lg-3")
+        #menu-tabs(class="col-xs-12 col-lg-9")
             ul#menu-tabs-nav(class="nav nav-tabs", role="tablist")
-                li#menu-tabs-welcome(role="presentation") 
+                li#menu-tabs-welcome(class="hidden-xs", role="presentation") 
                     a(href="#panel-welcome")
                 li#menu-tabs-links(role="presentation") 
                     a(class="menu-button",
@@ -45,7 +45,7 @@
                       data-toggle="tab") 
                         span(class="glyphicon glyphicon-cog")
                         | Settings
-                li#menu-tabs-help(role="presentation") 
+                li#menu-tabs-help(class="navbar-right", role="presentation") 
                     a(class="menu-button",
                       href="#panel-help", 
                       aria-controls="help", 
@@ -53,23 +53,34 @@
                       data-toggle="tab") 
                         span(class="glyphicon glyphicon-question-sign")
                         | Help
+
     #panels(class="row")
-        #panel-feeds(class="col-xs-3")
-        #panel-main(class="col-xs-7") 
+        #panel-feeds(class="col-xs-12 col-md-3")
+        #panel-main(class="col-xs-12 col-md-9") 
             #panel-main-tabs(class="tab-content")
                 #panel-welcome(class="tab-pane fade", role="tabpanel")
                     include ./panel-welcome.jade
                 #panel-links(class="tab-pane fade", role="tabpanel")
                     include ./panel-links.jade
-                #panel-history(class="tab-pane fade", role="tabpanel")
-                    include ./panel-history.jade
-                #panel-add-feeds(class="tab-pane fade", role="tabpanel") 
-                    include ./panel-add-feeds.jade
-                #panel-import-export(class="tab-pane fade", role="tabpanel") 
-                    include ./panel-import-export.jade
-                #panel-settings(class="tab-pane fade", role="tabpanel")
-                    include ./panel-settings.jade
+                #panel-history(class="tab-pane fade row", role="tabpanel")
+                    div(class="col-xs-12 col-md-7 col-lg-9")
+                        include ./panel-history.jade
+                    .panel-tips(class="hidden-xs col-md-5 col-lg-3")
+                        include ./panel-tips.jade
+                #panel-add-feeds(class="tab-pane fade row", role="tabpanel") 
+                    div(class="col-xs-12 col-md-7 col-lg-9")
+                        include ./panel-add-feeds.jade
+                    .panel-tips(class="hidden-xs col-md-5 col-lg-3")
+                        include ./panel-tips.jade
+                #panel-import-export(class="tab-pane fade row", role="tabpanel") 
+                    div(class="col-xs-12 col-md-7 col-lg-9")
+                        include ./panel-import-export.jade
+                    .panel-tips(class="hidden-xs col-md-5 col-lg-3")
+                        include ./panel-tips.jade
+                #panel-settings(class="tab-pane fade row", role="tabpanel")
+                    div(class="ccol-xs-12 ol-md-7 col-lg-9")
+                        include ./panel-settings.jade
+                    .panel-tips(class="hidden-xs col-md-5 col-lg-3")
+                        include ./panel-tips.jade
                 #panel-help(class="tab-pane fade", role="tabpanel")
                     include ./panel-help.jade
-        #panel-tips(class="col-xs-2")
-            include ./panel-tips.jade
