@@ -41,12 +41,13 @@ module.exports = class FeedsView extends ViewCollection
         if $target.hasClass "tag-open"
             $target.removeClass "tag-open"
             $target.addClass "tag-close"
-            @cleanLinks()
+            if $target.find(".feed-open").length
+                @cleanLinks()
+                $target.find(".feed-open").removeClass("feed-open")
         else
             $target.removeClass "tag-close"
             $target.addClass "tag-open"
-
-        @reloadCounts($target)
+            @reloadCounts($target)
 
         false
 
