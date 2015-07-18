@@ -159,15 +159,15 @@ body {
 #tips {
   color: #c6c6c6;
 }
-#tip-of-the-day p {
+.tip-of-the-day p {
   background: #6d6d72;
   color: #cec9c2;
 }
-#tip-questions {
+.tip-questions {
   background: #5a5a61;
   color: #d4cfc7;
 }
-#tip-issues {
+.tip-issues {
   background: #5a5a61;
   color: #d4cfc7;
 }
@@ -306,15 +306,15 @@ body.use-light-colors #panel-help a {
 body.use-light-colors #tips {
   color: #676766;
 }
-body.use-light-colors #tip-of-the-day p {
+body.use-light-colors .tip-of-the-day p {
   background: #f6f5f3;
   color: #888786;
 }
-body.use-light-colors #tip-questions {
+body.use-light-colors .tip-questions {
   background: #e6e4e3;
   color: #323232;
 }
-body.use-light-colors #tip-issues {
+body.use-light-colors .tip-issues {
   background: #e6e4e3;
   color: #323232;
 }
@@ -499,6 +499,12 @@ body.show-old-links #panel-links .link.link-old {
 #panel-welcome .welcome-actions {
   text-align: center;
 }
+#panel-links .full {
+  width: 100%;
+}
+#panel-links .hidden {
+  width: 0%;
+}
 #panel-links .links-title h1 {
   display: inline-block;
   padding-right: 1em;
@@ -592,7 +598,9 @@ body.show-old-links #panel-links .link.link-old {
   font-weight: bolder;
 }
 #panel-help h3 {
-  font-style: italic;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+  font-size: 1.5em;
 }
 #panel-help p {
   font-weight: bolder;
@@ -603,36 +611,37 @@ body.show-old-links #panel-links .link.link-old {
 #tips {
   height: 100%;
 }
-#tip-of-the-day,
-#tip-questions,
-#tip-issues {
+.tip-of-the-day,
+.tip-questions,
+.tip-issues {
   margin: 0 1em 2em 1em;
   font-size: 1.2em;
 }
-#tip-of-the-day p,
-#tip-questions p,
-#tip-issues p {
+.tip-of-the-day p,
+.tip-questions p,
+.tip-issues p {
   padding: 1em;
 }
-#tip-of-the-day .tip-title,
-#tip-questions .tip-title,
-#tip-issues .tip-title {
+.tip-of-the-day .tip-title,
+.tip-questions .tip-title,
+.tip-issues .tip-title {
   font-weight: bolder;
   font-size: 1.2em;
   padding: 1em 1em 0 1em;
 }
-#tip-of-the-day .tip-title .poulpe,
-#tip-questions .tip-title .poulpe,
-#tip-issues .tip-title .poulpe {
+.tip-of-the-day .tip-title .poulpe,
+.tip-questions .tip-title .poulpe,
+.tip-issues .tip-title .poulpe {
   height: 3em;
+  margin-right: 0.5em;
 }
-#tip-of-the-day a,
-#tip-questions a,
-#tip-issues a {
+.tip-of-the-day a,
+.tip-questions a,
+.tip-issues a {
   color: inherit;
   text-decoration: underline;
 }
-#tip-of-the-day .tip-title {
+.tip-of-the-day .tip-title {
   padding: 0.5em 0;
 }
 #panel-import-export form {

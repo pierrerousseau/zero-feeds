@@ -82,6 +82,8 @@ module.exports = class FeedView extends View
                     if displayLinks is true
                         @renderXml()
                         @$el.addClass("feed-open")
+                        $(".list-links").addClass("full")
+                        $("#panel-links .panel-tips").addClass("hidden")
                         @setCount(0)
                         last  = @model.last
                         title = @model.titleText()
@@ -159,6 +161,8 @@ module.exports = class FeedView extends View
         @cleanLinks()
         if $target.hasClass("feed-open")
             @cleanOpenedFeed()
+            $(".list-links").removeClass("full")
+            $("#panel-links .panel-tips").removeClass("hidden")
             @stopWaiter()
         else
             @cleanOpenedFeed()

@@ -61,26 +61,30 @@
                 #panel-welcome(class="tab-pane fade", role="tabpanel")
                     include ./panel-welcome.jade
                 #panel-links(class="tab-pane fade", role="tabpanel")
-                    include ./panel-links.jade
+                    .list-links(class="col-xs-12 col-md-7 col-lg-9")
+                        include ./panel-links.jade
+                    .panel-tips(class="hidden-xs col-md-5 col-lg-3")
+                        include ./panel-tips.jade
                 #panel-history(class="tab-pane fade row", role="tabpanel")
                     div(class="col-xs-12 col-md-7 col-lg-9")
                         include ./panel-history.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
-                        include ./panel-tips.jade
                 #panel-add-feeds(class="tab-pane fade row", role="tabpanel") 
                     div(class="col-xs-12 col-md-7 col-lg-9")
                         include ./panel-add-feeds.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
-                        include ./panel-tips.jade
+                        include ./panel-tips-add-feeds.jade
                 #panel-import-export(class="tab-pane fade row", role="tabpanel") 
                     div(class="col-xs-12 col-md-7 col-lg-9")
                         include ./panel-import-export.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
-                        include ./panel-tips.jade
                 #panel-settings(class="tab-pane fade row", role="tabpanel")
                     div(class="ccol-xs-12 ol-md-7 col-lg-9")
                         include ./panel-settings.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
-                        include ./panel-tips.jade
+                        include ./panel-tips-settings.jade
                 #panel-help(class="tab-pane fade", role="tabpanel")
-                    include ./panel-help.jade
+                    div(class="ccol-xs-12 ol-md-7 col-lg-9")
+                        include ./panel-help.jade
+                    .panel-tips(class="hidden-xs col-md-5 col-lg-3")
+                        include ./panel-tips-help.jade
