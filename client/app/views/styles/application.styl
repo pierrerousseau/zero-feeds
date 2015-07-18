@@ -219,12 +219,17 @@ body.use-light-colors
             &:hover
                 background: light-panel-background
                 color: light-main-color
+                border-top-color: light-panel-background
         li
+            a
+                border-top-color: light-menu-background
             &.active
                 a
                     border-top-color: light-menu-border-color
                     background: light-panel-background
                     color: light-main-color
+                    &:hover
+                        border-top-color: light-menu-border-color
 
     #panel-main
         color: light-panel-color

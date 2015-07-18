@@ -185,11 +185,18 @@ body.use-light-colors #menu .menu-button {
 body.use-light-colors #menu .menu-button:hover {
   background: #ecebe9;
   color: #58493e;
+  border-top-color: #ecebe9;
+}
+body.use-light-colors #menu li a {
+  border-top-color: #d9d6d2;
 }
 body.use-light-colors #menu li.active a {
   border-top-color: #f26522;
   background: #ecebe9;
   color: #58493e;
+}
+body.use-light-colors #menu li.active a:hover {
+  border-top-color: #f26522;
 }
 body.use-light-colors #panel-main {
   color: #676766;
