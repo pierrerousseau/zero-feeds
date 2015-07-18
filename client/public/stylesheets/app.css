@@ -27,11 +27,18 @@ body {
 #menu .menu-button:hover {
   background: #41454d;
   color: #fff;
+  border-top-color: #41454d;
+}
+#menu li a {
+  border-top-color: #616167;
 }
 #menu li.active a {
   border-top-color: #95b935;
   background: #41454d;
   color: #fff;
+}
+#menu li.active a:hover {
+  border-top-color: #95b935;
 }
 #panel-main {
   color: #c6c6c6;
@@ -52,6 +59,9 @@ body {
 #panel-main .btn-default:hover {
   background: #616164;
   color: #d4cfc7;
+}
+#panel-feeds {
+  padding-bottom: 2em;
 }
 #panel-feeds .tag.tag-open {
   color: #fff;
@@ -142,6 +152,9 @@ body {
 }
 #panel-help a {
   color: #d4cfc7;
+}
+.panel-tips {
+  font-size: 14px;
 }
 #tips {
   color: #c6c6c6;
@@ -324,16 +337,21 @@ body.show-old-links #panel-links .link.link-old {
   cursor: pointer;
 }
 #menu li {
-  display: table-cell;
   width: auto;
+  margin-right: -1px;
+  margin-left: -1px;
+  padding-right: 0;
+  padding-left: 0;
   white-space: nowrap;
-  float: none;
 }
 #menu li#menu-tabs-welcome {
   display: none;
 }
 #menu li a {
-  border: none;
+  border-width: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border-top-width: 5px;
 }
 #menu li a span {
   margin-right: 0.4em;
@@ -341,17 +359,10 @@ body.show-old-links #panel-links .link.link-old {
   vertical-align: sub;
 }
 #menu li#menu-tabs-help {
-  width: 100%;
   text-align: right;
 }
 #menu li#menu-tabs-help a {
   display: inline-block;
-}
-#menu li.active a {
-  border-top-width: 5px;
-  border-top-style: solid;
-  -webkit-border-radius: 0;
-  border-radius: 0;
 }
 #panels {
   height: 100%;
@@ -369,6 +380,7 @@ body.show-old-links #panel-links .link.link-old {
   font-weight: bolder;
   font-size: 1.5em;
   text-shadow: none;
+  white-space: normal;
 }
 #panel-main .btn span {
   margin-right: 0.25em;
@@ -549,7 +561,7 @@ body.show-old-links #panel-links .link.link-old {
 #panel-add-feeds input {
   height: 2em;
   font-size: 1.5em;
-  width: 50%;
+  width: 80%;
 }
 #panel-settings {
   padding-left: 1.5em;
