@@ -4,6 +4,31 @@ FeedsView  = require './feeds_view'
 ParamsView = require './params_view'
 Feed       = require '../models/feed'
 
+
+tips = [
+    "Follow a new link now or forget it.",
+    "Zero-Feeds displays only the new links from your feeds, if you still want them, there is a parameter to change in the settings panel.",
+    "Do not follow dozen of sites, you have better to do today than reading all the internet.",
+    "No new link ? Good! You can start what matters now.",
+    "Check your feeds only once a day.",
+    "Better check your feeds in the evening, before going to bed.",
+    "Visit all your feeds, open the interesting links in new tabs, close zero-feeds, start reading.",
+    "Choose a category, and check all new interesting links in the category before doing something else.",
+    "Something annoying with zero-feeds? Contact the author and solve this together.",
+    "After reading new links every day for free months, take a break.",
+    "Do not follow your feeds during your holidays.",
+    "Do not follow your feeds during the weekend.",
+    "Make sure that you are in a quiet place with enough time before starting to check your feeds.",
+    "Share a link only you can answer to why it is an interesting link.",
+    "Do not share a new information found in your feeds before you checked it elsewhere.",
+    "When you are not sure about something, look at the poulp, or visit the help section.",
+    "Visit the thread about zero-feeds in the cozy forum.",
+    "Give a star to zero-feeds on github to put a smile on the author face.",
+    "To modify a feed, remove it, it will be placed in the add a feed form, then change it and add the feed again."
+    "Colors are too dark? There is a parameter in the settings panel to make all clear."
+]
+
+
 module.exports = class AppView extends View
     el: 'body.application'
 
@@ -42,8 +67,12 @@ module.exports = class AppView extends View
         console.log("ok 2")
         $("#menu-tabs-import-export a").tab("show")
 
+    setTotd: () ->
+        day = (new Date()).getDate() % tips.length
+        $(".tip-of-the-day p:first").html(tips[day])
 
     afterRender: ->
+        @setTotd()
         @feedsView = new FeedsView()
         @startWaiter(@feedsView.$el)
         @feedsView.collection.fetch

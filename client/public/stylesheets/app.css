@@ -159,6 +159,7 @@ body {
 #tips {
   color: #c6c6c6;
 }
+.tip p,
 .tip-of-the-day p {
   background: #6d6d72;
   color: #cec9c2;
@@ -306,6 +307,7 @@ body.use-light-colors #panel-help a {
 body.use-light-colors #tips {
   color: #676766;
 }
+body.use-light-colors .tip p,
 body.use-light-colors .tip-of-the-day p {
   background: #f6f5f3;
   color: #888786;
@@ -611,17 +613,20 @@ body.show-old-links #panel-links .link.link-old {
 #tips {
   height: 100%;
 }
+.tip,
 .tip-of-the-day,
 .tip-questions,
 .tip-issues {
   margin: 0 1em 2em 1em;
   font-size: 1.2em;
 }
+.tip p,
 .tip-of-the-day p,
 .tip-questions p,
 .tip-issues p {
   padding: 1em;
 }
+.tip .tip-title,
 .tip-of-the-day .tip-title,
 .tip-questions .tip-title,
 .tip-issues .tip-title {
@@ -629,18 +634,21 @@ body.show-old-links #panel-links .link.link-old {
   font-size: 1.2em;
   padding: 1em 1em 0 1em;
 }
+.tip .tip-title .poulpe,
 .tip-of-the-day .tip-title .poulpe,
 .tip-questions .tip-title .poulpe,
 .tip-issues .tip-title .poulpe {
   height: 3em;
   margin-right: 0.5em;
 }
+.tip a,
 .tip-of-the-day a,
 .tip-questions a,
 .tip-issues a {
   color: inherit;
   text-decoration: underline;
 }
+.tip .tip-title,
 .tip-of-the-day .tip-title {
   padding: 0.5em 0;
 }
