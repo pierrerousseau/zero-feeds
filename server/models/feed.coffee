@@ -19,7 +19,7 @@ module.exports = Feed = americano.getModel 'Feed',
 
 
 Feed.all = (params, callback) ->
-    Feed.request "all", params, callback
+    Feed.request "byTags", params, callback
 
 
 base_decode = (buffer, encoding, opt) ->

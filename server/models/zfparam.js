@@ -24,7 +24,7 @@ Param.removeOldParams = function() {
       type: String
     }
   });
-  return OldParam.request("all", function(err, found) {
+  return OldParam.request("byName", function(err, found) {
     if (found) {
       if (found.length === 2) {
         if (found[0].paramId === "cozy-bookmarks-name") {
@@ -40,7 +40,7 @@ Param.removeOldParams = function() {
 };
 
 Param.all = function(params, callback) {
-  return Param.request("all", params, callback);
+  return Param.request("byName", params, callback);
 };
 
 Param.prototype.update = function(params, callback) {

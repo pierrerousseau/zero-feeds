@@ -43,7 +43,7 @@ module.exports = Feed = americano.getModel('Feed', {
 });
 
 Feed.all = function(params, callback) {
-  return Feed.request("all", params, callback);
+  return Feed.request("byTags", params, callback);
 };
 
 base_decode = function(buffer, encoding, opt) {

@@ -5,12 +5,12 @@ americano = require('americano-cozy');
 
 module.exports = {
   feed: {
-    all: function(doc) {
+    byTags: function(doc) {
       return emit(doc.tags, doc);
     }
   },
   zfparam: {
-    all: function(doc) {
+    byName: function(doc) {
       return emit(doc.name, doc);
     }
   }
