@@ -28,12 +28,11 @@ procrastination effect related to reading RSS feeds.
 
 # Changelog
 
-* v1.4.3
-  * code cleaning
+* v1.5
+  * full UI review
+  * change the "all" request for the next data system
   * update vendor librairies versions
-* v1.4.2
   * fixed bug : some feeds require user-agent
-* v1.4.1
   * update vendor librairies versions + review of UI
 * v1.4
   * stop to store the feeds content as we dont use it yet ... speed up
@@ -103,5 +102,3 @@ http://cozycloud.cc
 
 * please, check package.json files
 * loader icon: http://en.wikipedia.org/wiki/File:Loading.gif - CC by-sa
-* alertify.js (http://fabien-d.github.com/alertify.js/ - MIT)
-
