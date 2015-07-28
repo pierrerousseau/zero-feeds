@@ -12,7 +12,7 @@ americano.start name: 'Zero-Feeds', port: port, (err, app, server) ->
         'content': type: String
         'created': type: Date, default: Date
         'updated': type: Date, default: Date
-    Feed.request "all", (err, feeds) ->
+    Feed.request "byTags", (err, feeds) ->
         for feed in feeds
             if typeof feed.tags is "string"
                 tags = feed.tags.split(",")
