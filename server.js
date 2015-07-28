@@ -39,7 +39,7 @@ americano.start({
       "default": Date
     }
   });
-  return Feed.request("all", function(err, feeds) {
+  return Feed.request("byTags", function(err, feeds) {
     var feed, tags, _i, _len, _results;
     _results = [];
     for (_i = 0, _len = feeds.length; _i < _len; _i++) {

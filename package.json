@@ -1,6 +1,6 @@
 {
   "name": "zero-feeds",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Read your RSS feeds within your Cozy.",
   "repository": {
     "type": "git",
