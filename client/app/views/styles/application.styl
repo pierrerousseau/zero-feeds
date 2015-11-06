@@ -111,7 +111,9 @@ body
             color: button-background
 
 #panel-feeds
-    padding-bottom: 2em
+    padding: 1em
+    overflow-y: auto
+    height: 100%
     .tag
         &.tag-open
             color: title-highlight
@@ -140,6 +142,7 @@ body
         color: welcome-color
 
 #panel-links
+    height: 100%
     .panel
         background: inherit
         color: inherit
@@ -214,6 +217,8 @@ body.use-light-colors
     background: light-main-background
 
     #menu
+        height: 55px
+        font-size: 1rem
         color: light-menu-color
         background: light-menu-background
 
@@ -396,10 +401,11 @@ body
                 display: inline-block
 
 #panels
-    height: 100%
+    height: calc(100% - 55px)
 
 #panel-main
     height: 100%
+    font-size: 1rem
 
     h1
         font-size: 2em
@@ -414,6 +420,9 @@ body
         white-space: normal
         span
             margin-right: .25em
+
+#panel-main-tabs
+    height: 100%
 
 #panel-feeds
     .tag
@@ -503,17 +512,22 @@ body
 #panel-links
     .full
         width: 100%
+        height:100%
     .hidden
         width: 0%
     .links-title
+        height: 50px
         h1
             display: inline-block
             padding-right: 1em
         h3
             font-style: italic
             display: inline-block
+            font-size: 1.6rem
     .links
         list-style: none
+        height: calc(100% - 50px)
+        overflow-y: auto
 
     .panel
         border: none
