@@ -445,7 +445,7 @@ body.show-old-links #panel-links .link.link-old {
 #panel-feeds .feed .feed-title {
   vertical-align: text-top;
   display: inline-block;
-  width: 65%;
+  width: 85%;
   white-space: nowrap;
   overflow: hidden;
   -o-text-overflow: ellipsis;
