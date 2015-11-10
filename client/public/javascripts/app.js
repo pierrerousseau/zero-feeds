@@ -1,23 +1,40 @@
-(function(/*! Brunch !*/) {
+(function() {
   'use strict';
 
-  var globals = typeof window !== 'undefined' ? window : global;
+  var globals = typeof window === 'undefined' ? global : window;
   if (typeof globals.require === 'function') return;
 
   var modules = {};
   var cache = {};
+  var aliases = {};
+  var has = ({}).hasOwnProperty;
 
-  var has = function(object, name) {
-    return ({}).hasOwnProperty.call(object, name);
+  var endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
   };
 
-  var expand = function(root, name) {
-    var results = [], parts, part;
-    if (/^\.\.?(\/|$)/.test(name)) {
-      parts = [root, name].join('/').split('/');
-    } else {
-      parts = name.split('/');
+  var _cmp = 'components/';
+  var unalias = function(alias, loaderPath) {
+    var start = 0;
+    if (loaderPath) {
+      if (loaderPath.indexOf(_cmp) === 0) {
+        start = _cmp.length;
+      }
+      if (loaderPath.indexOf('/', start) > 0) {
+        loaderPath = loaderPath.substring(start, loaderPath.indexOf('/', start));
+      }
     }
+    var result = aliases[alias + '/index.js'] || aliases[loaderPath + '/deps/' + alias + '/index.js'];
+    if (result) {
+      return _cmp + result.substring(0, result.length - '.js'.length);
+    }
+    return alias;
+  };
+
+  var _reg = /^\.\.?(\/|$)/;
+  var expand = function(root, name) {
+    var results = [], part;
+    var parts = (_reg.test(name) ? root + '/' + name : name).split('/');
     for (var i = 0, length = parts.length; i < length; i++) {
       part = parts[i];
       if (part === '..') {
@@ -34,9 +51,8 @@
   };
 
   var localRequire = function(path) {
-    return function(name) {
-      var dir = dirname(path);
-      var absolute = expand(dir, name);
+    return function expanded(name) {
+      var absolute = expand(dirname(path), name);
       return globals.require(absolute, path);
     };
   };
@@ -51,21 +67,26 @@
   var require = function(name, loaderPath) {
     var path = expand(name, '.');
     if (loaderPath == null) loaderPath = '/';
+    path = unalias(name, loaderPath);
 
-    if (has(cache, path)) return cache[path].exports;
-    if (has(modules, path)) return initModule(path, modules[path]);
+    if (has.call(cache, path)) return cache[path].exports;
+    if (has.call(modules, path)) return initModule(path, modules[path]);
 
     var dirIndex = expand(path, './index');
-    if (has(cache, dirIndex)) return cache[dirIndex].exports;
-    if (has(modules, dirIndex)) return initModule(dirIndex, modules[dirIndex]);
+    if (has.call(cache, dirIndex)) return cache[dirIndex].exports;
+    if (has.call(modules, dirIndex)) return initModule(dirIndex, modules[dirIndex]);
 
     throw new Error('Cannot find module "' + name + '" from '+ '"' + loaderPath + '"');
   };
 
-  var define = function(bundle, fn) {
+  require.alias = function(from, to) {
+    aliases[to] = from;
+  };
+
+  require.register = require.define = function(bundle, fn) {
     if (typeof bundle === 'object') {
       for (var key in bundle) {
-        if (has(bundle, key)) {
+        if (has.call(bundle, key)) {
           modules[key] = bundle[key];
         }
       }
@@ -74,21 +95,19 @@
     }
   };
 
-  var list = function() {
+  require.list = function() {
     var result = [];
     for (var item in modules) {
-      if (has(modules, item)) {
+      if (has.call(modules, item)) {
         result.push(item);
       }
     }
     return result;
   };
 
+  require.brunch = true;
+  require._cache = cache;
   globals.require = require;
-  globals.require.define = define;
-  globals.require.register = define;
-  globals.require.list = list;
-  globals.require.brunch = true;
 })();
 require.register("collections/feed_collection", function(exports, require, module) {
 var Feed, FeedCollection,
@@ -117,7 +136,7 @@ module.exports = FeedCollection = (function(superClass) {
 
 });
 
-;require.register("collections/param_collection", function(exports, require, module) {
+require.register("collections/param_collection", function(exports, require, module) {
 var Param, ParamCollection,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -144,7 +163,7 @@ module.exports = ParamCollection = (function(superClass) {
 
 });
 
-;require.register("initialize", function(exports, require, module) {
+require.register("initialize", function(exports, require, module) {
 var initializeJQueryExtensions;
 
 if (this.CozyApp == null) {
@@ -235,7 +254,7 @@ initializeJQueryExtensions = function() {
 
 });
 
-;require.register("lib/app_helpers", function(exports, require, module) {
+require.register("lib/app_helpers", function(exports, require, module) {
 (function() {
   return (function() {
     var console, dummy, method, methods, results;
@@ -253,7 +272,7 @@ initializeJQueryExtensions = function() {
 
 });
 
-;require.register("lib/view", function(exports, require, module) {
+require.register("lib/view", function(exports, require, module) {
 var View,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -352,7 +371,7 @@ module.exports = View = (function(superClass) {
 
 });
 
-;require.register("lib/view_collection", function(exports, require, module) {
+require.register("lib/view_collection", function(exports, require, module) {
 var View, ViewCollection, methods,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -492,7 +511,7 @@ module.exports = ViewCollection;
 
 });
 
-;require.register("models/feed", function(exports, require, module) {
+require.register("models/feed", function(exports, require, module) {
 var Feed,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -622,7 +641,7 @@ module.exports = Feed = (function(superClass) {
 
 });
 
-;require.register("models/param", function(exports, require, module) {
+require.register("models/param", function(exports, require, module) {
 var Param,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -646,7 +665,7 @@ module.exports = Param = (function(superClass) {
 
 });
 
-;require.register("routers/app_router", function(exports, require, module) {
+require.register("routers/app_router", function(exports, require, module) {
 var AppRouter,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -668,7 +687,7 @@ module.exports = AppRouter = (function(superClass) {
 
 });
 
-;require.register("views/app_view", function(exports, require, module) {
+require.register("views/app_view", function(exports, require, module) {
 var AppRouter, AppView, Feed, FeedsView, ParamsView, View, tips,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -1001,7 +1020,7 @@ module.exports = AppView = (function(superClass) {
 
 });
 
-;require.register("views/feed_view", function(exports, require, module) {
+require.register("views/feed_view", function(exports, require, module) {
 var FeedView, View, linkTemplate, tagTemplate,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -1096,12 +1115,12 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.setUpdate = function(displayLinks) {
-    var $allThat, error, title;
+    var $allThat, error, error1, title;
     $allThat = $("." + this.model.cid);
     try {
       title = this.model.titleText();
-    } catch (_error) {
-      error = _error;
+    } catch (error1) {
+      error = error1;
       this.stopWaiter();
       View.error("Can't parse feed, please check feed address.");
       return false;
@@ -1292,7 +1311,7 @@ module.exports = FeedView = (function(superClass) {
 
 });
 
-;require.register("views/feeds_view", function(exports, require, module) {
+require.register("views/feeds_view", function(exports, require, module) {
 var FeedCollection, FeedView, FeedsView, ViewCollection,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -1385,7 +1404,7 @@ module.exports = FeedsView = (function(superClass) {
 
 });
 
-;require.register("views/param_view", function(exports, require, module) {
+require.register("views/param_view", function(exports, require, module) {
 var ParamView, View,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -1433,7 +1452,7 @@ module.exports = ParamView = (function(superClass) {
 
 });
 
-;require.register("views/params_view", function(exports, require, module) {
+require.register("views/params_view", function(exports, require, module) {
 var ParamCollection, ParamView, ParamsView, ViewCollection,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -1475,8 +1494,9 @@ module.exports = ParamsView = (function(superClass) {
 
 });
 
-;require.register("views/templates/feed", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/feed", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1490,8 +1510,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/home", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/home", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1502,8 +1523,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/link", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/link", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1524,8 +1546,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-add-feeds", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-add-feeds", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1536,8 +1559,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-help", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-help", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1548,8 +1572,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-history", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-history", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1560,8 +1585,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-import-export", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-import-export", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1572,8 +1598,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-links", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-links", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1584,8 +1611,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-settings", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-settings", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1596,8 +1624,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-tips-add-feeds", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-tips-add-feeds", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1608,8 +1637,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-tips-help", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-tips-help", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1620,8 +1650,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-tips-settings", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-tips-settings", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1632,8 +1663,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-tips", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-tips", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1644,8 +1676,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/panel-welcome", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/panel-welcome", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1656,8 +1689,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/param", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/param", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1681,8 +1715,9 @@ return buf.join("");
 };
 });
 
-;require.register("views/templates/tag", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+require.register("views/templates/tag", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge
+/**/) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
@@ -1695,5 +1730,5 @@ return buf.join("");
 };
 });
 
-;
+
 //# sourceMappingURL=app.js.map
