@@ -60,8 +60,12 @@ body {
   background: #616164;
   color: #d4cfc7;
 }
-#panel-feeds {
-  padding-bottom: 2em;
+#panel-feeds,
+#panel-main {
+  padding: 1em;
+  overflow-y: auto;
+  height: 100%;
+  font-size: 1rem;
 }
 #panel-feeds .tag.tag-open {
   color: #fff;
@@ -95,6 +99,9 @@ body {
 #panel-welcome .welcome-message {
   background: #5a5a61;
   color: #d4cfc7;
+}
+#panel-links {
+  height: 100%;
 }
 #panel-links .panel {
   background: inherit;
@@ -340,7 +347,8 @@ body.show-old-links #panel-links .link.link-old {
   height: 100%;
 }
 #menu {
-  margin: 0 0 2em 0;
+  height: 55px;
+  font-size: 1rem;
 }
 #menu .nav-tabs {
   border: none;
@@ -381,10 +389,7 @@ body.show-old-links #panel-links .link.link-old {
   display: inline-block;
 }
 #panels {
-  height: 100%;
-}
-#panel-main {
-  height: 100%;
+  height: calc(100% - 55px);
 }
 #panel-main h1 {
   font-size: 2em;
@@ -400,6 +405,9 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-main .btn span {
   margin-right: 0.25em;
+}
+#panel-main-tabs {
+  height: 100%;
 }
 #panel-feeds .tag {
   padding-left: 0.5em;
@@ -503,9 +511,13 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-links .full {
   width: 100%;
+  height: 100%;
 }
 #panel-links .hidden {
   width: 0%;
+}
+#panel-links .links-title {
+  height: 50px;
 }
 #panel-links .links-title h1 {
   display: inline-block;
@@ -514,9 +526,12 @@ body.show-old-links #panel-links .link.link-old {
 #panel-links .links-title h3 {
   font-style: italic;
   display: inline-block;
+  font-size: 1.6rem;
 }
 #panel-links .links {
   list-style: none;
+  height: calc(100% - 55px);
+  overflow-y: auto;
 }
 #panel-links .panel {
   border: none;

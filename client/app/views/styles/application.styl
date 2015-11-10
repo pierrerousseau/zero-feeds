@@ -66,6 +66,7 @@ light-input-color = #888786
 light-welcome-background = #e6e4e3
 light-welcome-color = #323232
 
+menu-height = 55px
 
 body
     color: main-color
@@ -110,10 +111,13 @@ body
             background: button-color
             color: button-background
 
-#panel-feeds
+#panel-feeds, #panel-main
     padding: 1em
     overflow-y: auto
     height: 100%
+    font-size: 1rem
+
+#panel-feeds
     .tag
         &.tag-open
             color: title-highlight
@@ -217,8 +221,6 @@ body.use-light-colors
     background: light-main-background
 
     #menu
-        height: 55px
-        font-size: 1rem
         color: light-menu-color
         background: light-menu-background
 
@@ -367,7 +369,8 @@ body
     height: 100%
 
 #menu
-    margin: 0 0 2em 0
+    height: 55px
+    font-size: 1rem
 
     .nav-tabs
         border: none
@@ -401,12 +404,9 @@ body
                 display: inline-block
 
 #panels
-    height: calc(100% - 55px)
+    height: "calc(100% - %s)" % menu-height
 
 #panel-main
-    height: 100%
-    font-size: 1rem
-
     h1
         font-size: 2em
         font-weight: bolder
@@ -526,7 +526,7 @@ body
             font-size: 1.6rem
     .links
         list-style: none
-        height: calc(100% - 50px)
+        height: "calc(100% - %s)" % menu-height
         overflow-y: auto
 
     .panel
