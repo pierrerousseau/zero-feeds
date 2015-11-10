@@ -42,6 +42,9 @@ americano.start({
   return Feed.request("byTags", function(err, feeds) {
     var feed, tags, _i, _len, _results;
     _results = [];
+    if(!feeds || !feeds.length){
+      return _results;
+    }
     for (_i = 0, _len = feeds.length; _i < _len; _i++) {
       feed = feeds[_i];
       if (typeof feed.tags === "string") {
