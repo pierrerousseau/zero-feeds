@@ -67,6 +67,7 @@ light-welcome-background = #e6e4e3
 light-welcome-color = #323232
 
 menu-height = 55px
+spacing = 15px
 
 body
     color: main-color
@@ -111,11 +112,11 @@ body
             background: button-color
             color: button-background
 
-#panel-feeds, #panel-main
-    padding: 1em
-    overflow-y: auto
-    height: 100%
+.scroll-panel
+    position: relative
     font-size: 1rem
+    padding: 0
+    height: 100%
 
 #panel-feeds
     .tag
@@ -367,6 +368,7 @@ body
 
 #content
     height: 100%
+    overflow: hidden
 
 #menu
     height: 55px
@@ -426,7 +428,7 @@ body
 
 #panel-feeds
     .tag
-        padding-left: .5em
+        padding: .6em
         &.tag-open
             .glyphicon-chevron-right
                 display: none
@@ -516,7 +518,6 @@ body
     .hidden
         width: 0%
     .links-title
-        height: 50px
         h1
             display: inline-block
             padding-right: 1em
@@ -526,18 +527,14 @@ body
             font-size: 1.6rem
     .links
         list-style: none
-        height: "calc(100% - %s)" % menu-height
-        overflow-y: auto
 
     .panel
         border: none
         padding: .5em
         margin: 0
-        font-size: 2em
+        font-size: 1.4em
     .panel-heading
         border: none
-        h3
-            font-size: 1em
     .panel-body
         display: none
     .panel-footer
@@ -547,9 +544,6 @@ body
         margin: 3px
         cursor: pointer
         .panel-heading
-            h3
-                width: 95%
-                display: inline-block
             > a
                 vertical-align: top
                 width: 5%
@@ -557,9 +551,6 @@ body
                 text-decoration: none
                 &:hover
                     opacity: .8
-            &:hover
-                a
-                    display: inline-block !important
         &.link-old
             display: none
         &.link-active
@@ -645,3 +636,7 @@ body
         .fa-twitter
         [href^="https://twitter.com/intent/tweet?"]
             display: initial !important
+
+.ps-container.ps-active-x > .ps-scrollbar-x-rail, .ps-container.ps-active-y > .ps-scrollbar-y-rail
+    display: block
+    opacity: 0.2
