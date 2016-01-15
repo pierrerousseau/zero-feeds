@@ -2,6 +2,7 @@
   "name": "zero-feeds",
   "version": "1.5.1",
   "description": "Read your RSS feeds within your Cozy.",
+  "license": "WTFPL",
   "repository": {
     "type": "git",
     "url": "https://github.com/pierrerousseau/zero-feeds.git"
@@ -10,7 +11,7 @@
   "dependencies": {
     "americano": "0.3.11",
     "americano-cozy": "0.2.11",
-    "iconv": "2.1.6"
+    "iconv": "2.1.11"
   },
   "devDependencies": {
     "should": "= 1.2.0",

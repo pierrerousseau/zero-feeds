@@ -100,7 +100,7 @@ easily on your server, a single place you control. This means you can manage
 efficiently your data while protecting your privacy without technical skills.
 
 More informations and hosting services on:
-http://cozycloud.cc
+https://cozy.io
 
 
 # Tools & resources used :
