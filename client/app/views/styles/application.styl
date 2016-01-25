@@ -66,6 +66,8 @@ light-input-color = #888786
 light-welcome-background = #e6e4e3
 light-welcome-color = #323232
 
+menu-height = 55px
+spacing = 15px
 
 body
     color: main-color
@@ -110,8 +112,13 @@ body
             background: button-color
             color: button-background
 
+.scroll-panel
+    position: relative
+    font-size: 1rem
+    padding: 0
+    height: 100%
+
 #panel-feeds
-    padding-bottom: 2em
     .tag
         &.tag-open
             color: title-highlight
@@ -140,6 +147,7 @@ body
         color: welcome-color
 
 #panel-links
+    height: 100%
     .panel
         background: inherit
         color: inherit
@@ -151,6 +159,9 @@ body
         background: inherit
         a
             color: link-active-title-color
+        img
+            max-width: 100%;
+            height: auto;
         *
             color: inherit
     .panel-footer
@@ -360,9 +371,11 @@ body
 
 #content
     height: 100%
+    overflow: hidden
 
 #menu
-    margin: 0 0 2em 0
+    height: 55px
+    font-size: 1rem
 
     .nav-tabs
         border: none
@@ -396,11 +409,9 @@ body
                 display: inline-block
 
 #panels
-    height: 100%
+    height: "calc(100% - %s)" % menu-height
 
 #panel-main
-    height: 100%
-
     h1
         font-size: 2em
         font-weight: bolder
@@ -415,9 +426,12 @@ body
         span
             margin-right: .25em
 
+#panel-main-tabs
+    height: 100%
+
 #panel-feeds
     .tag
-        padding-left: .5em
+        padding: .6em
         &.tag-open
             .glyphicon-chevron-right
                 display: none
@@ -446,7 +460,7 @@ body
         .feed-title
             vertical-align: text-top
             display: inline-block
-            width: 65%
+            width: 85%
             white-space: nowrap
             overflow: hidden
             text-overflow: ellipsis
@@ -503,6 +517,7 @@ body
 #panel-links
     .full
         width: 100%
+        height:100%
     .hidden
         width: 0%
     .links-title
@@ -512,6 +527,7 @@ body
         h3
             font-style: italic
             display: inline-block
+            font-size: 1.6rem
     .links
         list-style: none
 
@@ -519,11 +535,9 @@ body
         border: none
         padding: .5em
         margin: 0
-        font-size: 2em
+        font-size: 1.4em
     .panel-heading
         border: none
-        h3
-            font-size: 1em
     .panel-body
         display: none
     .panel-footer
@@ -533,9 +547,6 @@ body
         margin: 3px
         cursor: pointer
         .panel-heading
-            h3
-                width: 95%
-                display: inline-block
             > a
                 vertical-align: top
                 width: 5%
@@ -543,9 +554,6 @@ body
                 text-decoration: none
                 &:hover
                     opacity: .8
-            &:hover
-                a
-                    display: inline-block !important
         &.link-old
             display: none
         &.link-active
@@ -631,3 +639,7 @@ body
         .fa-twitter
         [href^="https://twitter.com/intent/tweet?"]
             display: initial !important
+
+.ps-container.ps-active-x > .ps-scrollbar-x-rail, .ps-container.ps-active-y > .ps-scrollbar-y-rail
+    display: block
+    opacity: 0.2

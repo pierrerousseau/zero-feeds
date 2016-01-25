@@ -14,6 +14,7 @@ exports.config =
                     'vendor/javascripts/backbone-1.2.1.min.js'
                     'vendor/javascripts/bootstrap-3.3.5.min.js'
                     'vendor/javascripts/pnotify-2.0.1.min.js'
+                    'vendor/javascripts/perfect-scrollbar-0.6.7.jquery.min.js'
                 ]
 
         stylesheets:
@@ -25,6 +26,7 @@ exports.config =
                     'vendor/stylesheets/bootstrap-theme-3.3.5.min.css'
                     'vendor/stylesheets/pnotify-2.0.1.min.css'
                     'vendor/stylesheets/helpers.css'
+                    'vendor/stylesheets/perfect-scrollbar-0.6.7.min.css'
                 ]
         templates:
             defaultExtension: 'jade'
