@@ -730,12 +730,10 @@ module.exports = AppView = (function(superClass) {
   };
 
   AppView.prototype.showAddAFeed = function() {
-    console.log("ok");
     return $("#menu-tabs-add-feeds a").tab("show");
   };
 
   AppView.prototype.showImportExport = function() {
-    console.log("ok 2");
     return $("#menu-tabs-import-export a").tab("show");
   };
 

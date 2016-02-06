@@ -48,15 +48,17 @@ procrastination effect related to reading RSS feeds.
   * can import opml files and feeds from a firefox export of bookmarks file
   * add new elements counters
 * v1.1
-  * handle http redirection
   * accept gziped feeds
   * try to add "http://" when no protocol is given in a feed url
   * better place to find link for atom feed 
   * update newly added feed
   * prevent to reload a feed already reloading (only for full tag reload)
   * give more space to feeds names
+  * try to fix styles for small screens
   * add help panel
   * code cleaning (views)
+  * better place to find link for atom feed 
+  * fixed bug : send tags array to cozy bookmarks
   * fixed bug : a feed was only in one of its tag
   * fixed bug : send tags array to cozy bookmarks
   * fixed bug : error handling when the feed cant be parsed
