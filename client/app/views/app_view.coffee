@@ -60,11 +60,9 @@ module.exports = class AppView extends View
         $("#menu-tabs-links a").tab("show")
 
     showAddAFeed: () ->
-        console.log("ok")
         $("#menu-tabs-add-feeds a").tab("show")
 
     showImportExport: () ->
-        console.log("ok 2")
         $("#menu-tabs-import-export a").tab("show")
 
     setTotd: () ->

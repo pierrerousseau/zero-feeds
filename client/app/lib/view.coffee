@@ -56,4 +56,3 @@ module.exports = class View extends Backbone.View
             "delay": 2000
             "buttons":
                 "sticker": false
-
