@@ -1,17 +1,17 @@
-h1 Import
+h1=t("panelImportExport import")
 
 iframe(style="display:none")
 
 form.import(role="form")
-    h3 Import opml rss file or html bookmarks file containing feeds and exported from firefox or chrome
+    h3=t("panelImportExport description import")
     input#import-file(type="file", name="feeds-file", style="display:none")
-    button(class="btn btn-default", type="submit") 
-           span(class="glyphicon glyphicon-cloud-upload")
-           | IMPORT
+    button(class="btn btn-default", type="submit")
+           span(class="glyphicon glyphicon-cloud-upload")=t("panelImportExport import").toUpperCase()
+
     .results
         span.import-success(class="label label-success") 0
         span.import-failed(class="label label-danger") 0
 
-h1 Export
+h1=t("panelImportExport export")
 form.import(role="form")
-    h3 Comming soon ...
+    h3=t("comming soon")

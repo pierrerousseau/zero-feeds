@@ -71,7 +71,7 @@ module.exports = class FeedView extends View
             title = @model.titleText()
         catch error
             @stopWaiter()
-            View.error "Can't parse feed, please check feed address."
+            View.error t("error cannot parse feed")
             return false
 
         if @$el.is ":visible"
@@ -96,7 +96,7 @@ module.exports = class FeedView extends View
                         if title
                             @model.save { "title": title, "content": "" }
                             $allThat.find("a").html title
-                            View.log "" + title + " reloaded"
+                            View.log "" + title + " " + t("feed reloaded")
                     setTimeout _.bind(@setUpdate, @),
                          ((1 + Math.floor(Math.random()*14)) * 60000)
                 error: =>
@@ -136,7 +136,7 @@ module.exports = class FeedView extends View
         links  = @model.links
             "feedClass": @feedClass()
         if not links.length
-            View.error "No link found, are you sure that the url is correct ?"
+            View.error t("error no link found")
             return
         links.reverse()
         $.each links,
@@ -203,9 +203,9 @@ module.exports = class FeedView extends View
                 @fullRemove()
                 title = @model.titleText()
                 if title
-                    View.log "" + title + " removed and placed in form"
+                    View.log "" + title + " " + t("feed removed placed in form")
             error: =>
-                View.error "Server error occured, feed was not deleted."
+                View.error t("error server error feed not deleted")
         evt.preventDefault()
 
         false
