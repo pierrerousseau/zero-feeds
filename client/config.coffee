@@ -13,7 +13,8 @@ exports.config =
                     'vendor/javascripts/underscore-1.8.3.min.js'
                     'vendor/javascripts/backbone-1.2.1.min.js'
                     'vendor/javascripts/bootstrap-3.3.5.min.js'
-                    'vendor/javascripts/pnotify-2.0.1.min.js'
+                    'vendor/javascripts/pnotify-2.0.1.min.js',
+                    'vendor/javascripts/polyglot.min.js'
                 ]
 
         stylesheets:

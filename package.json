@@ -32,6 +32,9 @@
     },
     "zfparam": {
       "description": "Allow you to change the options of the zero feed app"
+    },
+    "CozyInstance": {
+      "description": "Read language setting"
     }
   }
 }
