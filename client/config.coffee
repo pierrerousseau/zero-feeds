@@ -1,4 +1,8 @@
 exports.config =
+    plugins:
+        jade:
+            globals: ['t']
+
     files:
         javascripts:
             joinTo:
