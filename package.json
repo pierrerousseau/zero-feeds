@@ -11,6 +11,7 @@
   "dependencies": {
     "americano": "0.3.11",
     "americano-cozy": "0.2.11",
+    "cozy-i18n-helper": "0.0.4",
     "iconv": "2.1.11"
   },
   "devDependencies": {

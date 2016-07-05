@@ -12,19 +12,14 @@ $ ->
 
     initializeJQueryExtensions()
 
-    window.app = @
+    locale = 'en';
 
-    @locale = window.locale
-    delete window.locale
-
-    @polyglot = new Polyglot()
-    try
-        locales = require 'locales/'+ @locale
-    catch e
-        locales = require 'locales/en'
-
-    @polyglot.extend locales
-    window.t = @polyglot.t.bind @polyglot
+    $.ajax 'cozy-locale.json',
+        success: (data) ->
+            locale = data.locale
+            initializeLocale locale
+        error: ->
+            initializeLocale locale
 
     # Initialize App
     CozyApp.Views.appView = new AppView = require 'views/app_view'
@@ -75,3 +70,17 @@ initializeJQueryExtensions = ->
         else
             console.log "Spinner class not available."
             null
+
+initializeLocale = (locale) ->
+    locales = {}
+
+    try
+        locales = require('locales/' + locale)
+    catch err
+        locales = require('locales/en')
+
+    polyglot = new Polyglot()
+    # we give polyglot the data
+    polyglot.extend locales
+    # handy shortcut
+    window.t = polyglot.t.bind(polyglot)
