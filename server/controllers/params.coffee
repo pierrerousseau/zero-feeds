@@ -2,22 +2,22 @@ Param = require "../models/zfparam"
 
 useQuickmarks =
     "paramId": "use-quickmarks"
-    "description": "Use the quickmarks app to save links"
+    "description": "settings use quickmarks"
     "value": false
 
 useTwitter =
     "paramId": "use-twitter"
-    "description": "Use twitter to share links"
+    "description": "settings use twitter"
     "value": false
 
 showOldLinks =
     "paramId": "show-old-links"
-    "description": "Show new and old links"
+    "description": "settings show new and old links"
     "value": false
 
 useLightColors =
     "paramId": "use-light-colors"
-    "description": "Use light colors for the interface"
+    "description": "settings use light colors"
     "value": false
 
 availableParams = [
@@ -67,7 +67,7 @@ module.exports.all = (req, res) ->
         else
             params = cleanParams(params)
             params = addMissingParams(params)
-            
+
             res.send params
 
 module.exports.update = (req, res) ->

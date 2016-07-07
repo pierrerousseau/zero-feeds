@@ -1,15 +1,14 @@
-h1.add-feed-title Add a feed
+h1.add-feed-title=t("panelAddFeeds add a feed")
 form.add-one-feed(role="form")
     div(class="form-group")
-        label(for="add-feed-url") Feed URL
-        input#add-feed-url(name="add-feed-url", 
-                           class="form-control", 
+        label(for="add-feed-url")=t("panelAddFeeds feed url")
+        input#add-feed-url(name="add-feed-url",
+                           class="form-control",
                            placeholder="http://")
     div(class="form-group")
-        label(for="add-feed-tags") Tags (separated by ", ")
-        input#add-feed-tags(name="add-feed", 
-                            class="form-control", 
+        label(for="add-feed-tags")=t("panelAddFeeds tags separated by")
+        input#add-feed-tags(name="add-feed",
+                            class="form-control",
                             placeholder="science, diy")
-       button(class="btn btn-default", type="submit") 
-           span(class="glyphicon glyphicon-plus")
-           | ADD FEED
+       button(class="btn btn-default", type="submit")
+           span(class="glyphicon glyphicon-plus")=t("panelAddFeeds add feed").toUpperCase()

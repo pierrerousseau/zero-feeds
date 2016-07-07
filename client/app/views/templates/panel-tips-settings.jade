@@ -1,10 +1,7 @@
 .tip
-    .tip-title 
+    .tip-title
         img.poulpe(alt="poulpe", src="images/poulpe.svg")
-        | old links ?
-    p 
-        | I call "old" links the links that are still in the rss feed but that have been displayed before. 
-    p 
-        | By default, they are not displayed anymore following the "if you did not read it first time it does not interest you so much" rule. 
-    p 
-        | Check the "Show new and old links" parameter if you want to procrastinate or if a wrong click removed all links before you read them.
+        =t("panelTipsSettings old links")
+    p=t("panelTipsSettings old links description")
+    p=t("panelTipsSettings old links default behaviour")
+    p=t("panelTipsSettings show old links")

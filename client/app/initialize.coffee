@@ -21,14 +21,6 @@ $ ->
         error: ->
             initializeLocale locale
 
-    # Initialize App
-    CozyApp.Views.appView = new AppView = require 'views/app_view'
-    CozyApp.Views.appView.render()
-
-    # Initialize Backbone History
-    Backbone.history.start pushState: yes
-
-
 initializeJQueryExtensions = ->
     $.fn.spin = (opts, color) ->
         presets =
@@ -84,3 +76,10 @@ initializeLocale = (locale) ->
     polyglot.extend locales
     # handy shortcut
     window.t = polyglot.t.bind(polyglot)
+
+    # Initialize App
+    CozyApp.Views.appView = new AppView = require 'views/app_view'
+    CozyApp.Views.appView.render()
+
+    # Initialize Backbone History
+    Backbone.history.start pushState: yes

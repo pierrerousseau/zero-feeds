@@ -1,61 +1,56 @@
 #content
     #menu(class="row")
-        #menu-refresh-all(class="hidden-xs col-lg-3")
-        #menu-tabs(class="col-xs-12 col-lg-9")
+        #menu-refresh-all(class="hidden-xs col-lg-2")
+        #menu-tabs(class="col-xs-12 col-lg-10")
             ul#menu-tabs-nav(class="nav nav-tabs", role="tablist")
-                li#menu-tabs-welcome(class="hidden-xs", role="presentation") 
+                li#menu-tabs-welcome(class="hidden-xs", role="presentation")
                     a(href="#panel-welcome")
-                li#menu-tabs-links(role="presentation") 
+                li#menu-tabs-links(role="presentation")
                     a(class="menu-button",
-                      href="#panel-links", 
-                      aria-controls="links", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-home")=t("header links")
-                li#menu-tabs-history(role="presentation") 
+                      href="#panel-links",
+                      aria-controls="links",
+                      role="tab",
+                      data-toggle="tab")
+                        span(class="glyphicon glyphicon-home")=t("links")
+                li#menu-tabs-history(role="presentation")
                     a(class="menu-button",
-                      href="#panel-history", 
-                      aria-controls="history", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-time")
-                        | t("header history")
-                li#menu-tabs-add-feeds(role="presentation") 
+                      href="#panel-history",
+                      aria-controls="history",
+                      role="tab",
+                      data-toggle="tab")
+                        span(class="glyphicon glyphicon-time")=t("history")
+                li#menu-tabs-add-feeds(role="presentation")
                     a(class="menu-button",
-                      href="#panel-add-feeds", 
-                      aria-controls="add-feeds", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-plus")
-                        | t("add-feeds")
-                li#menu-tabs-import-export(role="presentation") 
+                      href="#panel-add-feeds",
+                      aria-controls="add-feeds",
+                      role="tab",
+                      data-toggle="tab")
+                        span(class="glyphicon glyphicon-plus")=t("add feeds")
+                li#menu-tabs-import-export(role="presentation")
                     a(class="menu-button",
-                      href="#panel-import-export", 
-                      aria-controls="import-export", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-transfer")
-                        | t("import/export")
-                li#menu-tabs-settings(role="presentation") 
+                      href="#panel-import-export",
+                      aria-controls="import-export",
+                      role="tab",
+                      data-toggle="tab")
+                        span(class="glyphicon glyphicon-transfer")=t("import export")
+                li#menu-tabs-settings(role="presentation")
                     a(class="menu-button",
-                      href="#panel-settings", 
-                      aria-controls="settings", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-cog")
-                        | t("settings")
-                li#menu-tabs-help(class="navbar-right", role="presentation") 
+                      href="#panel-settings",
+                      aria-controls="settings",
+                      role="tab",
+                      data-toggle="tab")
+                        span(class="glyphicon glyphicon-cog")=t("settings")
+                li#menu-tabs-help(class="navbar-right", role="presentation")
                     a(class="menu-button",
-                      href="#panel-help", 
-                      aria-controls="help", 
-                      role="tab", 
-                      data-toggle="tab") 
-                        span(class="glyphicon glyphicon-question-sign")
-                        | t("help")
+                      href="#panel-help",
+                      aria-controls="help",
+                      role="tab",
+                      data-toggle="tab")
+                        span(class="glyphicon glyphicon-question-sign")=t("help")
 
     #panels(class="row")
-        #panel-feeds(class="col-xs-12 col-md-3")
-        #panel-main(class="col-xs-12 col-md-9") 
+        #panel-feeds(class="col-xs-12 col-md-3 col-lg-2")
+        #panel-main(class="col-xs-12 col-md-9 col-lg-10")
             #panel-main-tabs(class="tab-content")
                 #panel-welcome(class="tab-pane fade", role="tabpanel")
                     include ./panel-welcome.jade
@@ -68,12 +63,12 @@
                     div(class="col-xs-12 col-md-7 col-lg-9")
                         include ./panel-history.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
-                #panel-add-feeds(class="tab-pane fade row", role="tabpanel") 
+                #panel-add-feeds(class="tab-pane fade row", role="tabpanel")
                     div(class="col-xs-12 col-md-7 col-lg-9")
                         include ./panel-add-feeds.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
                         include ./panel-tips-add-feeds.jade
-                #panel-import-export(class="tab-pane fade row", role="tabpanel") 
+                #panel-import-export(class="tab-pane fade row", role="tabpanel")
                     div(class="col-xs-12 col-md-7 col-lg-9")
                         include ./panel-import-export.jade
                     .panel-tips(class="hidden-xs col-md-5 col-lg-3")
