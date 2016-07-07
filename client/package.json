@@ -15,18 +15,18 @@
         "start": "brunch watch --server"
     },
     "dependencies": {
-        "javascript-brunch": "> 1.0 < 1.5",
-        "coffee-script-brunch": "> 1.0 < 1.5",
+        "javascript-brunch": "1.8.0",
+        "coffee-script-brunch": "1.8.3",
 
-        "css-brunch": "> 1.0 < 1.5",
-        "stylus-brunch": "> 1.0 < 1.5",
+        "css-brunch": "1.7.0",
+        "stylus-brunch": "1.8.1",
 
-        "jade-brunch": "> 1.0 < 1.5",
+        "jade-brunch": "1.8.2",
 
-        "uglify-js-brunch": "> 1.0 < 1.5",
-        "clean-css-brunch": "> 1.0 < 1.5",
+        "uglify-js-brunch": "1.7.8",
+        "clean-css-brunch": "1.8.0",
 
-        "auto-reload-brunch": "> 1.0 < 1.5"
+        "auto-reload-brunch": "1.8.1"
     },
     "devDependencies": {
         "mocha": "0.14.0",
