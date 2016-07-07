@@ -7,8 +7,8 @@ form.add-one-feed(role="form")
                            placeholder="http://")
     div(class="form-group")
         label(for="add-feed-tags")=t("panelAddFeeds tags separated by")
-        input#add-feed-tags(name="add-feed",
-                            class="form-control",
-                            placeholder="science, diy")
+        input#add-feed-tags(name="add-feed"
+                            class="form-control"
+                            placeholder=t('panelAddFeeds science diy'))
        button(class="btn btn-default", type="submit")
            span(class="glyphicon glyphicon-plus")=t("panelAddFeeds add feed").toUpperCase()
