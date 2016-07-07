@@ -1,10 +1,10 @@
 h1.welcome-title
     img.poulpe(alt="poulpe", src="images/poulpe.svg")
-    p Welcome to zero-feeds !
+    p=t("panelWelcome welcome to zero feeds")
 
 .welcome-message
-    p This application is a RSS/Atom feeds reader designed to minimise the time lost reading them
-    p.welcome-start Start now !
+    p=t("panelWelcome presentation")
+    p.welcome-start=t("panelWelcome start now")
     .welcome-actions
-        .welcome-add-feed(class="btn btn-default") Add your first feed
-        .welcome-add-feeds(class="btn btn-invert") Import a .opml file
+        .welcome-add-feed(class="btn btn-default")=t("panelWelcome add your first feed")
+        .welcome-add-feeds(class="btn btn-invert")=t("panelWelcome import opml file")
