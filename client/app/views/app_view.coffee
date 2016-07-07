@@ -112,7 +112,7 @@ module.exports = class AppView extends View
                     $(tag).find(".tag-title").click()
                 @cleanAddFeedForm()
             error: =>
-                View.error "Server error occured, feed was not added"
+                View.error t("error server error feed not added")
 
     addFeed: (evt) =>
         url  = $("#add-feed-url").val()
@@ -122,7 +122,7 @@ module.exports = class AppView extends View
             @createFeed(evt, url, tags)
             evt.preventDefault()
         else
-            View.error "Url field is required"
+            View.error t("error url field required")
 
         false
 
@@ -218,7 +218,7 @@ module.exports = class AppView extends View
     uploadFile: (evt) ->
         file = evt.target.files[0]
         if @isUnknownFormat file
-            View.error "This file cannot be imported"
+            View.error t("error file cannot be imported")
             return
 
         reader = new FileReader()
