@@ -28,7 +28,8 @@ procrastination effect related to reading RSS feeds.
 
 # Changelog
 
-* v1.5.1
+* v1.6.0
+  * add localization
   * fix bug: first installation failed due to a call to old request at server 
   start
 * v1.5
