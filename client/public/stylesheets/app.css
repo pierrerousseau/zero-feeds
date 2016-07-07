@@ -346,8 +346,8 @@ body.show-old-links #panel-links .link.link-old {
   border: none;
 }
 #menu .menu-button {
-  padding: 1em;
-  font-size: 1.5em;
+  padding: 0.8em;
+  font-size: 1.3em;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
@@ -371,7 +371,7 @@ body.show-old-links #panel-links .link.link-old {
 }
 #menu li a span {
   margin-right: 0.4em;
-  font-size: 1.2em;
+  font-size: 1.1em;
   vertical-align: sub;
 }
 #menu li#menu-tabs-help {
@@ -387,14 +387,14 @@ body.show-old-links #panel-links .link.link-old {
   height: 100%;
 }
 #panel-main h1 {
-  font-size: 2em;
+  font-size: 1.8em;
   font-weight: bolder;
   margin-top: 0;
   margin-bottom: 0.5em;
 }
 #panel-main .btn {
   font-weight: bolder;
-  font-size: 1.5em;
+  font-size: 1.3em;
   text-shadow: none;
   white-space: normal;
 }
@@ -421,13 +421,13 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-feeds .tag .tag-name {
   margin: 0.25em;
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 #panel-feeds .tag .tag-refresh {
   padding-left: 1em;
 }
 #panel-feeds .feed {
-  font-size: 1.5em;
+  font-size: 1.3em;
   cursor: pointer;
 }
 #panel-feeds .feed .feed-infos {
@@ -476,19 +476,19 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-welcome .welcome-title {
   text-align: center;
-  font-size: 4em;
+  font-size: 3.8em;
 }
 #panel-welcome .welcome-title p {
   display: inline;
   font-size: 0.8em;
 }
 #panel-welcome .welcome-message {
-  font-size: 2em;
-  padding: 1em 1.5em;
+  font-size: 1.8em;
+  padding: 1em 1.4em;
   margin: 0 2em;
 }
 #panel-welcome .welcome-message .welcome-start {
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 #panel-welcome .poulpe {
   height: 2em;
@@ -514,6 +514,7 @@ body.show-old-links #panel-links .link.link-old {
 #panel-links .links-title h3 {
   font-style: italic;
   display: inline-block;
+  font-size: 1.6em;
 }
 #panel-links .links {
   list-style: none;
@@ -553,7 +554,7 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-links .link .panel-heading > a:hover {
   opacity: 0.8;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   filter: alpha(opacity=80);
 }
 #panel-links .link .panel-heading:hover a {
@@ -574,7 +575,7 @@ body.show-old-links #panel-links .link.link-old {
   margin-right: 1em;
 }
 #panel-add-feeds {
-  padding-left: 1.5em;
+  padding-left: 1.4em;
   font-size: 1.25em;
 }
 #panel-add-feeds .form-group {
@@ -582,11 +583,11 @@ body.show-old-links #panel-links .link.link-old {
 }
 #panel-add-feeds input {
   height: 2em;
-  font-size: 1.5em;
+  font-size: 1.4em;
   width: 80%;
 }
 #panel-settings {
-  padding-left: 1.5em;
+  padding-left: 1.4em;
   font-size: 1.25em;
 }
 #panel-settings .checkbox {
@@ -602,7 +603,7 @@ body.show-old-links #panel-links .link.link-old {
 #panel-help h3 {
   padding-top: 1em;
   padding-bottom: 0.5em;
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 #panel-help p {
   font-weight: bolder;
@@ -618,7 +619,7 @@ body.show-old-links #panel-links .link.link-old {
 .tip-questions,
 .tip-issues {
   margin: 0 1em 2em 1em;
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 .tip p,
 .tip-of-the-day p,
@@ -631,7 +632,7 @@ body.show-old-links #panel-links .link.link-old {
 .tip-questions .tip-title,
 .tip-issues .tip-title {
   font-weight: bolder;
-  font-size: 1.2em;
+  font-size: 1.1em;
   padding: 1em 1em 0 1em;
 }
 .tip .tip-title .poulpe,

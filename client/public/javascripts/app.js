@@ -114,7 +114,6 @@ module.exports = FeedCollection = (function(superClass) {
   return FeedCollection;
 
 })(Backbone.Collection);
-
 });
 
 ;require.register("collections/param_collection", function(exports, require, module) {
@@ -141,11 +140,10 @@ module.exports = ParamCollection = (function(superClass) {
   return ParamCollection;
 
 })(Backbone.Collection);
-
 });
 
 ;require.register("initialize", function(exports, require, module) {
-var initializeJQueryExtensions;
+var initializeJQueryExtensions, initializeLocale;
 
 if (this.CozyApp == null) {
   this.CozyApp = {};
@@ -168,13 +166,18 @@ if (CozyApp.Collections == null) {
 }
 
 $(function() {
-  var AppView;
+  var locale;
   require('../lib/app_helpers');
   initializeJQueryExtensions();
-  CozyApp.Views.appView = new (AppView = require('views/app_view'));
-  CozyApp.Views.appView.render();
-  return Backbone.history.start({
-    pushState: true
+  locale = 'en';
+  return $.ajax('cozy-locale.json', {
+    success: function(data) {
+      locale = data.locale;
+      return initializeLocale(locale);
+    },
+    error: function() {
+      return initializeLocale(locale);
+    }
   });
 });
 
@@ -233,6 +236,24 @@ initializeJQueryExtensions = function() {
   };
 };
 
+initializeLocale = function(locale) {
+  var AppView, err, error, locales, polyglot;
+  locales = {};
+  try {
+    locales = require('locales/' + locale);
+  } catch (error) {
+    err = error;
+    locales = require('locales/en');
+  }
+  polyglot = new Polyglot();
+  polyglot.extend(locales);
+  window.t = polyglot.t.bind(polyglot);
+  CozyApp.Views.appView = new (AppView = require('views/app_view'));
+  CozyApp.Views.appView.render();
+  return Backbone.history.start({
+    pushState: true
+  });
+};
 });
 
 ;require.register("lib/app_helpers", function(exports, require, module) {
@@ -250,7 +271,6 @@ initializeJQueryExtensions = function() {
     return results;
   })();
 })();
-
 });
 
 ;require.register("lib/view", function(exports, require, module) {
@@ -349,7 +369,6 @@ module.exports = View = (function(superClass) {
   return View;
 
 })(Backbone.View);
-
 });
 
 ;require.register("lib/view_collection", function(exports, require, module) {
@@ -489,6 +508,221 @@ _.each(methods, function(method) {
 });
 
 module.exports = ViewCollection;
+});
+
+;require.register("locales/en", function(exports, require, module) {
+module.exports = {
+    "add feeds": "Add feeds",
+    "comming soon": "Comming soon...",
+    "error cannot parse feed": "Can't parse feed, please check feed address.",
+    "error file cannot be imported": "This file cannot be imported",
+    "error no link found": "No link found, are you sure that the url is correct ?",
+    "error server error feed not added": "Server error occured, feed was not added",
+    "error server error feed not deleted": "Server error occured, feed was not deleted.",
+    "error url field required": "Url field is required",
+    "feed reloaded": "reloaded",
+    "feed removed placed in form": "removed and placed in form",
+    "help": "Help",
+    "help add an issue": "add an issue",
+    "help and help me to help you": "and help me to help you",
+    "help difference from others reader": "In usual feed readers, the links are availables as long as they are provided by the websites, so you will first read what matters, then what looks interesing, then this stuff that is maybe the thing to read, then what is left, oh it's time to go to lunch ! No. I do not like this way of procrastination, so do not expect zero-feeds to help you to do that.",
+    "help don't reload all feeds": "I don't want to reload all the feeds of a tag.",
+    "help don't reload all feeds answer": "Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.",
+    "help free softwares": "I want to use only free softwares.",
+    "help how do i start": "How do I start?",
+    "help how do i start answer": "Probably by adding a feed (check the tabs, I'm sure you can find where to do that).",
+    "help how does it work": "How does it work?",
+    "help how to add add feed": "I'm not sure, how to add a feed ?",
+    "help how to add add feed answer": "Just click on the top \"Add Feeds\" button, fill the url and tags fields and click on the \"Add Feed\" button right next to the tags field (or hit the enter key in one of the fields). The tags and the feed url should appear in the left panel.",
+    "help how to edit feed": "I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?",
+    "help how to edit feed answer": "Pass the mouse on the feed title and click on cross on left of the feed, don't worry, your feed will be removed, but the \"Add Feed\" form will be filled with its url and tags. Change what is wrong and add the feed again.",
+    "help idea behind": "The idea behind zero-feeds is that if you do not read a link when you discover it, most of the time, it means that you are not so much interested in it (it's an \"opinionated\" feeds reader). So read it now or forget it.",
+    "help it still doesn't work": "It still doesn't work !",
+    "help licence": "I'm not sure what licence I can use for a cozycloud app but you can consider my code under",
+    "help links disappeared": "The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !",
+    "help links disappeared answer": "You just need to click once. In fact, \"reloading\" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.",
+    "help me too": "Me too",
+    "help news of the year": "Will you miss the news of the year?",
+    "help news of the year answer": "No, if you did not click on it, you will hear about it from others. So what are you afraid to miss ? A good link ? Yes probably, but do not worry, there will be another good link tomorow.",
+    "help only beginning of feed url": "I just see the beginning of the url of my feed, I feel unsatisfied.",
+    "help only beginning of feed url answer": "Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.",
+    "help please": "Please",
+    "help report a bug": "Report a bug",
+    "help retrieve old links": "I didn't visit all the links of a feed and I \"reloaded\" it, are the \"old\" links lost ?",
+    "help retrieve old links answer": "No, click on the \"Settings\" button at the top and check the \"Show new and old links\" checkbox, they should appear.",
+    "help scale 6000 feeds": "Does it scale for my 6000 feeds?",
+    "help scale 6000 feeds answer": "Seriously ? Reduce your amount of sites you follow, you have better to do today than reading all of them.",
+    "help tool presentation": "This is a tool to follow your rss/atom feeds without to much procrastinating.",
+    "help what are tags": "What are these \"tags\" ?",
+    "help what are tags answer": "They will be used to classify your feeds in the left panel. A click on a tag name will display all feeds tagged with it.",
+    "help what is quickmark app": "In this \"Settings\" panel, there is a field called \"Use Quickmarks app to save links\", what is it ?",
+    "help what is quickmark app answer": "You are curious, isn't it ? I like you. So, install the Quickmarks app that you can find in the Cozy Store. Then you should see a \"send to quickmarks\" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the quickmarks app. This is a perfect world, but this feature is not implemented yet",
+    "history": "History",
+    "import export": "Import/Export",
+    "link open and read now": "Open and read now",
+    "link send to twitter": "Send to Twitter",
+    "link share": "Share",
+    "links": "Links",
+    "panelAddFeeds add a feed": "Add a feed",
+    "panelAddFeeds add feed": "Add feed",
+    "panelAddFeeds feed url": "Feed URL",
+    "panelAddFeeds science diy": "science, diy",
+    "panelAddFeeds tags separated by": "Tags (separated by \", \")",
+    "panelImportExport import": "Import",
+    "panelImportExport description import": "Import opml rss file or html bookmarks file containing feeds and exported from firefox or chrome",
+    "panelImportExport export": "Export",
+    "panelLinks new articles": "new articles from your favorite feeds",
+    "panelTips any question": "Any question ?",
+    "panelTips change colors": "Colors are too dark? There is a parameter in the settings panel to make all clear.",
+    "panelTips check by category": "Choose a category, and check all new interesting links in the category before doing something else.",
+    "panelTips check environment before starting": "Make sure that you are in a quiet place with enough time before starting to check your feeds.",
+    "panelTips check feeds once": "Check your feeds only once a day.",
+    "panelTips check in evening": "Better check your feeds in the evening, before going to bed.",
+    "panelTips check info before sharing": "Do not share a new information found in your feeds before you checked it elsewhere.",
+    "panelTips contact author": "Something annoying with zero-feeds? Contact the author and solve this together.",
+    "panelTips display old links": "Zero-Feeds displays only the new links from your feeds, if you still want them, there is a parameter to change in the settings panel",
+    "panelTips don't read all internet": "Do not follow dozen of sites, you have better to do today than reading all the internet.",
+    "panelTips follow or forget": "Follow a new link now or forget it.",
+    "panelTips give star on github": "Give a star to zero-feeds on github to put a smile on the author face.",
+    "panelTips look poulp or help": "When you are not sure about something, look at the poulp, or visit the help section.",
+    "panelTips modify feed": "To modify a feed, remove it, it will be placed in the add a feed form, then change it and add the feed again.",
+    "panelTips no feed during holidays": "Do not follow your feeds during your holidays.",
+    "panelTips no feed during weekend": "Do not follow your feeds during the weekend.",
+    "panelTips no new link": "No new link ? Good! You can start what matters now.",
+    "panelTips open interesting feeds": "Visit all your feeds, open the interesting links in new tabs, close zero-feeds, start reading.",
+    "panelTips share only interesting link": "Share a link only you can answer to why it is an interesting link.",
+    "panelTips take a break": "After reading new links every day for free months, take a break.",
+    "panelTips tip of the day": "Tip of the day",
+    "panelTips visit forum": "Visit the thread about zero-feeds in the cozy forum.",
+    "panelTips visit help": "Visit the help section to find out how zero-feeds works.",
+    "panelTipsAddFeed follow new site": "Follow a new site ?",
+    "panelTipsAddFeed find rss/atom link": "On your favorite site find the \"rss/atom\" link.",
+    "panelTipsAddFeed fill url and tag": "Then, fill the url field with this link and the tag field with the categories that you want to associtate to this feed.",
+    "panelTipsAddFeed add feed": "Then click on the \"Add Feed\" button right next to the tags field (or hit the enter key in one of the fields).",
+    "panelTipsAddFeed tag and feed in left panel": "The tags and the feed url should appear in the left panel.",
+    "panelTipsSettings old links": "Old links",
+    "panelTipsSettings old links description": "I call \"old\" links the links that are still in the rss feed but that have been displayed before.",
+    "panelTipsSettings old links default behaviour": "By default, they are not displayed anymore following the \"if you did not read it first time it does not interest you so much\" rule.",
+    "panelTipsSettings show old links": "Check the \"Show new and old links\" parameter if you want to procrastinate or if a wrong click removed all links before you read them.",
+    "panelWelcome add your first feed": "Add your first feed",
+    "panelWelcome import opml file": "Import a .opml file",
+    "panelWelcome presentation": "This application is a RSS/Atom feeds reader designed to minimise the time lost reading them",
+    "panelWelcome start now": "Start now!",
+    "panelWelcome welcome to zero feeds": "Welcome to zero-feeds!",
+    "settings": "Settings",
+    "settings use quickmarks": "Use the Quickmarks app to save links",
+    "settings use twitter": "Use twitter to share links",
+    "settings show new and old links": "Show new and old links",
+    "settings use light colors": "Use light colors for the interface"
+}
+
+});
+
+;require.register("locales/fr", function(exports, require, module) {
+module.exports = {
+    "add feeds": "Ajouter des flux",
+    "comming soon": "Bientôt...",
+    "error cannot parse feed": "Impossible d'analyser le flux, veuillez vérifier l'adresse.",
+    "error file cannot be imported": "Ce fichier ne peut pas être importé",
+    "error no link found": "Aucun lien trouvé, êtes-vous sûr que l'url est correcte ?",
+    "error server error feed not added": "Erreur de serveur, le flux n'a pas été ajouté.",
+    "error server error feed not deleted": "Erreur de serveur, le flux n'a pas été supprimé.",
+    "error url field required": "Le champ url est requis",
+    "feed reloaded": "rechargé",
+    "feed removed placed in form": "supprimé et placé dans le formulaire",
+    "help": "Aide",
+    "help add an issue": "ajoutez une issue",
+    "help and help me to help you": "et aidez-moi à vous aider",
+    "help difference from others reader": "Dans les lecteurs de flux classiques, les liens sont disponibles aussi longtemps qu'ils sont fournis par les sites web. Vous allez donc lire en premier ce qui est important, ensuite ce qui a l'air intéressant, puis ce truc qui est peut-être la chose à lire, et qu'est-ce qui reste ? Oh, il est l'heure d'aller manger ! Non. Je n'aime pas cette façon de procrastiner, donc ne vous attendez pas à ce que zero-feeds vous aide à faire ça.",
+    "help don't reload all feeds": "Je ne veux pas recharger tous les flux d'un tag.",
+    "help don't reload all feeds answer": "Comme moi. Cliquez simplement sur le nom du tag dans le panneau gauche, tous les flux seront affichés, cliquez alors sur le titre du flux que vous voulez recharger.",
+    "help free softwares": "Je ne veux utiliser que des logiciels libres.",
+    "help how do i start": "Comment puis-je commencer ?",
+    "help how do i start answer": "Probablement en ajoutant un flux (verifiez les onglets, je suis sûr que vous pouvez trouver où faire ça).",
+    "help how does it work": "Comment est-ce que ça fonctionne ?",
+    "help how to add add feed": "Je ne suis pas sûr, comment ajouter un flux ?",
+    "help how to add add feed answer": "Cliquez simplement sur le bouton du haut \"Ajouter des flux\", remplissez les champs url et tags et cliquez sur bouton \"Ajouter le flux\" à droite à côté du champ tags (ou appuyez sur la touche entrée dans l'un des champs). Les tags l'url du flux devraient apparaître dans le panneau gauche.",
+    "help how to edit feed": "Je veux change les tags d'un flux, ou j'ai mal écrit l'url, comment puis-je éditer mon flux ?",
+    "help how to edit feed answer": "Passez la souris sur le titre du flux et cliquez sur la croix à gauche du flux. Ne vous inquiétez pas, votre flux sera supprimé, mais le formulaire \"Ajouter un flux\" sera pré-rempli avec son url et ses tags. Changez ce qui ne va pas et ajoutez à nouveau le flux.",
+    "help idea behind": "L'idée derrière zero-feeds est que si vous ne lisez pas un lien quand vous le découvrez, la plupart du temps, cela signifie que ça ne vous intéresse pas tellement (il en découle des contraintes qui sont voulues et qui peuvent ne pas correspondre à votre manière de fonctionner). Donc lisez-le maintenant ou oubliez-le.",
+    "help it still doesn't work": "Ça ne fonctionne toujours pas !",
+    "help licence": "Je ne suis pas sûr de la licence que je peux utiliser pour une app cozycloud mais vous pouvez considérer mon code sous",
+    "help links disappeared": "La première fois que j'ai cliqué sur un flux, les liens de ce flux ont été affichés. Maintenant, j'ai cliqué plusieurs fois et il n'y a plus de lien !",
+    "help links disappeared answer": "Vous n'avez besoin de cliquer qu'une seule fois. En fait, \"recharger\" un flux vise à afficher les nouveaux liens de ce flux depuis la dernière fois que vous l'avez rechargé. Donc si vous ne voyez rien, ça signifie qu'il n'y a pas de nouveaux liens pour vous aider à procrastiner.",
+    "help me too": "Moi aussi",
+    "help news of the year": "Allez-vous rater la news de l'année ?",
+    "help news of the year answer": "Non, si vous ne cliquez pas dessus, vous en entendrez parler dans les autres. Donc qu'est-ce que vous avez peur de rater ? Un bon lien ? Oui probablement, mais ne vous inquiétez pas, il y aura un autre bon lien demain.",
+    "help only beginning of feed url": "Je ne vois que le début de l'url de mon flux, je ne suis pas satisfait.",
+    "help only beginning of feed url answer": "Maintenant cliqez dessus. Le titre de ce flux devrait remplacer son url et le lien de ce flux devrait être affiché.",
+    "help please": "S'il vous plaît",
+    "help report a bug": "Signaler un bug",
+    "help retrieve old links": "Je n'ai pas visité tous les liens d'un flux et je l'ai rechargé, les \"vieux\" liens sont-ils perdus ?",
+    "help retrieve old links answer": "Non. Cliquez sur le bouton \"Paramètres\" en haut et cochez la case \"Afficher les nouveaux et les vieux liens\", ils devraient apparaitre.",
+    "help scale 6000 feeds": "Est-il adapté pour mes 6000 flux ?",
+    "help scale 6000 feeds answer": "Sérieusement ? Réduisez le nombre de sites que vous suivez, vous avez mieux à faire aujourd'hui que de tous les lire.",
+    "help tool presentation": "C'est un outil pour suivre vos flux rss/atom sans trop de procrastination.",
+    "help what are tags": "Que sont ces \"tags\" ?",
+    "help what are tags answer": "Ils vont être utilisés pour classer vos flux dans le panneau gauche. Un clic sur le nom d'un tag affichera tous les flux taggés avec.",
+    "help what is quickmark app": "Dans le panneau \"Paramètres\", il y a un champ intitulé \"Utiliser l'app Quickmarks pour sauvegarder les liens\", qu'est-ce que c'est ?",
+    "help what is quickmark app answer": "Vous êtes curieux, n'est-ce pas ? Je vous aime bien. Donc, installez l'app Quickmarks que vous pouvez trouver sur le Cozy Store. Vous devriez alors voir un bouton \"envoyer vers Quickmarks\" à gauche du lien du flux. Cliquez dessus et le lien sera ajouté à vos marque-pages dans l'app Quickmarks. C'est un monde parfait, mais cette fonctionnalité n'a pas encore été implémentée.",
+    "history": "Historique",
+    "import export": "Import/Export",
+    "link open and read now": "Ouvrir et lire maintenant",
+    "link send to twitter": "Envoyer sur Twitter",
+    "link share": "Partager",
+    "links": "Liens",
+    "panelAddFeeds add a feed": "Ajouter un flux",
+    "panelAddFeeds add feed": "Ajouter le flux",
+    "panelAddFeeds feed url": "URL du flux",
+    "panelAddFeeds science diy": "science, diy",
+    "panelAddFeeds tags separated by": "Tags (séparés par \", \")",
+    "panelImportExport import": "Import",
+    "panelImportExport description import": "Importer un fichier rss opml ou un fichier de marque-pages html contenant des flux exporté depuis firefox ou chrome",
+    "panelImportExport export": "Export",
+    "panelLinks new articles": "Nouveaux articles depuis vos flux favoris",
+    "panelTips any question": "Des questions ?",
+    "panelTips change colors": "Les couleurs sont trop sombres ? Il y a un paramètre dans le panneau paramètres pour rendre le tout plus clair.",
+    "panelTips check by category": "Choisissez une catégorie, et vérifiez tous les nouveaux liens intéressants à l'intérieur avant de faire quelque chose d'autre.",
+    "panelTips check environment before starting": "Assurez-vous d'être dans un endroit calme avec assez de temps avant de commencer à consulter vos flux.",
+    "panelTips check feeds once": "Consultez vos flux seulement une fois par jour.",
+    "panelTips check in evening": "Consultez plutôt vos flux dans la soirée, avant d'aller au lit.",
+    "panelTips check info before sharing": "Partagez une nouvelle information découverte dans vos flux uniquement après l'avoir vérifiée ailleurs.",
+    "panelTips contact author": "Quelque chose de gênant avec zero-feeds ? Contactez l'auteur et résolvez ça ensemble.",
+    "panelTips display old links": "Zero-Feeds affiche uniquement les nouveaux liens de vos flux, si vous les voulez toujours, il y a un paramètre à changer de le panneau de paramètres.",
+    "panelTips don't read all internet": "Ne suivez pas une douzaine de sites, vous avez mieux à faire aujourd'hui que de lire tout internet.",
+    "panelTips follow or forget": "Suivez un nouveau lien maintenant ou oubliez-le.",
+    "panelTips give star on github": "Donnez une étoile à zero-feeds sur Github pour afficher un sourire sur le visage de l'auteur.",
+    "panelTips look poulp or help": "Quand vous n'êtes pas sûr à propos de quelque chose, regardez le poulpe, ou visitez la section aide.",
+    "panelTips modify feed": "Pour modifier un flux, supprimez-le, il sera placé dans le formulaire d'ajout de flux. Ensuite, modifiez-le ajoutez le flux à nouveau.",
+    "panelTips no feed during holidays": "Ne suivez pas vos flux pendant vos vacances.",
+    "panelTips no feed during weekend": "Ne suivez pas vos flux pendant le week-end.",
+    "panelTips no new link": "Pas de nouveau lien ? Bien ! Vous pouvez commencer ce qui est important maintenant.",
+    "panelTips open interesting feeds": "Regardez tous vos flux, ouvrez les liens intéressants dans de nouveaux onglets, fermez zero-feeds, commencez à lire.",
+    "panelTips share only interesting link": "Partagez un lien uniquement si vous pouvez répondre à la question \"pourquoi ce lien est intéressant ?\".",
+    "panelTips take a break": "Après avoir lu de nouveaux liens tous les jours pendant plusieurs mois, prenez une pause.",
+    "panelTips tip of the day": "Astuce du jour",
+    "panelTips visit forum": "Visitez le sujet sur zero-feeds dans le forum de cozy cloud.",
+    "panelTips visit help": "Visitez la section aide pour trouver comment zero-feeds fonctionne.",
+    "panelTipsAddFeed follow new site": "Suivre un nouveau site ?",
+    "panelTipsAddFeed find rss/atom link": "Sur votre site favori, trouvez le lien \"rss/atom\".",
+    "panelTipsAddFeed fill url and tag": "Ensuite, remplissez le champ url avec ce lien et le champ tag avec la catégorie que vous voulez associer à ce flux.",
+    "panelTipsAddFeed add feed": "Cliquez alors sur le bouton \"Ajouter le flux\" à droite à côté du champ tags (ou appuyez sur la touche entrée dans l'un des champs).",
+    "panelTipsAddFeed tag and feed in left panel": "Les tags and l'url du flux devraient apparaitre dans le panneau gauche.",
+    "panelTipsSettings old links": "Vieux liens",
+    "panelTipsSettings old links description": "J'appelle \"vieux\" liens les liens qui sont toujours dans le flux rss mais qui ont déjà été affichés auparavant.",
+    "panelTipsSettings old links default behaviour": "Par défaut, ils ne sont plus affichés suivant la règle \"si vous ne l'avez pas lu la première fois, ça ne vous intéresse pas tant que ça\".",
+    "panelTipsSettings show old links": "Cochez le paramètre \"Afficher les nouveaux et les vieux liens\" si vous voulez procrastiner ou si un mauvais clic a supprimé tous les liens avant que vous les lisiez.",
+    "panelWelcome add your first feed": "Ajoutez votre premier flux",
+    "panelWelcome import opml file": "Importez un fichier .opml",
+    "panelWelcome presentation": "Cette application est un lecteur de flux RSS/Atom conçu pour minimiser le temps perdu en les lisant.",
+    "panelWelcome start now": "Démarrez maintenant !",
+    "panelWelcome welcome to zero feeds": "Bienvenue dans zero-feeds!",
+    "settings": "Paramètres",
+    "settings use quickmarks": "Utiliser l'app Quickmarks pour sauvegarder les liens",
+    "settings use twitter": "Utiliser Twitter pour partager les liens",
+    "settings show new and old links": "Afficher les nouveaux et les vieux liens",
+    "settings use light colors": "Utiliser des couleurs claires pour l'interface"
+}
 
 });
 
@@ -619,7 +853,6 @@ module.exports = Feed = (function(superClass) {
   return Feed;
 
 })(Backbone.Model);
-
 });
 
 ;require.register("models/param", function(exports, require, module) {
@@ -643,7 +876,6 @@ module.exports = Param = (function(superClass) {
   return Param;
 
 })(Backbone.Model);
-
 });
 
 ;require.register("routers/app_router", function(exports, require, module) {
@@ -665,7 +897,6 @@ module.exports = AppRouter = (function(superClass) {
   return AppRouter;
 
 })(Backbone.Router);
-
 });
 
 ;require.register("views/app_view", function(exports, require, module) {
@@ -684,7 +915,7 @@ ParamsView = require('./params_view');
 
 Feed = require('../models/feed');
 
-tips = ["Follow a new link now or forget it.", "Zero-Feeds displays only the new links from your feeds, if you still want them, there is a parameter to change in the settings panel.", "Do not follow dozen of sites, you have better to do today than reading all the internet.", "No new link ? Good! You can start what matters now.", "Check your feeds only once a day.", "Better check your feeds in the evening, before going to bed.", "Visit all your feeds, open the interesting links in new tabs, close zero-feeds, start reading.", "Choose a category, and check all new interesting links in the category before doing something else.", "Something annoying with zero-feeds? Contact the author and solve this together.", "After reading new links every day for free months, take a break.", "Do not follow your feeds during your holidays.", "Do not follow your feeds during the weekend.", "Make sure that you are in a quiet place with enough time before starting to check your feeds.", "Share a link only you can answer to why it is an interesting link.", "Do not share a new information found in your feeds before you checked it elsewhere.", "When you are not sure about something, look at the poulp, or visit the help section.", "Visit the thread about zero-feeds in the cozy forum.", "Give a star to zero-feeds on github to put a smile on the author face.", "To modify a feed, remove it, it will be placed in the add a feed form, then change it and add the feed again.", "Colors are too dark? There is a parameter in the settings panel to make all clear."];
+tips = ["panelTips follow or forget", "panelTips display old links", "panelTips don't read all internet", "panelTips no new link", "panelTips check feeds once", "panelTips check in evening", "panelTips open interesting feeds", "panelTips check by category", "panelTips contact author", "panelTips take a break", "panelTips no feed during holidays", "panelTips no feed during weekend", "panelTips check environment before starting", "panelTips share only interesting link", "panelTips check info before sharing", "panelTips look poulp or help", "panelTips visit forum", "panelTips give star on github", "panelTips modify feed", "panelTips change colors"];
 
 module.exports = AppView = (function(superClass) {
   extend(AppView, superClass);
@@ -740,7 +971,7 @@ module.exports = AppView = (function(superClass) {
   AppView.prototype.setTotd = function() {
     var day;
     day = (new Date()).getDate() % tips.length;
-    return $(".tip-of-the-day p:first").html(tips[day]);
+    return $(".tip-of-the-day p:first").html(t(tips[day]));
   };
 
   AppView.prototype.afterRender = function() {
@@ -808,7 +1039,7 @@ module.exports = AppView = (function(superClass) {
       })(this),
       error: (function(_this) {
         return function() {
-          return View.error("Server error occured, feed was not added");
+          return View.error(t("error server error feed not added"));
         };
       })(this)
     });
@@ -824,7 +1055,7 @@ module.exports = AppView = (function(superClass) {
       this.createFeed(evt, url, tags);
       evt.preventDefault();
     } else {
-      View.error("Url field is required");
+      View.error(t("error url field required"));
     }
     return false;
   };
@@ -976,7 +1207,7 @@ module.exports = AppView = (function(superClass) {
     var file, reader;
     file = evt.target.files[0];
     if (this.isUnknownFormat(file)) {
-      View.error("This file cannot be imported");
+      View.error(t("error file cannot be imported"));
       return;
     }
     reader = new FileReader();
@@ -996,7 +1227,6 @@ module.exports = AppView = (function(superClass) {
   return AppView;
 
 })(View);
-
 });
 
 ;require.register("views/feed_view", function(exports, require, module) {
@@ -1094,14 +1324,14 @@ module.exports = FeedView = (function(superClass) {
   };
 
   FeedView.prototype.setUpdate = function(displayLinks) {
-    var $allThat, error, title;
+    var $allThat, error, error1, title;
     $allThat = $("." + this.model.cid);
     try {
       title = this.model.titleText();
-    } catch (_error) {
-      error = _error;
+    } catch (error1) {
+      error = error1;
       this.stopWaiter();
-      View.error("Can't parse feed, please check feed address.");
+      View.error(t("error cannot parse feed"));
       return false;
     }
     if (this.$el.is(":visible")) {
@@ -1139,7 +1369,7 @@ module.exports = FeedView = (function(superClass) {
                   "content": ""
                 });
                 $allThat.find("a").html(title);
-                View.log("" + title + " reloaded");
+                View.log("" + title + " " + t("feed reloaded"));
               }
             }
             return setTimeout(_.bind(_this.setUpdate, _this), (1 + Math.floor(Math.random() * 14)) * 60000);
@@ -1192,7 +1422,7 @@ module.exports = FeedView = (function(superClass) {
       "feedClass": this.feedClass()
     });
     if (!links.length) {
-      View.error("No link found, are you sure that the url is correct ?");
+      View.error(t("error no link found"));
       return;
     }
     links.reverse();
@@ -1270,13 +1500,13 @@ module.exports = FeedView = (function(superClass) {
           _this.fullRemove();
           title = _this.model.titleText();
           if (title) {
-            return View.log("" + title + " removed and placed in form");
+            return View.log("" + title + " " + t("feed removed placed in form"));
           }
         };
       })(this),
       error: (function(_this) {
         return function() {
-          return View.error("Server error occured, feed was not deleted.");
+          return View.error(t("error server error feed not deleted"));
         };
       })(this)
     });
@@ -1287,7 +1517,6 @@ module.exports = FeedView = (function(superClass) {
   return FeedView;
 
 })(View);
-
 });
 
 ;require.register("views/feeds_view", function(exports, require, module) {
@@ -1380,7 +1609,6 @@ module.exports = FeedsView = (function(superClass) {
   return FeedsView;
 
 })(ViewCollection);
-
 });
 
 ;require.register("views/param_view", function(exports, require, module) {
@@ -1428,7 +1656,6 @@ module.exports = ParamView = (function(superClass) {
   return ParamView;
 
 })(View);
-
 });
 
 ;require.register("views/params_view", function(exports, require, module) {
@@ -1470,227 +1697,320 @@ module.exports = ParamsView = (function(superClass) {
   return ParamsView;
 
 })(ViewCollection);
-
 });
 
 ;require.register("views/templates/feed", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
- var title = model.title ? model.title : model.url
-buf.push('<div class="feed-infos"><div class="feed-delete"> \n&times;</div><div class="feed-spinner"><img src="images/loader.gif" alt="..." class="loader"/></div><div class="feed-count"></div></div><div class="feed-title"> <a');
-buf.push(attrs({ 'href':("" + (model.url) + ""), 'title':("" + (title) + ""), 'data-tags':("" + (model.tags) + "") }, {"href":true,"title":true,"data-tags":true}));
-buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (model) {
+var title = model.title ? model.title : model.url
+buf.push("<div class=\"feed-infos\"><div class=\"feed-delete\">&times;</div><div class=\"feed-spinner\"><img src=\"images/loader.gif\" alt=\"...\" class=\"loader\"/></div><div class=\"feed-count\"></div></div><div class=\"feed-title\"> <a" + (jade.attr("href", "" + (model.url) + "", true, false)) + (jade.attr("title", "" + (title) + "", true, false)) + (jade.attr("data-tags", "" + (model.tags) + "", true, false)) + ">" + (jade.escape((jade_interp = title) == null ? '' : jade_interp)) + "</a></div>");}.call(this,"model" in locals_for_with?locals_for_with.model:typeof model!=="undefined"?model:undefined));;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/home", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div id="content"><div id="menu" class="row"><div id="menu-refresh-all" class="hidden-xs col-lg-3"></div><div id="menu-tabs" class="col-xs-12 col-lg-9"><ul id="menu-tabs-nav" role="tablist" class="nav nav-tabs"><li id="menu-tabs-welcome" role="presentation" class="hidden-xs"> <a href="#panel-welcome"></a></li><li id="menu-tabs-links" role="presentation"> <a href="#panel-links" aria-controls="links" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-home"></span> Links</a></li><li id="menu-tabs-history" role="presentation"> <a href="#panel-history" aria-controls="history" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-time"></span>History</a></li><li id="menu-tabs-add-feeds" role="presentation"> <a href="#panel-add-feeds" aria-controls="add-feeds" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-plus"></span>Add Feeds</a></li><li id="menu-tabs-import-export" role="presentation"> <a href="#panel-import-export" aria-controls="import-export" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-transfer"></span>Import/Export</a></li><li id="menu-tabs-settings" role="presentation"> <a href="#panel-settings" aria-controls="settings" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-cog"></span>Settings</a></li><li id="menu-tabs-help" role="presentation" class="navbar-right"> <a href="#panel-help" aria-controls="help" role="tab" data-toggle="tab" class="menu-button"> <span class="glyphicon glyphicon-question-sign"></span>Help</a></li></ul></div></div><div id="panels" class="row"><div id="panel-feeds" class="col-xs-12 col-md-3"></div><div id="panel-main" class="col-xs-12 col-md-9"> <div id="panel-main-tabs" class="tab-content"><div id="panel-welcome" role="tabpanel" class="tab-pane fade"><h1 class="welcome-title"><img alt="poulpe" src="images/poulpe.svg" class="poulpe"/><p>Welcome to zero-feeds !</p></h1><div class="welcome-message"><p>This application is a RSS/Atom feeds reader designed to minimise the time lost reading them</p><p class="welcome-start">Start now !</p><div class="welcome-actions"><div class="welcome-add-feed btn btn-default">Add your first feed</div><div class="welcome-add-feeds btn btn-invert">Import a .opml file</div></div></div></div><div id="panel-links" role="tabpanel" class="tab-pane fade"><div class="list-links col-xs-12 col-md-7 col-lg-9"><div class="links-title"><h1>Links</h1><h3>new articles from your favorite feeds</h3></div><div class="links"></div></div><div class="panel-tips hidden-xs col-md-5 col-lg-3"><div class="tip-of-the-day"><div class="tip-title"> <img alt="poulpe" src="images/poulpe.svg" class="poulpe"/>Tip of the day</div><p>Zero-Feeds displays only the new links from your feeds, if you still want them, there is a parameter to change in the settings panel</p></div><div class="tip-questions"><div class="tip-title">Any question ?</div><p>Visit the help section to find out how zero-feeds works.</p></div></div></div><div id="panel-history" role="tabpanel" class="tab-pane fade row"><div class="col-xs-12 col-md-7 col-lg-9"><h1>Comming soon ...</h1></div><div class="panel-tips hidden-xs col-md-5 col-lg-3"></div></div><div id="panel-add-feeds" role="tabpanel" class="tab-pane fade row"> <div class="col-xs-12 col-md-7 col-lg-9"><h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form></div><div class="panel-tips hidden-xs col-md-5 col-lg-3"><div class="tip"><div class="tip-title"> <img alt="poulpe" src="images/poulpe.svg" class="poulpe"/>Follow a new site ?</div><p> \nOn your favorite site find the "rss/atom" link.</p><p>Then, fill the url field with this link \nand the tag field with the categories \nthat you want to associtate to this feed.</p><p>Then click on the "Add Feed" button right next to the tags field \n(or hit the enter key in one of the fields).</p><p>The tags and the feed url should appear in the left panel.</p></div></div></div><div id="panel-import-export" role="tabpanel" class="tab-pane fade row"> <div class="col-xs-12 col-md-7 col-lg-9"><h1>Import</h1><iframe style="display:none"></iframe><form role="form" class="import"><h3>Import opml rss file or html bookmarks file containing feeds and exported from firefox or chrome</h3><input id="import-file" type="file" name="feeds-file" style="display:none"/><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-cloud-upload"></span>IMPORT</button><div class="results"><span class="import-success label label-success">0</span><span class="import-failed label label-danger">0</span></div></form><h1>Export</h1><form role="form" class="import"><h3>Comming soon ...</h3></form></div><div class="panel-tips hidden-xs col-md-5 col-lg-3"></div></div><div id="panel-settings" role="tabpanel" class="tab-pane fade row"><div class="ccol-xs-12 ol-md-7 col-lg-9"><h1>Settings</h1><form id="settings" role="form"></form></div><div class="panel-tips hidden-xs col-md-5 col-lg-3"><div class="tip"><div class="tip-title"> <img alt="poulpe" src="images/poulpe.svg" class="poulpe"/>old links ?</div><p> \nI call "old" links the links that are still in the rss feed but that have been displayed before. </p><p> \nBy default, they are not displayed anymore following the "if you did not read it first time it does not interest you so much" rule. </p><p> \nCheck the "Show new and old links" parameter if you want to procrastinate or if a wrong click removed all links before you read them.</p></div></div></div><div id="panel-help" role="tabpanel" class="tab-pane fade"><div class="ccol-xs-12 ol-md-7 col-lg-9"><h1>Help<h3>How does it work? </h3><p>This is a tool to follow your rss/atom feeds without to much procrastinating.</p><p> \nThe idea behind zero-feeds is that if you do not read a link when you discover it, most of the time, it means that you are not so much interested in it (it\'s an "opinionated" feeds reader). So read it now or forget it. </p><p>In usual feed readers, the links are availables as long as they are provided by the websites, so you will first read what matters, then what looks interesing, then this stuff that is maybe the thing to read, then what is left, oh it\'s time to go to lunch ! No. I do not like this way of procrastination, so do not expect zero-feeds to help you to do that. </p><h3>Will you miss the news of the year ? </h3><p>No, if you did not click on it, you will hear about it from others. So what are you afraid to miss ? A good link ? Yes probably, but do not worry, there will be another good link tomorow.</p><h3>Does it scale for my 6000 feeds ? </h3><p>Seriously ? Reduce your amount of sites you follow, you have better to do today than reading all of them.</p><h3>How do I start ? </h3><p> \nProbably by adding a feed (check the tabs, I\'m sure you can find where to do that).</p><h3>I\'m not sure, how to add a feed ? </h3><p> \nJust click on the top "Add Feeds" button, fill the url and tags fields and click on the "Add Feed" button right next to the tags field (or hit the enter key in one of the fields).\nThe tags and the feed url should appear in the left panel.</p><h3>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h3><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "Add Feed" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h3>I just see the beginning of the url of my feed, I feel unsatisfied.</h3><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h3>What are these "tags" ?</h3><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h3>I don\'t want to reload all the feeds of a tag.</h3><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h3>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h3><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h3>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h3><p>No, click on the "Settings" button at the top and check the "Show new and old links" checkbox, they should appear. </p><h3>In this "Settings" panel, there is a field called "Use quickmarks app to save links", what is it ?</h3><p> \nYou are curious, isn\'t it ? I like you. So, install the Quickmarks app that you can find in the Cozy Store\nThen you should see a "send to quickmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the quickmarks app.\nThis is a perfect world, but this feature is not implemented yet</p><h3>It still doesn\'t work !</h3><p> \nPlease <a href="https://github.com/pierrerousseau/zero-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h3>I want to use only free softwares.</h3><p> <a href="https://github.com/pierrerousseau/zero-feeds" target="_blank">Me too</a>. \n I\'m not sure what licence I can use for a cozycloud app but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL" target="_blank">WTFPL</a>. </p></h1></div><div class="panel-tips hidden-xs col-md-5 col-lg-3"><div class="tip-issues"><div class="tip-title">Report a bug</div><p> \nPlease &nbsp;<a href="https://github.com/pierrerousseau/zero-feeds/issues" target="_blank">add an issue</a>&nbsp; and help me to help you.</p></div></div></div></div></div></div></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<div id=\"content\"><div id=\"menu\" class=\"row\"><div id=\"menu-refresh-all\" class=\"hidden-xs col-lg-2\"></div><div id=\"menu-tabs\" class=\"col-xs-12 col-lg-10\"><ul id=\"menu-tabs-nav\" role=\"tablist\" class=\"nav nav-tabs\"><li id=\"menu-tabs-welcome\" role=\"presentation\" class=\"hidden-xs\"><a href=\"#panel-welcome\"></a></li><li id=\"menu-tabs-links\" role=\"presentation\"><a href=\"#panel-links\" aria-controls=\"links\" role=\"tab\" data-toggle=\"tab\" class=\"menu-button\"><span class=\"glyphicon glyphicon-home\">" + (jade.escape(null == (jade_interp = t("links")) ? "" : jade_interp)) + "</span></a></li><li id=\"menu-tabs-history\" role=\"presentation\"><a href=\"#panel-history\" aria-controls=\"history\" role=\"tab\" data-toggle=\"tab\" class=\"menu-button\"><span class=\"glyphicon glyphicon-time\">" + (jade.escape(null == (jade_interp = t("history")) ? "" : jade_interp)) + "</span></a></li><li id=\"menu-tabs-add-feeds\" role=\"presentation\"><a href=\"#panel-add-feeds\" aria-controls=\"add-feeds\" role=\"tab\" data-toggle=\"tab\" class=\"menu-button\"><span class=\"glyphicon glyphicon-plus\">" + (jade.escape(null == (jade_interp = t("add feeds")) ? "" : jade_interp)) + "</span></a></li><li id=\"menu-tabs-import-export\" role=\"presentation\"><a href=\"#panel-import-export\" aria-controls=\"import-export\" role=\"tab\" data-toggle=\"tab\" class=\"menu-button\"><span class=\"glyphicon glyphicon-transfer\">" + (jade.escape(null == (jade_interp = t("import export")) ? "" : jade_interp)) + "</span></a></li><li id=\"menu-tabs-settings\" role=\"presentation\"><a href=\"#panel-settings\" aria-controls=\"settings\" role=\"tab\" data-toggle=\"tab\" class=\"menu-button\"><span class=\"glyphicon glyphicon-cog\">" + (jade.escape(null == (jade_interp = t("settings")) ? "" : jade_interp)) + "</span></a></li><li id=\"menu-tabs-help\" role=\"presentation\" class=\"navbar-right\"><a href=\"#panel-help\" aria-controls=\"help\" role=\"tab\" data-toggle=\"tab\" class=\"menu-button\"><span class=\"glyphicon glyphicon-question-sign\">" + (jade.escape(null == (jade_interp = t("help")) ? "" : jade_interp)) + "</span></a></li></ul></div></div><div id=\"panels\" class=\"row\"><div id=\"panel-feeds\" class=\"col-xs-12 col-md-3 col-lg-2\"></div><div id=\"panel-main\" class=\"col-xs-12 col-md-9 col-lg-10\"><div id=\"panel-main-tabs\" class=\"tab-content\"><div id=\"panel-welcome\" role=\"tabpanel\" class=\"tab-pane fade\"><h1 class=\"welcome-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/><p>" + (jade.escape(null == (jade_interp = t("panelWelcome welcome to zero feeds")) ? "" : jade_interp)) + "</p></h1><div class=\"welcome-message\"><p>" + (jade.escape(null == (jade_interp = t("panelWelcome presentation")) ? "" : jade_interp)) + "</p><p class=\"welcome-start\">" + (jade.escape(null == (jade_interp = t("panelWelcome start now")) ? "" : jade_interp)) + "</p><div class=\"welcome-actions\"><div class=\"welcome-add-feed btn btn-default\">" + (jade.escape(null == (jade_interp = t("panelWelcome add your first feed")) ? "" : jade_interp)) + "</div><div class=\"welcome-add-feeds btn btn-invert\">" + (jade.escape(null == (jade_interp = t("panelWelcome import opml file")) ? "" : jade_interp)) + "</div></div></div></div><div id=\"panel-links\" role=\"tabpanel\" class=\"tab-pane fade\"><div class=\"list-links col-xs-12 col-md-7 col-lg-9\"><div class=\"links-title\"><h1>" + (jade.escape(null == (jade_interp = t("links")) ? "" : jade_interp)) + "</h1><h3>" + (jade.escape(null == (jade_interp = t("panelLinks new articles")) ? "" : jade_interp)) + "</h3></div><div class=\"links\"></div></div><div class=\"panel-tips hidden-xs col-md-5 col-lg-3\"><div class=\"tip-of-the-day\"><div class=\"tip-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/>" + (jade.escape(null == (jade_interp = t("panelTips tip of the day")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("panelTips display old links")) ? "" : jade_interp)) + "</p></div><div class=\"tip-questions\"><div class=\"tip-title\">" + (jade.escape(null == (jade_interp = t("panelTips any question")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("panelTips visit help")) ? "" : jade_interp)) + "</p></div></div></div><div id=\"panel-history\" role=\"tabpanel\" class=\"tab-pane fade row\"><div class=\"col-xs-12 col-md-7 col-lg-9\"><h1>" + (jade.escape(null == (jade_interp = t("comming soon")) ? "" : jade_interp)) + "</h1></div><div class=\"panel-tips hidden-xs col-md-5 col-lg-3\"></div></div><div id=\"panel-add-feeds\" role=\"tabpanel\" class=\"tab-pane fade row\"><div class=\"col-xs-12 col-md-7 col-lg-9\"><h1 class=\"add-feed-title\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds add a feed")) ? "" : jade_interp)) + "</h1><form role=\"form\" class=\"add-one-feed\"><div class=\"form-group\"><label for=\"add-feed-url\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds feed url")) ? "" : jade_interp)) + "</label><input id=\"add-feed-url\" name=\"add-feed-url\" placeholder=\"http://\" class=\"form-control\"/></div><div class=\"form-group\"><label for=\"add-feed-tags\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds tags separated by")) ? "" : jade_interp)) + "</label><input id=\"add-feed-tags\" name=\"add-feed\"" + (jade.attr("placeholder", t('panelAddFeeds science diy'), true, false)) + " class=\"form-control\"/></div><button type=\"submit\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-plus\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds add feed").toUpperCase()) ? "" : jade_interp)) + "</span></button></form></div><div class=\"panel-tips hidden-xs col-md-5 col-lg-3\"><div class=\"tip\"><div class=\"tip-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed follow new site")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed find rss/atom link")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed fill url and tag")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed add feed")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed tag and feed in left panel")) ? "" : jade_interp)) + "</p></div></div></div><div id=\"panel-import-export\" role=\"tabpanel\" class=\"tab-pane fade row\"><div class=\"col-xs-12 col-md-7 col-lg-9\"><h1>" + (jade.escape(null == (jade_interp = t("panelImportExport import")) ? "" : jade_interp)) + "</h1><iframe style=\"display:none\"></iframe><form role=\"form\" class=\"import\"><h3>" + (jade.escape(null == (jade_interp = t("panelImportExport description import")) ? "" : jade_interp)) + "</h3><input id=\"import-file\" type=\"file\" name=\"feeds-file\" style=\"display:none\"/><button type=\"submit\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-cloud-upload\">" + (jade.escape(null == (jade_interp = t("panelImportExport import").toUpperCase()) ? "" : jade_interp)) + "</span></button><div class=\"results\"><span class=\"import-success label label-success\">0</span><span class=\"import-failed label label-danger\">0</span></div></form><h1>" + (jade.escape(null == (jade_interp = t("panelImportExport export")) ? "" : jade_interp)) + "</h1><form role=\"form\" class=\"import\"><h3>" + (jade.escape(null == (jade_interp = t("comming soon")) ? "" : jade_interp)) + "</h3></form></div><div class=\"panel-tips hidden-xs col-md-5 col-lg-3\"></div></div><div id=\"panel-settings\" role=\"tabpanel\" class=\"tab-pane fade row\"><div class=\"ccol-xs-12 ol-md-7 col-lg-9\"><h1>" + (jade.escape(null == (jade_interp = t("settings")) ? "" : jade_interp)) + "</h1><form id=\"settings\" role=\"form\"></form></div><div class=\"panel-tips hidden-xs col-md-5 col-lg-3\"><div class=\"tip\"><div class=\"tip-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/></div><p>" + (jade.escape(null == (jade_interp = t("panelTipsSettings old links description")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsSettings old links default behaviour")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsSettings show old links")) ? "" : jade_interp)) + "</p></div></div></div><div id=\"panel-help\" role=\"tabpanel\" class=\"tab-pane fade\"><div class=\"ccol-xs-12 ol-md-7 col-lg-9\"><h1>" + (jade.escape(null == (jade_interp = t("help")) ? "" : jade_interp)) + "<h3>" + (jade.escape(null == (jade_interp = t("help how does it work")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help tool presentation")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("help idea behind")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("help difference from others reader")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help news of the year")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help news of the year answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help scale 6000 feeds")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help scale 6000 feeds answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help how do i start")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help how do i start answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help how to add add feed")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help how to add add feed answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help how to edit feed")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help how to edit feed answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help only beginning of feed url")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help only beginning of feed url answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help what are tags")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help what are tags answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help don't reload all feeds")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help don't reload all feeds answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help links disappeared")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help links disappeared answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help retrieve old links")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help retrieve old links answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help what is quickmark app")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help what is quickmark app answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help it still doesn't work")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help please")) ? "" : jade_interp)) + "&nbsp;<a href=\"https://github.com/pierrerousseau/zero-feeds/issues\" target=\"_blank\">" + (jade.escape((jade_interp = t("help add an issue")) == null ? '' : jade_interp)) + "</a>&nbsp;" + (jade.escape(null == (jade_interp = t("help and help me to help you")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help free softwares")) ? "" : jade_interp)) + "</h3><p><a href=\"https://github.com/pierrerousseau/zero-feeds\" target=\"_blank\">" + (jade.escape((jade_interp = t("help me too")) == null ? '' : jade_interp)) + "</a>. &nbsp;" + (jade.escape(null == (jade_interp = t("help licence")) ? "" : jade_interp)) + "&nbsp;<a href=\"https://en.wikipedia.org/wiki/WTFPL\" target=\"_blank\">WTFPL</a>.</p></h1></div><div class=\"panel-tips hidden-xs col-md-5 col-lg-3\"><div class=\"tip-issues\"><div class=\"tip-title\">" + (jade.escape(null == (jade_interp = t("help report a bug")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("help please")) ? "" : jade_interp)) + "&nbsp;<a href=\"https://github.com/pierrerousseau/zero-feeds/issues\" target=\"_blank\">" + (jade.escape((jade_interp = t("help add an issue")) == null ? '' : jade_interp)) + "</a>&nbsp;" + (jade.escape(null == (jade_interp = t("help and help me to help you")) ? "" : jade_interp)) + "</p></div></div></div></div></div></div></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/link", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<li');
-buf.push(attrs({ "class": ("link " + (from) + " link-" + (state) + "") }, {"class":true}));
-buf.push('><div class="panel panel-default"><div class="panel-heading"><h3 class="link-title panel-title"><a');
-buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank") }, {"href":true,"target":true}));
-buf.push('>' + escape((interp = title) == null ? '' : interp) + '</a></h3><a');
-buf.push(attrs({ 'title':("send to Twitter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank") }, {"title":true,"href":true,"target":true}));
-buf.push('> <span class="fa fa-twitter"></span></a></div><div class="panel-body"><div class="link-infos"></div><div class="link-description">' + ((interp = description) == null ? '' : interp) + '</div></div><div class="panel-footer"><div class="link-buttons"><a');
-buf.push(attrs({ 'href':("" + (url) + ""), 'target':("_blank"), "class": ("btn btn-default") }, {"class":true,"href":true,"target":true}));
-buf.push('> <span class="glyphicon glyphicon-link"></span>Open and read now</a><a');
-buf.push(attrs({ 'title':("send to Twitter"), 'href':("https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + ""), 'target':("_blank"), "class": ("btn btn-invert") }, {"class":true,"title":true,"href":true,"target":true}));
-buf.push('> <span class="fa fa-twitter"></span>Share</a></div></div></div></li>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (description, encodedTitle, from, state, title, url) {
+buf.push("<li" + (jade.cls(["link " + (from) + " link-" + (state) + ""], [true])) + "><div class=\"panel panel-default\"><div class=\"panel-heading\"><h3 class=\"link-title panel-title\"><a" + (jade.attr("href", "" + (url) + "", true, false)) + " target=\"_blank\">" + (jade.escape((jade_interp = title) == null ? '' : jade_interp)) + "</a></h3><a" + (jade.attr("title", t("link send to twitter"), true, false)) + (jade.attr("href", "https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + "", true, false)) + " target=\"_blank\"><span class=\"fa fa-twitter\"></span></a></div><div class=\"panel-body\"><div class=\"link-infos\"></div><div class=\"link-description\">" + (((jade_interp = description) == null ? '' : jade_interp)) + "</div></div><div class=\"panel-footer\"><div class=\"link-buttons\"><a" + (jade.attr("href", "" + (url) + "", true, false)) + " target=\"_blank\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-link\">" + (jade.escape(null == (jade_interp = t("link open and read now")) ? "" : jade_interp)) + "</span></a><a title=\"send to Twitter\"" + (jade.attr("href", "https://twitter.com/intent/tweet?text=" + (encodedTitle) + "&url=" + (url) + "", true, false)) + " target=\"_blank\" class=\"btn btn-invert\"><span class=\"fa fa-twitter\">" + (jade.escape(null == (jade_interp = t("link share")) ? "" : jade_interp)) + "</span></a></div></div></div></li>");}.call(this,"description" in locals_for_with?locals_for_with.description:typeof description!=="undefined"?description:undefined,"encodedTitle" in locals_for_with?locals_for_with.encodedTitle:typeof encodedTitle!=="undefined"?encodedTitle:undefined,"from" in locals_for_with?locals_for_with.from:typeof from!=="undefined"?from:undefined,"state" in locals_for_with?locals_for_with.state:typeof state!=="undefined"?state:undefined,"title" in locals_for_with?locals_for_with.title:typeof title!=="undefined"?title:undefined,"url" in locals_for_with?locals_for_with.url:typeof url!=="undefined"?url:undefined));;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-add-feeds", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1 class="add-feed-title">Add a feed</h1><form role="form" class="add-one-feed"><div class="form-group"><label for="add-feed-url">Feed URL</label><input id="add-feed-url" name="add-feed-url" placeholder="http://" class="form-control"/></div><div class="form-group"><label for="add-feed-tags">Tags (separated by ", ")</label><input id="add-feed-tags" name="add-feed" placeholder="science, diy" class="form-control"/></div><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span>ADD FEED</button></form>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<h1 class=\"add-feed-title\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds add a feed")) ? "" : jade_interp)) + "</h1><form role=\"form\" class=\"add-one-feed\"><div class=\"form-group\"><label for=\"add-feed-url\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds feed url")) ? "" : jade_interp)) + "</label><input id=\"add-feed-url\" name=\"add-feed-url\" placeholder=\"http://\" class=\"form-control\"/></div><div class=\"form-group\"><label for=\"add-feed-tags\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds tags separated by")) ? "" : jade_interp)) + "</label><input id=\"add-feed-tags\" name=\"add-feed\"" + (jade.attr("placeholder", t('panelAddFeeds science diy'), true, false)) + " class=\"form-control\"/></div><button type=\"submit\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-plus\">" + (jade.escape(null == (jade_interp = t("panelAddFeeds add feed").toUpperCase()) ? "" : jade_interp)) + "</span></button></form>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-help", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1>Help<h3>How does it work? </h3><p>This is a tool to follow your rss/atom feeds without to much procrastinating.</p><p> \nThe idea behind zero-feeds is that if you do not read a link when you discover it, most of the time, it means that you are not so much interested in it (it\'s an "opinionated" feeds reader). So read it now or forget it. </p><p>In usual feed readers, the links are availables as long as they are provided by the websites, so you will first read what matters, then what looks interesing, then this stuff that is maybe the thing to read, then what is left, oh it\'s time to go to lunch ! No. I do not like this way of procrastination, so do not expect zero-feeds to help you to do that. </p><h3>Will you miss the news of the year ? </h3><p>No, if you did not click on it, you will hear about it from others. So what are you afraid to miss ? A good link ? Yes probably, but do not worry, there will be another good link tomorow.</p><h3>Does it scale for my 6000 feeds ? </h3><p>Seriously ? Reduce your amount of sites you follow, you have better to do today than reading all of them.</p><h3>How do I start ? </h3><p> \nProbably by adding a feed (check the tabs, I\'m sure you can find where to do that).</p><h3>I\'m not sure, how to add a feed ? </h3><p> \nJust click on the top "Add Feeds" button, fill the url and tags fields and click on the "Add Feed" button right next to the tags field (or hit the enter key in one of the fields).\nThe tags and the feed url should appear in the left panel.</p><h3>I want to change the tags of a feed, or I mistyped the url, how can I edit my feed ?</h3><p>Pass the mouse on the feed title and click on cross on left of the feed, don\'t worry, your feed will be removed, but the "Add Feed" form will be filled with its url and tags. Change what is wrong and add the feed again.</p><h3>I just see the beginning of the url of my feed, I feel unsatisfied.</h3><p>Now click on it. The title of this feed should replace its url and the link of this feed should be displayed.</p><h3>What are these "tags" ?</h3><p>They will be used to classify your feeds in the left panel.\nA click on a tag name will display all feeds tagged with it</p><h3>I don\'t want to reload all the feeds of a tag.</h3><p>Like me. So, just click on the tag name in the left panel, all feeds will be displayed, then click on the feed title you want to reload.</p><h3>The first time I clicked on a feed, the links of this feed have been displayed, now I clicked several times and there is no more links !</h3><p>You just need to click once. In fact, "reloading" a feed aims to display the new links of this feed since the last time you did reload it. So if you see nothing, it means that there is no new link to help you to procrastinate.</p><h3>I didn\'t visit all the links of a feed and I "reloaded" it, are the "old" links lost ?</h3><p>No, click on the "Settings" button at the top and check the "Show new and old links" checkbox, they should appear. </p><h3>In this "Settings" panel, there is a field called "Use quickmarks app to save links", what is it ?</h3><p> \nYou are curious, isn\'t it ? I like you. So, install the Quickmarks app that you can find in the Cozy Store\nThen you should see a "send to quickmarks" button on the left of the feed links, click on it, and this link will be added to your bookmarks in the quickmarks app.\nThis is a perfect world, but this feature is not implemented yet</p><h3>It still doesn\'t work !</h3><p> \nPlease <a href="https://github.com/pierrerousseau/zero-feeds/issues" target="_blank">add an issue</a> and help me to help you.</p><h3>I want to use only free softwares.</h3><p> <a href="https://github.com/pierrerousseau/zero-feeds" target="_blank">Me too</a>. \n I\'m not sure what licence I can use for a cozycloud app but you can consider my code under <a href="https://en.wikipedia.org/wiki/WTFPL" target="_blank">WTFPL</a>. </p></h1>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<h1>" + (jade.escape(null == (jade_interp = t("help")) ? "" : jade_interp)) + "<h3>" + (jade.escape(null == (jade_interp = t("help how does it work")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help tool presentation")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("help idea behind")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("help difference from others reader")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help news of the year")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help news of the year answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help scale 6000 feeds")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help scale 6000 feeds answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help how do i start")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help how do i start answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help how to add add feed")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help how to add add feed answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help how to edit feed")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help how to edit feed answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help only beginning of feed url")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help only beginning of feed url answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help what are tags")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help what are tags answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help don't reload all feeds")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help don't reload all feeds answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help links disappeared")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help links disappeared answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help retrieve old links")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help retrieve old links answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help what is quickmark app")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help what is quickmark app answer")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help it still doesn't work")) ? "" : jade_interp)) + "</h3><p>" + (jade.escape(null == (jade_interp = t("help please")) ? "" : jade_interp)) + "&nbsp;<a href=\"https://github.com/pierrerousseau/zero-feeds/issues\" target=\"_blank\">" + (jade.escape((jade_interp = t("help add an issue")) == null ? '' : jade_interp)) + "</a>&nbsp;" + (jade.escape(null == (jade_interp = t("help and help me to help you")) ? "" : jade_interp)) + "</p><h3>" + (jade.escape(null == (jade_interp = t("help free softwares")) ? "" : jade_interp)) + "</h3><p><a href=\"https://github.com/pierrerousseau/zero-feeds\" target=\"_blank\">" + (jade.escape((jade_interp = t("help me too")) == null ? '' : jade_interp)) + "</a>. &nbsp;" + (jade.escape(null == (jade_interp = t("help licence")) ? "" : jade_interp)) + "&nbsp;<a href=\"https://en.wikipedia.org/wiki/WTFPL\" target=\"_blank\">WTFPL</a>.</p></h1>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-history", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1>Comming soon ...</h1>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<h1>" + (jade.escape(null == (jade_interp = t("comming soon")) ? "" : jade_interp)) + "</h1>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-import-export", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1>Import</h1><iframe style="display:none"></iframe><form role="form" class="import"><h3>Import opml rss file or html bookmarks file containing feeds and exported from firefox or chrome</h3><input id="import-file" type="file" name="feeds-file" style="display:none"/><button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-cloud-upload"></span>IMPORT</button><div class="results"><span class="import-success label label-success">0</span><span class="import-failed label label-danger">0</span></div></form><h1>Export</h1><form role="form" class="import"><h3>Comming soon ...</h3></form>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<h1>" + (jade.escape(null == (jade_interp = t("panelImportExport import")) ? "" : jade_interp)) + "</h1><iframe style=\"display:none\"></iframe><form role=\"form\" class=\"import\"><h3>" + (jade.escape(null == (jade_interp = t("panelImportExport description import")) ? "" : jade_interp)) + "</h3><input id=\"import-file\" type=\"file\" name=\"feeds-file\" style=\"display:none\"/><button type=\"submit\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-cloud-upload\">" + (jade.escape(null == (jade_interp = t("panelImportExport import").toUpperCase()) ? "" : jade_interp)) + "</span></button><div class=\"results\"><span class=\"import-success label label-success\">0</span><span class=\"import-failed label label-danger\">0</span></div></form><h1>" + (jade.escape(null == (jade_interp = t("panelImportExport export")) ? "" : jade_interp)) + "</h1><form role=\"form\" class=\"import\"><h3>" + (jade.escape(null == (jade_interp = t("comming soon")) ? "" : jade_interp)) + "</h3></form>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-links", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div class="links-title"><h1>Links</h1><h3>new articles from your favorite feeds</h3></div><div class="links"></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<div class=\"links-title\"><h1>" + (jade.escape(null == (jade_interp = t("links")) ? "" : jade_interp)) + "</h1><h3>" + (jade.escape(null == (jade_interp = t("panelLinks new articles")) ? "" : jade_interp)) + "</h3></div><div class=\"links\"></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-settings", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1>Settings</h1><form id="settings" role="form"></form>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<h1>" + (jade.escape(null == (jade_interp = t("settings")) ? "" : jade_interp)) + "</h1><form id=\"settings\" role=\"form\"></form>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-tips-add-feeds", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div class="tip"><div class="tip-title"> <img alt="poulpe" src="images/poulpe.svg" class="poulpe"/>Follow a new site ?</div><p> \nOn your favorite site find the "rss/atom" link.</p><p>Then, fill the url field with this link \nand the tag field with the categories \nthat you want to associtate to this feed.</p><p>Then click on the "Add Feed" button right next to the tags field \n(or hit the enter key in one of the fields).</p><p>The tags and the feed url should appear in the left panel.</p></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<div class=\"tip\"><div class=\"tip-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed follow new site")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed find rss/atom link")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed fill url and tag")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed add feed")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsAddFeed tag and feed in left panel")) ? "" : jade_interp)) + "</p></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-tips-help", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div class="tip-issues"><div class="tip-title">Report a bug</div><p> \nPlease &nbsp;<a href="https://github.com/pierrerousseau/zero-feeds/issues" target="_blank">add an issue</a>&nbsp; and help me to help you.</p></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<div class=\"tip-issues\"><div class=\"tip-title\">" + (jade.escape(null == (jade_interp = t("help report a bug")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("help please")) ? "" : jade_interp)) + "&nbsp;<a href=\"https://github.com/pierrerousseau/zero-feeds/issues\" target=\"_blank\">" + (jade.escape((jade_interp = t("help add an issue")) == null ? '' : jade_interp)) + "</a>&nbsp;" + (jade.escape(null == (jade_interp = t("help and help me to help you")) ? "" : jade_interp)) + "</p></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-tips-settings", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div class="tip"><div class="tip-title"> <img alt="poulpe" src="images/poulpe.svg" class="poulpe"/>old links ?</div><p> \nI call "old" links the links that are still in the rss feed but that have been displayed before. </p><p> \nBy default, they are not displayed anymore following the "if you did not read it first time it does not interest you so much" rule. </p><p> \nCheck the "Show new and old links" parameter if you want to procrastinate or if a wrong click removed all links before you read them.</p></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<div class=\"tip\"><div class=\"tip-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/></div><p>" + (jade.escape(null == (jade_interp = t("panelTipsSettings old links description")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsSettings old links default behaviour")) ? "" : jade_interp)) + "</p><p>" + (jade.escape(null == (jade_interp = t("panelTipsSettings show old links")) ? "" : jade_interp)) + "</p></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-tips", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div class="tip-of-the-day"><div class="tip-title"> <img alt="poulpe" src="images/poulpe.svg" class="poulpe"/>Tip of the day</div><p>Zero-Feeds displays only the new links from your feeds, if you still want them, there is a parameter to change in the settings panel</p></div><div class="tip-questions"><div class="tip-title">Any question ?</div><p>Visit the help section to find out how zero-feeds works.</p></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<div class=\"tip-of-the-day\"><div class=\"tip-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/>" + (jade.escape(null == (jade_interp = t("panelTips tip of the day")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("panelTips display old links")) ? "" : jade_interp)) + "</p></div><div class=\"tip-questions\"><div class=\"tip-title\">" + (jade.escape(null == (jade_interp = t("panelTips any question")) ? "" : jade_interp)) + "</div><p>" + (jade.escape(null == (jade_interp = t("panelTips visit help")) ? "" : jade_interp)) + "</p></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/panel-welcome", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<h1 class="welcome-title"><img alt="poulpe" src="images/poulpe.svg" class="poulpe"/><p>Welcome to zero-feeds !</p></h1><div class="welcome-message"><p>This application is a RSS/Atom feeds reader designed to minimise the time lost reading them</p><p class="welcome-start">Start now !</p><div class="welcome-actions"><div class="welcome-add-feed btn btn-default">Add your first feed</div><div class="welcome-add-feeds btn btn-invert">Import a .opml file</div></div></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+
+buf.push("<h1 class=\"welcome-title\"><img alt=\"poulpe\" src=\"images/poulpe.svg\" class=\"poulpe\"/><p>" + (jade.escape(null == (jade_interp = t("panelWelcome welcome to zero feeds")) ? "" : jade_interp)) + "</p></h1><div class=\"welcome-message\"><p>" + (jade.escape(null == (jade_interp = t("panelWelcome presentation")) ? "" : jade_interp)) + "</p><p class=\"welcome-start\">" + (jade.escape(null == (jade_interp = t("panelWelcome start now")) ? "" : jade_interp)) + "</p><div class=\"welcome-actions\"><div class=\"welcome-add-feed btn btn-default\">" + (jade.escape(null == (jade_interp = t("panelWelcome add your first feed")) ? "" : jade_interp)) + "</div><div class=\"welcome-add-feeds btn btn-invert\">" + (jade.escape(null == (jade_interp = t("panelWelcome import opml file")) ? "" : jade_interp)) + "</div></div></div>");;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/param", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<label> ');
- if (model.value == "true")
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (model) {
+buf.push("<label>");
+if (model.value == "true")
 {
-buf.push('<input');
-buf.push(attrs({ 'id':("settings-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'checked':("checked"), 'value':("" + (model.value) + "") }, {"id":true,"name":true,"type":true,"checked":true,"value":true}));
-buf.push('/>');
+buf.push("<input" + (jade.attr("id", "settings-" + (model.paramId) + "", true, false)) + (jade.attr("name", "" + (model.paramId) + "", true, false)) + " type=\"checkbox\" checked=\"checked\"" + (jade.attr("value", "" + (model.value) + "", true, false)) + "/>");
 }
- else
+else
 {
-buf.push('<input');
-buf.push(attrs({ 'id':("settings-" + (model.paramId) + ""), 'name':("" + (model.paramId) + ""), 'type':("checkbox"), 'value':("" + (model.value) + "") }, {"id":true,"name":true,"type":true,"value":true}));
-buf.push('/>');
+buf.push("<input" + (jade.attr("id", "settings-" + (model.paramId) + "", true, false)) + (jade.attr("name", "" + (model.paramId) + "", true, false)) + " type=\"checkbox\"" + (jade.attr("value", "" + (model.value) + "", true, false)) + "/>");
 }
-buf.push('' + escape((interp = model.description) == null ? '' : interp) + '</label>');
-}
-return buf.join("");
+buf.push("" + (jade.escape((jade_interp = t(model.description)) == null ? '' : jade_interp)) + "</label>");}.call(this,"model" in locals_for_with?locals_for_with.model:typeof model!=="undefined"?model:undefined));;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/tag", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var __templateData = function template(locals) {
 var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div');
-buf.push(attrs({ "class": ('tag') + ' ' + ("tag-close tag-" + (name) + "") }, {"class":true}));
-buf.push('><div class="tag-title"><div class="tag-toggle"><span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-down"></span></div><div class="tag-name">' + escape((interp = name) == null ? '' : interp) + '</div><div class="tag-refresh"><span class="glyphicon glyphicon-refresh"></span></div></div><div class="tag-feeds"></div></div>');
-}
-return buf.join("");
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (name) {
+buf.push("<div" + (jade.cls(['tag',"tag-close tag-" + (name) + ""], [null,true])) + "><div class=\"tag-title\"><div class=\"tag-toggle\"><span class=\"glyphicon glyphicon-chevron-right\"></span><span class=\"glyphicon glyphicon-chevron-down\"></span></div><div class=\"tag-name\">" + (jade.escape((jade_interp = name) == null ? '' : jade_interp)) + "</div><div class=\"tag-refresh\"><span class=\"glyphicon glyphicon-refresh\"></span></div></div><div class=\"tag-feeds\"></div></div>");}.call(this,"name" in locals_for_with?locals_for_with.name:typeof name!=="undefined"?name:undefined));;return buf.join("");
 };
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;
