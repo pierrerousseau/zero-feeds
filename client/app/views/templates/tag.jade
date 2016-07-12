@@ -3,7 +3,10 @@
         .tag-toggle
             span(class="glyphicon glyphicon-chevron-right")
             span(class="glyphicon glyphicon-chevron-down")
-        .tag-name #{name}
+        if name == "untagged"
+            .tag-name=t("tag untagged")
+        else
+            .tag-name #{name}
         .tag-refresh
             span(class="glyphicon glyphicon-refresh")
     .tag-feeds
