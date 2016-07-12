@@ -100,5 +100,6 @@ module.exports = {
     "panelSettings use-quickmarks": "Use the Quickmarks app to save links",
     "panelSettings use-twitter": "Use twitter to share links",
     "panelSettings show-old-links": "Show new and old links",
-    "panelSettings use-light-colors": "Use light colors for the interface"
+    "panelSettings use-light-colors": "Use light colors for the interface",
+    "tag untagged": "untagged"
 }

@@ -100,5 +100,6 @@ module.exports = {
     "panelSettings use-quickmarks": "Utiliser l'app Quickmarks pour sauvegarder les liens",
     "panelSettings use-twitter": "Utiliser Twitter pour partager les liens",
     "panelSettings show-old-links": "Afficher les nouveaux et les vieux liens",
-    "panelSettings use-light-colors": "Utiliser des couleurs claires pour l'interface"
+    "panelSettings use-light-colors": "Utiliser des couleurs claires pour l'interface",
+    "tag untagged": "non classé"
 }
